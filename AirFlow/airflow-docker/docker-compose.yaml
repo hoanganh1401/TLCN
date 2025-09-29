@@ -69,14 +69,25 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    # Install additional requirements from requirements.txt mounted into the container
+    # Note: use a plain quoted string to avoid embedding extra quotes via parameter expansion
+    _PIP_ADDITIONAL_REQUIREMENTS: "-r /opt/airflow/requirements.txt"
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    # Provide MinIO and WAQI API settings to Airflow containers
+    MINIO_HOST: ${MINIO_HOST:-minio:9000}
+    MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-admin}
+    MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-admin123}
+    MINIO_BUCKET: ${MINIO_BUCKET:-air-quality}
+    WAQI_API_KEY: ${WAQI_API_KEY:-4ab752a4-5aaf-48dc-8130-837c88e9efbe}
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/sql:/opt/airflow/sql:ro
+    # mount project requirements so Airflow can pip install them at startup
+    - ${AIRFLOW_PROJ_DIR:-.}/requirements.txt:/opt/airflow/requirements.txt:ro
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -101,6 +112,19 @@ services:
       start_period: 5s
     restart: always
 
+  pgadmin:
+    image: dpage/pgadmin4:6
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    restart: always
+
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change
     # https://redis.io/blog/redis-adopts-dual-source-available-licensing/
@@ -115,11 +139,68 @@ services:
       start_period: 30s
     restart: always
 
+  # Zookeeper for Kafka
+  zookeeper:
+    image: bitnami/zookeeper:3
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper-data:/bitnami
+    healthcheck:
+      test: ["CMD-SHELL", "zkServer.sh status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  # Kafka broker
+  kafka:
+    image: bitnami/kafka:3
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      # Internal listener for container network and external listener for host access
+      - KAFKA_CFG_LISTENERS=INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INSIDE://kafka:9092,OUTSIDE://localhost:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INSIDE
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    volumes:
+      - kafka-data:/bitnami
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+  # Kafka UI - Kafdrop
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    ports:
+      - "9001:9000"
+    environment:
+      - KAFKA_BROKERCONNECT=kafka:9092
+    depends_on:
+      kafka:
+        condition: service_started
+    restart: always
+
   airflow-apiserver:
     <<: *airflow-common
     command: api-server
     ports:
-      - "8080:8080"
+      - "8081:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/version"]
       interval: 30s
@@ -131,6 +212,28 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
+  # MinIO for Data Lake (S3-compatible)
+  minio:
+    image: minio/minio:latest
+    command: server /data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
+      # Expose console on container port 9001 and bind it to all interfaces so host can access it
+      - MINIO_CONSOLE_ADDRESS=0.0.0.0:9001
+    ports:
+      - "9004:9000"
+      - "9005:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: always
 
   airflow-scheduler:
     <<: *airflow-common
@@ -331,5 +434,53 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+  # Air Quality Streaming Service
+  air-quality-streaming:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: air-quality-streaming
+    environment:
+      # Database connections
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=airflow
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_PORT=5432
+      # MinIO connections  
+      - MINIO_HOST=minio:9000
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=admin123
+      - MINIO_BUCKET=air-quality
+      # API configuration
+      - WAQI_TOKEN=73f88f4b0cf15fdc4984cc221d78cff444761f42
+      - STREAMING_INTERVAL=300
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - minio
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    volumes:
+      - ./logs:/app/logs
+    # Temporary debug: run container as root to avoid host-mounted permission issues
+    # Remove or revert this in production and implement proper UID mapping
+    user: "0:0"
+    networks:
+      - default
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 volumes:
   postgres-db-volume:
+  zookeeper-data:
+  kafka-data:
+  minio-data:
+  pgadmin-data:

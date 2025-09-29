@@ -1,0 +1,1736 @@
+2025-09-21 20:41:06,885 - INFO - Total stations configured: 79
+2025-09-21 20:41:06,886 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:41:06,886 - INFO - Configured stations: 79
+2025-09-21 20:41:06,887 - INFO - WAQI Token: Set
+2025-09-21 20:41:06,887 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:41:06,888 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:41:06,895 - INFO - PostgreSQL is ready!
+2025-09-21 20:41:06,916 - INFO - MinIO is ready!
+2025-09-21 20:41:06,928 - INFO - Starting streaming loop...
+2025-09-21 20:41:06,928 - INFO - Starting data collection round...
+2025-09-21 20:41:07,435 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:41:07Z.json
+2025-09-21 20:41:07,445 - ERROR - Database error for Hanoi - Hoan Kiem: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:07,446 - ERROR - [ERROR] DB insert for Hanoi - Hoan Kiem: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:08,913 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:41:08Z.json
+2025-09-21 20:41:08,921 - ERROR - Database error for Hanoi - Cau Giay: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:08,921 - ERROR - [ERROR] DB insert for Hanoi - Cau Giay: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:10,409 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:41:10Z.json
+2025-09-21 20:41:10,419 - ERROR - Database error for Hanoi - Dong Da: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:10,419 - ERROR - [ERROR] DB insert for Hanoi - Dong Da: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:11,877 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:41:11Z.json
+2025-09-21 20:41:11,884 - ERROR - Database error for Hanoi - Ba Dinh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:11,885 - ERROR - [ERROR] DB insert for Hanoi - Ba Dinh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:13,378 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:41:13Z.json
+2025-09-21 20:41:13,386 - ERROR - Database error for Ho Chi Minh City - District 1: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41706, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:13,387 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 1: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41706, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:14,885 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:41:14Z.json
+2025-09-21 20:41:14,893 - ERROR - Database error for Ho Chi Minh City - District 3: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41707, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:14,893 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 3: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41707, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:16,351 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:41:16Z.json
+2025-09-21 20:41:16,358 - ERROR - Database error for Ho Chi Minh City - District 7: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41708, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:16,359 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 7: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41708, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:17,819 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:41:17Z.json
+2025-09-21 20:41:17,825 - ERROR - Database error for Ho Chi Minh City - Binh Thanh: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41709, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:17,826 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Binh Thanh: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41709, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:19,320 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:41:19Z.json
+2025-09-21 20:41:19,327 - ERROR - Database error for Ho Chi Minh City - Tan Binh: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41710, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:19,327 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Tan Binh: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41710, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:41:20,795 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:41:20Z.json
+2025-09-21 20:41:20,802 - ERROR - Database error for Da Nang - Hai Chau: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:20,802 - ERROR - [ERROR] DB insert for Da Nang - Hai Chau: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:22,269 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:41:22Z.json
+2025-09-21 20:41:22,276 - ERROR - Database error for Da Nang - Son Tra: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:22,277 - ERROR - [ERROR] DB insert for Da Nang - Son Tra: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:23,771 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:41:23Z.json
+2025-09-21 20:41:23,779 - ERROR - Database error for Da Nang - Ngu Hanh Son: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:23,780 - ERROR - [ERROR] DB insert for Da Nang - Ngu Hanh Son: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:25,274 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:41:25Z.json
+2025-09-21 20:41:25,281 - ERROR - Database error for Can Tho - Ninh Kieu: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:25,281 - ERROR - [ERROR] DB insert for Can Tho - Ninh Kieu: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:26,734 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:41:26Z.json
+2025-09-21 20:41:26,741 - ERROR - Database error for Can Tho - Cai Rang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:26,741 - ERROR - [ERROR] DB insert for Can Tho - Cai Rang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:28,234 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:41:28Z.json
+2025-09-21 20:41:28,247 - ERROR - Database error for Hai Phong - Hong Bang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:28,248 - ERROR - [ERROR] DB insert for Hai Phong - Hong Bang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:29,685 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:41:30,139 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:41:30Z.json
+2025-09-21 20:41:30,146 - ERROR - Database error for Hue - Hue City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:30,147 - ERROR - [ERROR] DB insert for Hue - Hue City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:31,627 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:41:31Z.json
+2025-09-21 20:41:31,637 - ERROR - Database error for Nha Trang - Khanh Hoa: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:31,638 - ERROR - [ERROR] DB insert for Nha Trang - Khanh Hoa: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:33,125 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:41:33Z.json
+2025-09-21 20:41:33,136 - ERROR - Database error for Vung Tau - Ba Ria: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:33,137 - ERROR - [ERROR] DB insert for Vung Tau - Ba Ria: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:34,594 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:41:35,072 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:41:35,521 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:41:35,964 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:41:36,403 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:41:36Z.json
+2025-09-21 20:41:36,411 - ERROR - Database error for Bac Ninh - Bac Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:36,412 - ERROR - [ERROR] DB insert for Bac Ninh - Bac Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:37,892 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:41:38,348 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:41:38,836 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:41:39,307 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:41:39,750 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:41:40,201 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:41:40,693 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:41:40Z.json
+2025-09-21 20:41:40,701 - ERROR - Database error for Cao Bang - Cao Bang City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:40,702 - ERROR - [ERROR] DB insert for Cao Bang - Cao Bang City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:42,165 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:41:42,638 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:41:43,113 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:41:43,547 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:41:43,991 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:41:44,455 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:41:44Z.json
+2025-09-21 20:41:44,462 - ERROR - Database error for Gia Lai - Pleiku: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:44,463 - ERROR - [ERROR] DB insert for Gia Lai - Pleiku: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:45,915 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:41:46,395 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:41:46,857 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:41:47,296 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:41:47,734 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:41:48,193 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:41:48Z.json
+2025-09-21 20:41:48,203 - ERROR - Database error for Hung Yen - Hung Yen City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:48,204 - ERROR - [ERROR] DB insert for Hung Yen - Hung Yen City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:41:49,694 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:41:50,145 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:41:50,589 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:41:51,043 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:41:51,516 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:41:51,965 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:41:51Z.json
+2025-09-21 20:41:51,972 - ERROR - Database error for Lang Son - Lang Son City: invalid input syntax for type integer: "-"
+LINE 4: ...      VALUES (41726, '2025-09-21T10:00:00+07:00', '-', 1, 1,...
+                                                             ^
+
+2025-09-21 20:41:51,973 - ERROR - [ERROR] DB insert for Lang Son - Lang Son City: invalid input syntax for type integer: "-"
+LINE 4: ...      VALUES (41726, '2025-09-21T10:00:00+07:00', '-', 1, 1,...
+                                                             ^
+
+2025-09-21 20:41:53,405 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:41:53,876 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:41:54,372 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:41:54,856 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:41:55,308 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:41:55,765 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:41:56,250 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:41:56,729 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:41:57,188 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:41:57,670 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:41:58,200 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:41:58,703 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:41:59,173 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:41:59,622 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:42:00,080 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:42:00,537 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:42:01,001 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:42:00Z.json
+2025-09-21 20:42:01,009 - ERROR - Database error for Son La - Son La City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:01,010 - ERROR - [ERROR] DB insert for Son La - Son La City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:02,470 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:42:02Z.json
+2025-09-21 20:42:02,478 - ERROR - Database error for Tay Ninh - Tay Ninh City: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41729, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:42:02,479 - ERROR - [ERROR] DB insert for Tay Ninh - Tay Ninh City: invalid input syntax for type integer: "-"
+LINE 4:             VALUES (41729, NULL, '-', NULL, NULL, NULL, NULL...
+                                         ^
+
+2025-09-21 20:42:03,784 - INFO - Total stations configured: 79
+2025-09-21 20:42:03,784 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:42:03,785 - INFO - Configured stations: 79
+2025-09-21 20:42:03,785 - INFO - WAQI Token: Set
+2025-09-21 20:42:03,785 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:42:03,785 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:42:03,791 - INFO - PostgreSQL is ready!
+2025-09-21 20:42:03,800 - INFO - MinIO is ready!
+2025-09-21 20:42:03,808 - INFO - Starting streaming loop...
+2025-09-21 20:42:03,808 - INFO - Starting data collection round...
+2025-09-21 20:42:04,280 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:42:04Z.json
+2025-09-21 20:42:04,287 - ERROR - Database error for Hanoi - Hoan Kiem: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:04,287 - ERROR - [ERROR] DB insert for Hanoi - Hoan Kiem: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:05,765 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:42:05Z.json
+2025-09-21 20:42:05,776 - ERROR - Database error for Hanoi - Cau Giay: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:05,777 - ERROR - [ERROR] DB insert for Hanoi - Cau Giay: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:07,227 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:42:07Z.json
+2025-09-21 20:42:07,235 - ERROR - Database error for Hanoi - Dong Da: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:07,235 - ERROR - [ERROR] DB insert for Hanoi - Dong Da: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:08,713 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:42:08Z.json
+2025-09-21 20:42:08,722 - ERROR - Database error for Hanoi - Ba Dinh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:08,723 - ERROR - [ERROR] DB insert for Hanoi - Ba Dinh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:10,190 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:42:10Z.json
+2025-09-21 20:42:10,198 - ERROR - Database error for Ho Chi Minh City - District 1: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:10,199 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 1: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:11,668 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:42:11Z.json
+2025-09-21 20:42:11,679 - ERROR - Database error for Ho Chi Minh City - District 3: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:11,680 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 3: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:13,144 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:42:13Z.json
+2025-09-21 20:42:13,156 - ERROR - Database error for Ho Chi Minh City - District 7: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:13,157 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 7: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:14,649 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:42:14Z.json
+2025-09-21 20:42:14,655 - ERROR - Database error for Ho Chi Minh City - Binh Thanh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:14,655 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Binh Thanh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:16,157 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:42:16Z.json
+2025-09-21 20:42:16,164 - ERROR - Database error for Ho Chi Minh City - Tan Binh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:16,165 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Tan Binh: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:17,668 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:42:17Z.json
+2025-09-21 20:42:17,676 - ERROR - Database error for Da Nang - Hai Chau: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:17,677 - ERROR - [ERROR] DB insert for Da Nang - Hai Chau: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:19,170 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:42:19Z.json
+2025-09-21 20:42:19,180 - ERROR - Database error for Da Nang - Son Tra: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:19,181 - ERROR - [ERROR] DB insert for Da Nang - Son Tra: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:20,667 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:42:20Z.json
+2025-09-21 20:42:20,672 - ERROR - Database error for Da Nang - Ngu Hanh Son: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:20,673 - ERROR - [ERROR] DB insert for Da Nang - Ngu Hanh Son: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:22,156 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:42:22Z.json
+2025-09-21 20:42:22,162 - ERROR - Database error for Can Tho - Ninh Kieu: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:22,163 - ERROR - [ERROR] DB insert for Can Tho - Ninh Kieu: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:23,647 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:42:23Z.json
+2025-09-21 20:42:23,654 - ERROR - Database error for Can Tho - Cai Rang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:23,655 - ERROR - [ERROR] DB insert for Can Tho - Cai Rang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:25,136 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:42:25Z.json
+2025-09-21 20:42:25,143 - ERROR - Database error for Hai Phong - Hong Bang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:25,144 - ERROR - [ERROR] DB insert for Hai Phong - Hong Bang: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:26,608 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:42:27,112 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:42:27Z.json
+2025-09-21 20:42:27,120 - ERROR - Database error for Hue - Hue City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:27,121 - ERROR - [ERROR] DB insert for Hue - Hue City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:28,584 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:42:28Z.json
+2025-09-21 20:42:28,590 - ERROR - Database error for Nha Trang - Khanh Hoa: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:28,591 - ERROR - [ERROR] DB insert for Nha Trang - Khanh Hoa: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:30,103 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:42:30Z.json
+2025-09-21 20:42:30,110 - ERROR - Database error for Vung Tau - Ba Ria: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:30,111 - ERROR - [ERROR] DB insert for Vung Tau - Ba Ria: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:31,571 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:42:32,046 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:42:32,521 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:42:33,005 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:42:33,505 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:42:33Z.json
+2025-09-21 20:42:33,512 - ERROR - Database error for Bac Ninh - Bac Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:33,513 - ERROR - [ERROR] DB insert for Bac Ninh - Bac Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:35,008 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:42:35,460 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:42:35,906 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:42:36,383 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:42:36,840 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:42:37,292 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:42:37,758 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:42:37Z.json
+2025-09-21 20:42:37,765 - ERROR - Database error for Cao Bang - Cao Bang City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:37,766 - ERROR - [ERROR] DB insert for Cao Bang - Cao Bang City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:39,242 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:42:39,678 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:42:40,113 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:42:40,616 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:42:41,060 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:42:41,543 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:42:41Z.json
+2025-09-21 20:42:41,558 - ERROR - Database error for Gia Lai - Pleiku: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:41,559 - ERROR - [ERROR] DB insert for Gia Lai - Pleiku: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:43,050 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:42:43,515 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:42:43,968 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:42:44,419 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:42:44,887 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:42:45,344 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:42:45Z.json
+2025-09-21 20:42:45,355 - ERROR - Database error for Hung Yen - Hung Yen City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:45,356 - ERROR - [ERROR] DB insert for Hung Yen - Hung Yen City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:46,833 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:42:47,276 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:42:47,722 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:42:48,171 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:42:48,644 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:42:49,143 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:42:49Z.json
+2025-09-21 20:42:49,150 - ERROR - Database error for Lang Son - Lang Son City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:49,150 - ERROR - [ERROR] DB insert for Lang Son - Lang Son City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:50,631 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:42:51,080 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:42:51,553 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:42:52,036 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:42:52,499 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:42:52,947 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:42:53,395 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:42:53,828 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:42:54,273 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:42:54,774 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:42:55,208 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:42:55,642 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:42:56,126 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:42:56,561 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:42:57,026 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:42:57,507 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:42:57,988 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:42:57Z.json
+2025-09-21 20:42:57,994 - ERROR - Database error for Son La - Son La City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:57,994 - ERROR - [ERROR] DB insert for Son La - Son La City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:59,462 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:42:59Z.json
+2025-09-21 20:42:59,471 - ERROR - Database error for Tay Ninh - Tay Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:42:59,471 - ERROR - [ERROR] DB insert for Tay Ninh - Tay Ninh City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:43:00,954 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:43:01,460 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:43:01Z.json
+2025-09-21 20:43:01,474 - ERROR - Database error for Thai Nguyen - Thai Nguyen City: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:43:01,474 - ERROR - [ERROR] DB insert for Thai Nguyen - Thai Nguyen City: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:43:02,973 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:43:02Z.json
+2025-09-21 20:43:02,981 - ERROR - Database error for Thai Nguyen - Song Cong: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:43:02,982 - ERROR - [ERROR] DB insert for Thai Nguyen - Song Cong: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:43:04,469 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:43:04,902 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:43:05,340 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:43:05,792 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:43:06,258 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:43:06,741 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:43:07,233 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:43:07Z.json
+2025-09-21 20:43:07,242 - ERROR - Database error for Vinh Long - Vinh Long City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:43:07,243 - ERROR - [ERROR] DB insert for Vinh Long - Vinh Long City: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+2025-09-21 20:43:08,727 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:43:09,189 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:43:09,189 - INFO - Streaming round completed: 0 stations processed, 79 errors
+2025-09-21 20:43:09,190 - INFO - Sleeping 234.6 seconds...
+2025-09-21 20:43:15,232 - INFO - Total stations configured: 79
+2025-09-21 20:43:15,233 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:43:15,234 - INFO - Configured stations: 79
+2025-09-21 20:43:15,234 - INFO - WAQI Token: Set
+2025-09-21 20:43:15,235 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:43:15,235 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:43:15,244 - INFO - PostgreSQL is ready!
+2025-09-21 20:43:15,257 - INFO - MinIO is ready!
+2025-09-21 20:43:15,269 - INFO - Starting streaming loop...
+2025-09-21 20:43:15,269 - INFO - Starting data collection round...
+2025-09-21 20:43:15,754 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:43:15Z.json
+2025-09-21 20:43:18,124 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:43:18Z.json
+2025-09-21 20:43:18,131 - ERROR - Database error for Hanoi - Cau Giay: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:18,132 - ERROR - [ERROR] DB insert for Hanoi - Cau Giay: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:19,596 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:43:19Z.json
+2025-09-21 20:43:19,603 - ERROR - Database error for Hanoi - Dong Da: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:19,603 - ERROR - [ERROR] DB insert for Hanoi - Dong Da: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:21,101 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:43:21Z.json
+2025-09-21 20:43:21,113 - ERROR - Database error for Hanoi - Ba Dinh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:21,114 - ERROR - [ERROR] DB insert for Hanoi - Ba Dinh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8688) already exists.
+
+2025-09-21 20:43:22,572 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:43:22Z.json
+2025-09-21 20:43:24,098 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:43:24Z.json
+2025-09-21 20:43:24,104 - ERROR - Database error for Ho Chi Minh City - District 3: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:24,105 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 3: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:25,587 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:43:25Z.json
+2025-09-21 20:43:25,592 - ERROR - Database error for Ho Chi Minh City - District 7: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:25,594 - ERROR - [ERROR] DB insert for Ho Chi Minh City - District 7: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:27,069 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:43:27Z.json
+2025-09-21 20:43:27,079 - ERROR - Database error for Ho Chi Minh City - Binh Thanh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:27,080 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Binh Thanh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:28,560 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:43:28Z.json
+2025-09-21 20:43:28,569 - ERROR - Database error for Ho Chi Minh City - Tan Binh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:28,570 - ERROR - [ERROR] DB insert for Ho Chi Minh City - Tan Binh: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(8767) already exists.
+
+2025-09-21 20:43:30,064 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:43:30Z.json
+2025-09-21 20:43:31,580 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:43:31Z.json
+2025-09-21 20:43:31,586 - ERROR - Database error for Da Nang - Son Tra: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(1584) already exists.
+
+2025-09-21 20:43:31,587 - ERROR - [ERROR] DB insert for Da Nang - Son Tra: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(1584) already exists.
+
+2025-09-21 20:43:33,068 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:43:33Z.json
+2025-09-21 20:43:33,074 - ERROR - Database error for Da Nang - Ngu Hanh Son: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(1584) already exists.
+
+2025-09-21 20:43:33,075 - ERROR - [ERROR] DB insert for Da Nang - Ngu Hanh Son: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(1584) already exists.
+
+2025-09-21 20:43:34,537 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:43:34Z.json
+2025-09-21 20:43:36,030 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:43:36Z.json
+2025-09-21 20:43:36,039 - ERROR - Database error for Can Tho - Cai Rang: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13687) already exists.
+
+2025-09-21 20:43:36,040 - ERROR - [ERROR] DB insert for Can Tho - Cai Rang: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13687) already exists.
+
+2025-09-21 20:43:37,512 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:43:37Z.json
+2025-09-21 20:43:38,986 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:43:40,226 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:43:40Z.json
+2025-09-21 20:43:41,705 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:43:41Z.json
+2025-09-21 20:43:43,255 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:43:43Z.json
+2025-09-21 20:43:44,759 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:43:45,220 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:43:45,668 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:43:46,142 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:43:46,632 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:43:46Z.json
+2025-09-21 20:43:48,106 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:43:48,684 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:43:49,140 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:43:49,595 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:43:50,068 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:43:50,516 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:43:51,030 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:43:51Z.json
+2025-09-21 20:43:52,984 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:43:53,608 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:43:54,047 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:43:55,494 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:43:55,952 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:43:56,408 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:43:56Z.json
+2025-09-21 20:43:57,874 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:43:58,334 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:43:58,824 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:43:59,285 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:43:59,749 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:44:00,374 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:44:00Z.json
+2025-09-21 20:44:01,844 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:44:02,296 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:44:02,742 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:44:03,658 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:44:04,118 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:44:04,559 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:44:04Z.json
+2025-09-21 20:44:06,020 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:44:06,472 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:44:06,945 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:44:07,430 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:44:07,873 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:44:08,336 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:44:08,793 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:44:09,251 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:44:09,695 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:44:10,300 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:44:12,652 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:44:13,101 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:44:13,575 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:44:14,359 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:44:14,825 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:44:15,281 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:44:15,767 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:44:15Z.json
+2025-09-21 20:44:17,282 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:44:17Z.json
+2025-09-21 20:44:18,758 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:44:19,216 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:44:19Z.json
+2025-09-21 20:44:19,222 - ERROR - Database error for Thai Nguyen - Thai Nguyen City: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:44:19,223 - ERROR - [ERROR] DB insert for Thai Nguyen - Thai Nguyen City: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:44:20,692 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:44:20Z.json
+2025-09-21 20:44:20,699 - ERROR - Database error for Thai Nguyen - Song Cong: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:44:20,700 - ERROR - [ERROR] DB insert for Thai Nguyen - Song Cong: duplicate key value violates unique constraint "ux_dim_waqi_id"
+DETAIL:  Key (waqi_id)=(13027) already exists.
+
+2025-09-21 20:44:22,163 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:44:22,627 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:44:23,076 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:44:23,532 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:44:24,138 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:44:24,596 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:44:25,045 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:44:25Z.json
+2025-09-21 20:44:26,511 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:44:26,951 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:44:26,953 - INFO - Streaming round completed: 16 stations processed, 63 errors
+2025-09-21 20:44:26,953 - INFO - Sleeping 228.3 seconds...
+2025-09-21 20:44:57,682 - INFO - Total stations configured: 79
+2025-09-21 20:44:57,683 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:44:57,684 - INFO - Configured stations: 79
+2025-09-21 20:44:57,684 - INFO - WAQI Token: Set
+2025-09-21 20:44:57,685 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:44:57,685 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:44:57,694 - INFO - PostgreSQL is ready!
+2025-09-21 20:44:57,703 - INFO - MinIO is ready!
+2025-09-21 20:44:57,715 - INFO - Starting streaming loop...
+2025-09-21 20:44:57,716 - INFO - Starting data collection round...
+2025-09-21 20:44:58,222 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:44:58Z.json
+2025-09-21 20:44:59,712 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:44:59Z.json
+2025-09-21 20:45:01,218 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:45:01Z.json
+2025-09-21 20:45:02,692 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:45:02Z.json
+2025-09-21 20:45:04,214 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:45:04Z.json
+2025-09-21 20:45:05,822 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:45:05Z.json
+2025-09-21 20:45:07,282 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:45:07Z.json
+2025-09-21 20:45:08,734 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:45:08Z.json
+2025-09-21 20:45:10,215 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:45:10Z.json
+2025-09-21 20:45:11,707 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:45:11Z.json
+2025-09-21 20:45:13,187 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:45:13Z.json
+2025-09-21 20:45:14,688 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:45:14Z.json
+2025-09-21 20:45:16,162 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:45:16Z.json
+2025-09-21 20:45:17,662 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:45:17Z.json
+2025-09-21 20:45:19,138 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:45:19Z.json
+2025-09-21 20:45:20,621 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:45:21,073 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:45:21Z.json
+2025-09-21 20:45:22,547 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:45:22Z.json
+2025-09-21 20:45:24,057 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:45:24Z.json
+2025-09-21 20:45:25,498 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:45:25,946 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:45:26,387 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:45:26,859 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:45:27,350 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:45:27Z.json
+2025-09-21 20:45:28,842 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:45:29,363 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:45:29,841 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:45:30,303 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:45:30,795 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:45:31,281 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:45:31,750 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:45:31Z.json
+2025-09-21 20:45:33,214 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:45:33,664 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:45:34,122 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:45:34,595 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:45:35,034 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:45:35,520 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:45:35Z.json
+2025-09-21 20:45:36,995 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:45:37,480 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:45:37,960 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:45:38,397 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:45:38,860 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:45:39,333 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:45:39Z.json
+2025-09-21 20:45:40,793 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:45:41,231 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:45:41,695 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:45:42,136 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:45:42,578 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:45:43,027 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:45:43Z.json
+2025-09-21 20:45:44,467 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:45:44,933 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:45:45,398 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:45:45,846 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:45:46,290 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:45:46,732 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:45:47,168 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:45:47,636 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:45:48,095 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:45:48,548 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:45:49,015 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:45:49,490 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:45:49,950 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:45:50,416 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:45:50,883 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:45:51,330 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:45:51,858 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:45:51Z.json
+2025-09-21 20:45:53,371 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:45:53Z.json
+2025-09-21 20:45:54,825 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:45:55,302 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:45:55Z.json
+2025-09-21 20:45:56,778 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:45:56Z.json
+2025-09-21 20:45:58,279 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:45:58,756 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:45:59,195 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:45:59,669 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:46:00,165 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:46:00,623 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:46:01,099 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:46:01Z.json
+2025-09-21 20:46:02,599 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:46:03,073 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:46:03,074 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 20:46:03,075 - INFO - Sleeping 234.6 seconds...
+2025-09-21 20:49:57,702 - INFO - Starting data collection round...
+2025-09-21 20:49:58,189 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:49:58Z.json
+2025-09-21 20:49:59,708 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:49:59Z.json
+2025-09-21 20:50:01,178 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:50:01Z.json
+2025-09-21 20:50:02,702 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:50:02Z.json
+2025-09-21 20:50:04,183 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:50:04Z.json
+2025-09-21 20:50:05,675 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:50:05Z.json
+2025-09-21 20:50:07,165 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:50:07Z.json
+2025-09-21 20:50:08,712 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:50:08Z.json
+2025-09-21 20:50:10,225 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:50:10Z.json
+2025-09-21 20:50:11,822 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:50:11Z.json
+2025-09-21 20:50:13,524 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:50:13Z.json
+2025-09-21 20:50:14,980 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:50:14Z.json
+2025-09-21 20:50:16,441 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:50:16Z.json
+2025-09-21 20:50:17,952 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:50:17Z.json
+2025-09-21 20:50:19,457 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:50:19Z.json
+2025-09-21 20:50:20,935 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:50:21,381 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:50:21Z.json
+2025-09-21 20:50:22,851 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:50:22Z.json
+2025-09-21 20:50:24,343 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:50:24Z.json
+2025-09-21 20:50:25,831 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:50:26,282 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:50:26,725 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:50:27,219 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:50:27,678 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:50:27Z.json
+2025-09-21 20:50:29,154 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:50:29,605 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:50:30,070 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:50:30,555 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:50:31,006 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:50:31,467 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:50:31,910 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:50:31Z.json
+2025-09-21 20:50:33,409 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:50:33,851 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:50:34,296 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:50:34,773 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:50:35,217 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:50:35,703 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:50:35Z.json
+2025-09-21 20:50:37,157 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:50:37,630 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:50:38,083 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:50:38,522 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:50:38,971 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:50:39,438 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:50:39Z.json
+2025-09-21 20:50:40,899 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:50:41,383 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:50:41,866 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:50:42,303 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:50:42,761 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:50:43,238 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:50:43Z.json
+2025-09-21 20:50:44,801 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:50:45,244 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:50:45,702 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:50:46,235 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:50:46,680 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:50:47,120 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:50:47,600 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:50:48,047 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:50:48,478 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:50:48,955 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:50:49,418 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:50:49,857 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:50:50,298 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:50:50,772 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:50:51,241 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:50:51,670 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:50:52,146 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:50:52Z.json
+2025-09-21 20:50:53,622 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:50:53Z.json
+2025-09-21 20:50:55,081 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:50:55,528 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:50:55Z.json
+2025-09-21 20:50:57,042 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:50:57Z.json
+2025-09-21 20:50:58,520 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:50:58,983 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:50:59,460 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:50:59,894 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:51:00,361 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:51:00,789 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:51:01,280 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:51:01Z.json
+2025-09-21 20:51:02,748 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:51:03,203 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:51:03,204 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 20:51:03,204 - INFO - Sleeping 234.5 seconds...
+2025-09-21 20:51:12,869 - INFO - Total stations configured: 79
+2025-09-21 20:51:12,870 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:51:12,870 - INFO - Configured stations: 79
+2025-09-21 20:51:12,871 - INFO - WAQI Token: Set
+2025-09-21 20:51:12,872 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:51:12,873 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:51:12,881 - INFO - PostgreSQL is ready!
+2025-09-21 20:51:12,889 - INFO - MinIO is ready!
+2025-09-21 20:51:12,901 - INFO - Starting streaming loop...
+2025-09-21 20:51:12,902 - INFO - Starting data collection round...
+2025-09-21 20:51:13,396 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:51:13Z.json
+2025-09-21 20:51:14,882 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:51:14Z.json
+2025-09-21 20:51:16,365 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:51:16Z.json
+2025-09-21 20:51:17,871 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:51:17Z.json
+2025-09-21 20:51:19,381 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:51:19Z.json
+2025-09-21 20:51:20,845 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:51:20Z.json
+2025-09-21 20:51:22,329 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:51:22Z.json
+2025-09-21 20:51:23,773 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:51:23Z.json
+2025-09-21 20:51:25,230 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:51:25Z.json
+2025-09-21 20:51:26,725 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:51:26Z.json
+2025-09-21 20:51:28,183 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:51:28Z.json
+2025-09-21 20:51:29,680 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:51:29Z.json
+2025-09-21 20:51:31,155 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:51:31Z.json
+2025-09-21 20:51:32,640 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:51:32Z.json
+2025-09-21 20:51:34,139 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:51:34Z.json
+2025-09-21 20:51:35,597 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:51:36,066 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:51:36Z.json
+2025-09-21 20:51:37,523 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:51:37Z.json
+2025-09-21 20:51:39,007 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:51:39Z.json
+2025-09-21 20:51:40,482 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:51:40,921 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:51:41,380 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:51:41,859 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:51:42,352 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:51:42Z.json
+2025-09-21 20:51:43,814 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:51:44,267 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:51:44,748 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:51:45,217 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:51:45,659 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:51:46,094 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:51:46,571 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:51:46Z.json
+2025-09-21 20:51:48,066 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:51:48,508 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:51:48,942 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:51:49,377 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:51:49,799 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:51:50,291 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:51:50Z.json
+2025-09-21 20:51:51,786 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:51:52,221 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:51:52,663 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:51:53,149 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:51:53,616 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:51:54,110 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:51:54Z.json
+2025-09-21 20:51:55,600 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:51:56,085 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:51:56,560 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:51:57,009 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:51:57,488 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:51:57,973 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:51:57Z.json
+2025-09-21 20:51:59,433 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:51:59,904 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:52:00,338 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:52:00,796 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:52:01,274 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:52:01,760 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:52:02,191 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:52:02,627 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:52:03,070 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:52:03,535 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:52:04,016 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:52:04,494 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:52:04,930 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:52:05,403 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:52:05,868 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:52:06,313 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:52:06,764 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:52:06Z.json
+2025-09-21 20:52:08,214 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:52:08Z.json
+2025-09-21 20:52:09,708 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:52:10,179 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:52:10Z.json
+2025-09-21 20:52:11,681 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:52:11Z.json
+2025-09-21 20:52:13,143 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:52:13,598 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:52:14,044 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:52:14,492 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:52:14,932 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:52:15,407 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:52:15,883 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:52:15Z.json
+2025-09-21 20:52:17,356 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:52:17,800 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:52:17,800 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 20:52:17,801 - INFO - Sleeping 235.1 seconds...
+2025-09-21 20:56:12,888 - INFO - Starting data collection round...
+2025-09-21 20:56:13,377 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:56:13Z.json
+2025-09-21 20:56:14,881 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:56:14Z.json
+2025-09-21 20:56:16,378 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:56:16Z.json
+2025-09-21 20:56:17,911 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:56:17Z.json
+2025-09-21 20:56:19,483 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:56:19Z.json
+2025-09-21 20:56:21,446 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T20:56:21Z.json
+2025-09-21 20:56:22,918 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T20:56:22Z.json
+2025-09-21 20:56:24,408 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T20:56:24Z.json
+2025-09-21 20:56:25,859 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T20:56:25Z.json
+2025-09-21 20:56:27,327 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T20:56:27Z.json
+2025-09-21 20:56:28,825 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T20:56:28Z.json
+2025-09-21 20:56:30,351 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T20:56:30Z.json
+2025-09-21 20:56:31,842 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T20:56:31Z.json
+2025-09-21 20:56:33,344 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T20:56:33Z.json
+2025-09-21 20:56:34,846 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T20:56:34Z.json
+2025-09-21 20:56:36,304 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 20:56:36,753 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T20:56:36Z.json
+2025-09-21 20:56:38,298 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T20:56:38Z.json
+2025-09-21 20:56:39,762 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T20:56:39Z.json
+2025-09-21 20:56:41,222 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 20:56:41,689 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 20:56:42,192 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 20:56:42,654 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 20:56:43,127 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:56:43Z.json
+2025-09-21 20:56:44,607 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 20:56:45,040 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 20:56:45,472 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 20:56:45,951 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 20:56:46,424 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 20:56:46,883 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 20:56:47,328 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T20:56:47Z.json
+2025-09-21 20:56:48,816 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 20:56:49,305 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 20:56:49,792 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 20:56:50,270 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 20:56:50,721 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 20:56:51,213 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T20:56:51Z.json
+2025-09-21 20:56:52,666 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 20:56:53,146 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 20:56:53,630 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 20:56:54,068 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 20:56:54,531 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 20:56:55,028 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T20:56:55Z.json
+2025-09-21 20:56:56,490 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 20:56:56,920 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 20:56:57,407 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 20:56:57,870 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 20:56:58,326 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 20:56:58,790 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T20:56:58Z.json
+2025-09-21 20:57:00,250 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 20:57:00,705 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 20:57:01,150 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 20:57:01,635 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 20:57:02,067 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 20:57:02,548 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 20:57:02,995 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 20:57:03,443 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 20:57:03,939 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 20:57:04,396 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 20:57:04,844 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 20:57:05,294 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 20:57:05,746 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 20:57:06,203 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 20:57:06,692 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 20:57:07,168 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 20:57:07,653 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T20:57:07Z.json
+2025-09-21 20:57:09,154 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T20:57:09Z.json
+2025-09-21 20:57:10,622 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 20:57:11,116 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T20:57:11Z.json
+2025-09-21 20:57:12,627 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T20:57:12Z.json
+2025-09-21 20:57:14,098 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 20:57:14,574 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 20:57:15,025 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 20:57:15,474 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 20:57:15,941 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 20:57:16,443 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 20:57:16,912 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T20:57:16Z.json
+2025-09-21 20:57:18,382 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 20:57:18,826 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 20:57:18,827 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 20:57:18,827 - INFO - Sleeping 234.1 seconds...
+2025-09-21 20:59:53,493 - INFO - Total stations configured: 79
+2025-09-21 20:59:53,494 - INFO - === Air Quality Streaming Service ===
+2025-09-21 20:59:53,494 - INFO - Configured stations: 79
+2025-09-21 20:59:53,495 - INFO - WAQI Token: Set
+2025-09-21 20:59:53,495 - INFO - Streaming interval: 300 seconds
+2025-09-21 20:59:53,496 - INFO - Waiting for dependencies to be ready...
+2025-09-21 20:59:53,501 - INFO - PostgreSQL is ready!
+2025-09-21 20:59:53,512 - INFO - MinIO is ready!
+2025-09-21 20:59:53,520 - INFO - Starting streaming loop...
+2025-09-21 20:59:53,520 - INFO - Starting data collection round...
+2025-09-21 20:59:53,990 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T20:59:53Z.json
+2025-09-21 20:59:55,498 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T20:59:55Z.json
+2025-09-21 20:59:56,980 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T20:59:56Z.json
+2025-09-21 20:59:58,453 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T20:59:58Z.json
+2025-09-21 20:59:59,922 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T20:59:59Z.json
+2025-09-21 21:00:01,401 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T21:00:01Z.json
+2025-09-21 21:00:04,540 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T21:00:04Z.json
+2025-09-21 21:00:06,074 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T21:00:06Z.json
+2025-09-21 21:00:07,624 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T21:00:07Z.json
+2025-09-21 21:00:09,092 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T21:00:09Z.json
+2025-09-21 21:00:10,564 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T21:00:10Z.json
+2025-09-21 21:00:12,069 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T21:00:12Z.json
+2025-09-21 21:00:13,567 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T21:00:13Z.json
+2025-09-21 21:00:15,040 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T21:00:15Z.json
+2025-09-21 21:00:16,560 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T21:00:16Z.json
+2025-09-21 21:00:18,075 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 21:00:18,566 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T21:00:18Z.json
+2025-09-21 21:00:20,022 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T21:00:20Z.json
+2025-09-21 21:00:21,475 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T21:00:21Z.json
+2025-09-21 21:00:22,929 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 21:00:23,425 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 21:00:23,899 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 21:00:24,350 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 21:00:24,829 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T21:00:24Z.json
+2025-09-21 21:00:26,302 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 21:00:26,766 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 21:00:27,236 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 21:00:27,678 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 21:00:28,154 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 21:00:28,616 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 21:00:29,060 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T21:00:29Z.json
+2025-09-21 21:00:30,545 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 21:00:30,994 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 21:00:31,446 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 21:00:31,883 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 21:00:32,368 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 21:00:32,816 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T21:00:32Z.json
+2025-09-21 21:00:34,291 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 21:00:34,726 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 21:00:35,250 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 21:00:35,736 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 21:00:36,214 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 21:00:36,667 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T21:00:36Z.json
+2025-09-21 21:00:38,214 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 21:00:38,677 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 21:00:39,142 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 21:00:39,640 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 21:00:40,142 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 21:00:40,692 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T21:00:40Z.json
+2025-09-21 21:00:42,171 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 21:00:42,645 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 21:00:43,140 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 21:00:43,594 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 21:00:44,071 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 21:00:44,538 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 21:00:44,980 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 21:00:45,427 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 21:00:45,854 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 21:00:46,343 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 21:00:46,801 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 21:00:47,247 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 21:00:47,725 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 21:00:48,174 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 21:00:48,674 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 21:00:49,120 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 21:00:49,617 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T21:00:49Z.json
+2025-09-21 21:00:51,106 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T21:00:51Z.json
+2025-09-21 21:00:52,602 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 21:00:53,082 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T21:00:53Z.json
+2025-09-21 21:00:54,601 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T21:00:54Z.json
+2025-09-21 21:00:56,079 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 21:00:56,532 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 21:00:56,973 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 21:00:57,449 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 21:00:57,915 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 21:00:58,384 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 21:00:58,875 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T21:00:58Z.json
+2025-09-21 21:01:00,335 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 21:01:00,776 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 21:01:00,777 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 21:01:00,777 - INFO - Sleeping 232.7 seconds...
+2025-09-21 21:02:03,555 - INFO - Total stations configured: 79
+2025-09-21 21:02:03,556 - INFO - === Air Quality Streaming Service ===
+2025-09-21 21:02:03,556 - INFO - Configured stations: 79
+2025-09-21 21:02:03,557 - INFO - WAQI Token: Set
+2025-09-21 21:02:03,557 - INFO - Streaming interval: 300 seconds
+2025-09-21 21:02:03,557 - INFO - Waiting for dependencies to be ready...
+2025-09-21 21:02:03,569 - INFO - PostgreSQL is ready!
+2025-09-21 21:02:03,579 - INFO - MinIO is ready!
+2025-09-21 21:02:03,589 - INFO - Starting streaming loop...
+2025-09-21 21:02:03,590 - INFO - Starting data collection round...
+2025-09-21 21:02:04,886 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=21/2025-09-21T21:02:04Z.json
+2025-09-21 21:02:06,371 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=21/2025-09-21T21:02:06Z.json
+2025-09-21 21:02:07,944 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=21/2025-09-21T21:02:07Z.json
+2025-09-21 21:02:09,456 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=21/2025-09-21T21:02:09Z.json
+2025-09-21 21:02:10,907 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=21/2025-09-21T21:02:10Z.json
+2025-09-21 21:02:12,357 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=21/2025-09-21T21:02:12Z.json
+2025-09-21 21:02:13,846 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=21/2025-09-21T21:02:13Z.json
+2025-09-21 21:02:15,328 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=21/2025-09-21T21:02:15Z.json
+2025-09-21 21:02:16,822 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=21/2025-09-21T21:02:16Z.json
+2025-09-21 21:02:18,286 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=21/2025-09-21T21:02:18Z.json
+2025-09-21 21:02:19,790 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=21/2025-09-21T21:02:19Z.json
+2025-09-21 21:02:21,269 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=21/2025-09-21T21:02:21Z.json
+2025-09-21 21:02:22,739 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=21/2025-09-21T21:02:22Z.json
+2025-09-21 21:02:24,199 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=21/2025-09-21T21:02:24Z.json
+2025-09-21 21:02:25,677 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=21/2025-09-21T21:02:25Z.json
+2025-09-21 21:02:27,118 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-21 21:02:27,556 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=21/2025-09-21T21:02:27Z.json
+2025-09-21 21:02:29,028 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=21/2025-09-21T21:02:29Z.json
+2025-09-21 21:02:30,525 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=21/2025-09-21T21:02:30Z.json
+2025-09-21 21:02:32,019 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-21 21:02:32,497 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-21 21:02:32,975 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-21 21:02:33,465 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-21 21:02:33,917 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=21/2025-09-21T21:02:33Z.json
+2025-09-21 21:02:35,403 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-21 21:02:35,880 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-21 21:02:36,364 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-21 21:02:36,802 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-21 21:02:37,259 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-21 21:02:37,739 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-21 21:02:38,198 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=21/2025-09-21T21:02:38Z.json
+2025-09-21 21:02:39,656 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-21 21:02:40,090 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-21 21:02:40,549 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-21 21:02:40,981 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-21 21:02:41,453 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-21 21:02:41,943 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=21/2025-09-21T21:02:41Z.json
+2025-09-21 21:02:43,407 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-21 21:02:43,844 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-21 21:02:44,330 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-21 21:02:44,788 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-21 21:02:45,227 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-21 21:02:45,676 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=21/2025-09-21T21:02:45Z.json
+2025-09-21 21:02:47,158 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-21 21:02:47,603 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-21 21:02:48,070 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-21 21:02:48,498 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-21 21:02:48,953 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-21 21:02:49,415 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=21/2025-09-21T21:02:49Z.json
+2025-09-21 21:02:50,894 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-21 21:02:51,342 - WARNING - No WAQI data for Long An - Tan An
+2025-09-21 21:02:51,807 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-21 21:02:52,259 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-21 21:02:52,729 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-21 21:02:53,168 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-21 21:02:53,604 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-21 21:02:54,061 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-21 21:02:54,507 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-21 21:02:54,988 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-21 21:02:55,484 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-21 21:02:55,976 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-21 21:02:56,492 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-21 21:02:56,984 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-21 21:02:57,544 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-21 21:02:58,052 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-21 21:02:58,504 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=21/2025-09-21T21:02:58Z.json
+2025-09-21 21:02:59,965 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=21/2025-09-21T21:02:59Z.json
+2025-09-21 21:03:01,455 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-21 21:03:01,920 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=21/2025-09-21T21:03:01Z.json
+2025-09-21 21:03:03,405 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=21/2025-09-21T21:03:03Z.json
+2025-09-21 21:03:04,893 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-21 21:03:05,356 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-21 21:03:05,818 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-21 21:03:06,278 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-21 21:03:06,721 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-21 21:03:07,186 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-21 21:03:07,638 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=21/2025-09-21T21:03:07Z.json
+2025-09-21 21:03:09,111 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-21 21:03:09,558 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-21 21:03:09,559 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-21 21:03:09,560 - INFO - Sleeping 234.0 seconds...
+2025-09-23 08:14:46,358 - INFO - Total stations configured: 79
+2025-09-23 08:14:46,373 - INFO - === Air Quality Streaming Service ===
+2025-09-23 08:14:46,380 - INFO - Configured stations: 79
+2025-09-23 08:14:46,388 - INFO - WAQI Token: Set
+2025-09-23 08:14:46,395 - INFO - Streaming interval: 300 seconds
+2025-09-23 08:14:46,403 - INFO - Waiting for dependencies to be ready...
+2025-09-23 08:14:46,444 - INFO - Waiting for PostgreSQL... (1/30)
+2025-09-23 08:14:51,479 - INFO - PostgreSQL is ready!
+2025-09-23 08:14:51,495 - INFO - MinIO is ready!
+2025-09-23 08:14:51,513 - INFO - Starting streaming loop...
+2025-09-23 08:14:51,515 - INFO - Starting data collection round...
+2025-09-23 08:14:52,173 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=23/2025-09-23T08:14:52Z.json
+2025-09-23 08:14:53,712 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=23/2025-09-23T08:14:53Z.json
+2025-09-23 08:14:55,249 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=23/2025-09-23T08:14:55Z.json
+2025-09-23 08:14:57,235 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=23/2025-09-23T08:14:57Z.json
+2025-09-23 08:14:59,101 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=23/2025-09-23T08:14:59Z.json
+2025-09-23 08:15:00,725 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=23/2025-09-23T08:15:00Z.json
+2025-09-23 08:15:02,457 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=23/2025-09-23T08:15:02Z.json
+2025-09-23 08:15:03,937 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=23/2025-09-23T08:15:03Z.json
+2025-09-23 08:15:05,471 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=23/2025-09-23T08:15:05Z.json
+2025-09-23 08:15:06,966 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=23/2025-09-23T08:15:06Z.json
+2025-09-23 08:15:08,501 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=23/2025-09-23T08:15:08Z.json
+2025-09-23 08:15:10,123 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=23/2025-09-23T08:15:10Z.json
+2025-09-23 08:15:11,637 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=23/2025-09-23T08:15:11Z.json
+2025-09-23 08:15:13,156 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=23/2025-09-23T08:15:13Z.json
+2025-09-23 08:15:14,684 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=23/2025-09-23T08:15:14Z.json
+2025-09-23 08:15:16,325 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-23 08:15:16,803 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=23/2025-09-23T08:15:16Z.json
+2025-09-23 08:15:18,271 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=23/2025-09-23T08:15:18Z.json
+2025-09-23 08:15:19,759 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=23/2025-09-23T08:15:19Z.json
+2025-09-23 08:15:21,208 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-23 08:15:21,747 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-23 08:15:22,251 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-23 08:15:22,784 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-23 08:15:23,317 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=23/2025-09-23T08:15:23Z.json
+2025-09-23 08:15:24,722 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-23 08:15:25,119 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-23 08:15:25,516 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-23 08:15:25,914 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-23 08:15:26,363 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-23 08:15:26,768 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-23 08:15:27,225 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=23/2025-09-23T08:15:27Z.json
+2025-09-23 08:15:28,666 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-23 08:15:29,051 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-23 08:15:29,466 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-23 08:15:29,915 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-23 08:15:30,375 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-23 08:15:30,887 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=23/2025-09-23T08:15:30Z.json
+2025-09-29 07:44:06,048 - INFO - Total stations configured: 79
+2025-09-29 07:44:06,049 - INFO - === Air Quality Streaming Service ===
+2025-09-29 07:44:06,050 - INFO - Configured stations: 79
+2025-09-29 07:44:06,050 - INFO - WAQI Token: Set
+2025-09-29 07:44:06,051 - INFO - Streaming interval: 300 seconds
+2025-09-29 07:44:06,052 - INFO - Waiting for dependencies to be ready...
+2025-09-29 07:44:06,073 - INFO - PostgreSQL is ready!
+2025-09-29 07:44:06,078 - WARNING - Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x76b5ee303f90>: Failed to establish a new connection: [Errno 111] Connection refused')': /
+2025-09-29 07:44:06,481 - WARNING - Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x76b5ee314c10>: Failed to establish a new connection: [Errno 111] Connection refused')': /
+2025-09-29 07:44:06,502 - INFO - MinIO is ready!
+2025-09-29 07:44:06,518 - INFO - Starting streaming loop...
+2025-09-29 07:44:06,519 - INFO - Starting data collection round...
+2025-09-29 07:44:07,107 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T07:44:07Z.json
+2025-09-29 07:44:08,571 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T07:44:08Z.json
+2025-09-29 07:44:10,003 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T07:44:09Z.json
+2025-09-29 07:44:11,436 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T07:44:11Z.json
+2025-09-29 07:44:12,883 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T07:44:12Z.json
+2025-09-29 07:44:14,311 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T07:44:14Z.json
+2025-09-29 07:44:15,748 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T07:44:15Z.json
+2025-09-29 07:44:17,238 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T07:44:17Z.json
+2025-09-29 07:44:18,720 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T07:44:18Z.json
+2025-09-29 07:44:20,233 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T07:44:20Z.json
+2025-09-29 07:44:21,749 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T07:44:21Z.json
+2025-09-29 07:44:23,226 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T07:44:23Z.json
+2025-09-29 07:44:24,665 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T07:44:24Z.json
+2025-09-29 07:44:26,232 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T07:44:26Z.json
+2025-09-29 07:44:27,874 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T07:44:27Z.json
+2025-09-29 07:44:29,412 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 07:44:29,962 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T07:44:29Z.json
+2025-09-29 07:44:31,536 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T07:44:31Z.json
+2025-09-29 07:44:33,039 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T07:44:33Z.json
+2025-09-29 07:44:34,455 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 07:44:34,874 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 07:44:35,323 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 07:44:35,784 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 07:44:36,219 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:44:36Z.json
+2025-09-29 07:44:37,649 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 07:44:38,049 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 07:44:38,459 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 07:44:38,854 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 07:44:39,303 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 07:44:39,703 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 07:44:40,176 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T07:44:40Z.json
+2025-09-29 07:44:41,581 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 07:44:41,961 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 07:44:42,371 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 07:44:42,779 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 07:44:43,203 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 07:44:43,642 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T07:44:43Z.json
+2025-09-29 07:44:45,067 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 07:44:45,485 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 07:44:45,871 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 07:44:46,314 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 07:44:46,766 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 07:44:47,254 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T07:44:47Z.json
+2025-09-29 07:44:48,694 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 07:44:49,110 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 07:44:49,496 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 07:44:49,953 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 07:44:50,360 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 07:44:50,785 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T07:44:50Z.json
+2025-09-29 07:44:52,188 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 07:44:52,595 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 07:44:53,007 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 07:44:53,406 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 07:44:53,823 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 07:44:54,242 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 07:44:54,733 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 07:44:55,132 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 07:44:55,578 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 07:44:56,031 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 07:44:56,420 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 07:44:56,826 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 07:44:57,238 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 07:44:57,651 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 07:44:58,075 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 07:44:58,497 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 07:44:58,930 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T07:44:58Z.json
+2025-09-29 07:45:00,377 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:45:00Z.json
+2025-09-29 07:45:02,157 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 07:45:02,748 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T07:45:02Z.json
+2025-09-29 07:45:04,535 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T07:45:04Z.json
+2025-09-29 07:45:05,984 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 07:45:06,373 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 07:45:06,779 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 07:45:07,201 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 07:45:07,585 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 07:45:07,996 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 07:45:08,399 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T07:45:08Z.json
+2025-09-29 07:45:09,814 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 07:45:10,214 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 07:45:10,215 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 07:45:10,216 - INFO - Sleeping 236.3 seconds...
+2025-09-29 07:49:06,497 - INFO - Starting data collection round...
+2025-09-29 07:49:07,039 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T07:49:07Z.json
+2025-09-29 07:49:08,464 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T07:49:08Z.json
+2025-09-29 07:49:09,932 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T07:49:09Z.json
+2025-09-29 07:49:11,374 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T07:49:11Z.json
+2025-09-29 07:49:12,813 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T07:49:12Z.json
+2025-09-29 07:49:14,272 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T07:49:14Z.json
+2025-09-29 07:49:15,730 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T07:49:15Z.json
+2025-09-29 07:49:17,182 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T07:49:17Z.json
+2025-09-29 07:49:18,626 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T07:49:18Z.json
+2025-09-29 07:49:20,037 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T07:49:20Z.json
+2025-09-29 07:49:21,884 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T07:49:21Z.json
+2025-09-29 07:49:23,318 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T07:49:23Z.json
+2025-09-29 07:49:24,746 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T07:49:24Z.json
+2025-09-29 07:49:26,214 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T07:49:26Z.json
+2025-09-29 07:49:27,749 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T07:49:27Z.json
+2025-09-29 07:49:29,433 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 07:49:29,974 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T07:49:29Z.json
+2025-09-29 07:49:31,429 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T07:49:31Z.json
+2025-09-29 07:49:32,840 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T07:49:32Z.json
+2025-09-29 07:49:34,247 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 07:49:34,688 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 07:49:35,086 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 07:49:35,482 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 07:49:35,912 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:49:35Z.json
+2025-09-29 07:49:37,332 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 07:49:37,732 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 07:49:38,116 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 07:49:38,508 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 07:49:38,915 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 07:49:39,349 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 07:49:39,807 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T07:49:39Z.json
+2025-09-29 07:49:41,219 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 07:49:41,616 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 07:49:42,016 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 07:49:42,412 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 07:49:42,800 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 07:49:43,207 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T07:49:43Z.json
+2025-09-29 07:49:44,618 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 07:49:45,011 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 07:49:45,405 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 07:49:45,795 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 07:49:46,190 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 07:49:46,629 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T07:49:46Z.json
+2025-09-29 07:49:48,076 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 07:49:48,509 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 07:49:48,945 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 07:49:49,355 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 07:49:49,763 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 07:49:50,182 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T07:49:50Z.json
+2025-09-29 07:49:51,604 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 07:49:52,018 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 07:49:52,436 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 07:49:52,858 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 07:49:53,300 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 07:49:53,693 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 07:49:54,075 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 07:49:54,476 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 07:49:54,862 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 07:49:55,277 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 07:49:55,698 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 07:49:56,114 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 07:49:56,495 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 07:49:56,894 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 07:49:57,289 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 07:49:57,743 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 07:49:58,199 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T07:49:58Z.json
+2025-09-29 07:49:59,651 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:49:59Z.json
+2025-09-29 07:50:01,061 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 07:50:01,493 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T07:50:01Z.json
+2025-09-29 07:50:03,090 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T07:50:03Z.json
+2025-09-29 07:50:04,581 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 07:50:05,033 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 07:50:05,469 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 07:50:05,913 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 07:50:06,328 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 07:50:06,719 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 07:50:07,136 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T07:50:07Z.json
+2025-09-29 07:50:08,616 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 07:50:09,018 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 07:50:09,019 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 07:50:09,021 - INFO - Sleeping 237.5 seconds...
+2025-09-29 07:54:06,470 - INFO - Starting data collection round...
+2025-09-29 07:54:06,923 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T07:54:06Z.json
+2025-09-29 07:54:08,441 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T07:54:08Z.json
+2025-09-29 07:54:09,922 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T07:54:09Z.json
+2025-09-29 07:54:11,395 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T07:54:11Z.json
+2025-09-29 07:54:12,875 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T07:54:12Z.json
+2025-09-29 07:54:14,328 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T07:54:14Z.json
+2025-09-29 07:54:15,811 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T07:54:15Z.json
+2025-09-29 07:54:17,283 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T07:54:17Z.json
+2025-09-29 07:54:18,739 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T07:54:18Z.json
+2025-09-29 07:54:20,279 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T07:54:20Z.json
+2025-09-29 07:54:21,977 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T07:54:21Z.json
+2025-09-29 07:54:23,390 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T07:54:23Z.json
+2025-09-29 07:54:24,838 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T07:54:24Z.json
+2025-09-29 07:54:26,262 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T07:54:26Z.json
+2025-09-29 07:54:27,717 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T07:54:27Z.json
+2025-09-29 07:54:29,179 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 07:54:29,585 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T07:54:29Z.json
+2025-09-29 07:54:31,040 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T07:54:31Z.json
+2025-09-29 07:54:32,466 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T07:54:32Z.json
+2025-09-29 07:54:33,884 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 07:54:34,282 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 07:54:34,664 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 07:54:35,081 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 07:54:35,468 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:54:35Z.json
+2025-09-29 07:54:36,860 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 07:54:37,247 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 07:54:37,660 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 07:54:38,084 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 07:54:38,476 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 07:54:38,872 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 07:54:39,569 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T07:54:39Z.json
+2025-09-29 07:54:40,966 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 07:54:41,379 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 07:54:41,784 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 07:54:42,170 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 07:54:42,789 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 07:54:43,283 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T07:54:43Z.json
+2025-09-29 07:54:44,671 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 07:54:45,084 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 07:54:45,538 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 07:54:45,958 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 07:54:46,379 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 07:54:46,797 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T07:54:46Z.json
+2025-09-29 07:54:49,318 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 07:54:49,699 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 07:54:50,098 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 07:54:50,485 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 07:54:50,902 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 07:54:51,332 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T07:54:51Z.json
+2025-09-29 07:54:52,744 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 07:54:53,202 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 07:54:53,718 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 07:54:54,217 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 07:54:54,749 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 07:54:55,249 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 07:54:55,691 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 07:54:56,084 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 07:54:56,493 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 07:54:56,908 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 07:54:57,298 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 07:54:57,691 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 07:54:58,066 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 07:54:58,456 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 07:54:58,851 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 07:54:59,239 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 07:54:59,660 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T07:54:59Z.json
+2025-09-29 07:55:01,082 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:55:01Z.json
+2025-09-29 07:55:02,498 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 07:55:02,926 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T07:55:02Z.json
+2025-09-29 07:55:04,372 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T07:55:04Z.json
+2025-09-29 07:55:05,811 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 07:55:06,222 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 07:55:06,619 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 07:55:07,017 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 07:55:07,409 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 07:55:07,843 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 07:55:08,302 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T07:55:08Z.json
+2025-09-29 07:55:09,695 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 07:55:10,087 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 07:55:10,088 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 07:55:10,089 - INFO - Sleeping 236.4 seconds...
+2025-09-29 07:59:06,448 - INFO - Starting data collection round...
+2025-09-29 07:59:06,877 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T07:59:06Z.json
+2025-09-29 07:59:08,487 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T07:59:08Z.json
+2025-09-29 07:59:10,060 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T07:59:10Z.json
+2025-09-29 07:59:11,521 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T07:59:11Z.json
+2025-09-29 07:59:12,986 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T07:59:12Z.json
+2025-09-29 07:59:14,413 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T07:59:14Z.json
+2025-09-29 07:59:15,864 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T07:59:15Z.json
+2025-09-29 07:59:17,320 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T07:59:17Z.json
+2025-09-29 07:59:18,750 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T07:59:18Z.json
+2025-09-29 07:59:20,201 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T07:59:20Z.json
+2025-09-29 07:59:21,633 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T07:59:21Z.json
+2025-09-29 07:59:23,094 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T07:59:23Z.json
+2025-09-29 07:59:24,530 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T07:59:24Z.json
+2025-09-29 07:59:25,947 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T07:59:25Z.json
+2025-09-29 07:59:27,389 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T07:59:27Z.json
+2025-09-29 07:59:28,846 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 07:59:29,266 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T07:59:29Z.json
+2025-09-29 07:59:30,736 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T07:59:30Z.json
+2025-09-29 07:59:32,283 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T07:59:32Z.json
+2025-09-29 07:59:33,664 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 07:59:34,042 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 07:59:34,481 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 07:59:34,903 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 07:59:35,370 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:59:35Z.json
+2025-09-29 07:59:36,784 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 07:59:37,182 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 07:59:37,571 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 07:59:37,955 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 07:59:38,372 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 07:59:38,776 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 07:59:39,221 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T07:59:39Z.json
+2025-09-29 07:59:40,647 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 07:59:41,056 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 07:59:41,468 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 07:59:41,875 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 07:59:42,257 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 07:59:42,709 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T07:59:42Z.json
+2025-09-29 07:59:44,108 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 07:59:44,495 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 07:59:44,892 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 07:59:45,282 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 07:59:45,666 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 07:59:46,134 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T07:59:46Z.json
+2025-09-29 07:59:47,551 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 07:59:47,951 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 07:59:48,315 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 07:59:48,710 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 07:59:49,096 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 07:59:49,524 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T07:59:49Z.json
+2025-09-29 07:59:50,947 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 07:59:51,418 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 07:59:51,821 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 07:59:52,220 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 07:59:52,639 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 07:59:53,053 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 07:59:53,461 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 07:59:53,869 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 07:59:54,270 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 07:59:54,695 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 07:59:55,105 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 07:59:55,478 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 07:59:55,879 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 07:59:56,267 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 07:59:56,660 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 07:59:57,116 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 07:59:57,560 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T07:59:57Z.json
+2025-09-29 07:59:59,012 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T07:59:58Z.json
+2025-09-29 08:00:00,432 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 08:00:00,966 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T08:00:00Z.json
+2025-09-29 08:00:06,703 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T08:00:06Z.json
+2025-09-29 08:00:08,568 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 08:00:09,331 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 08:00:09,917 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 08:00:10,308 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 08:00:10,699 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 08:00:11,072 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 08:00:11,502 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T08:00:11Z.json
+2025-09-29 08:00:13,222 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 08:00:13,704 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 08:00:13,706 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 08:00:13,706 - INFO - Sleeping 232.7 seconds...
+2025-09-29 08:04:06,427 - INFO - Starting data collection round...
+2025-09-29 08:04:06,883 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T08:04:06Z.json
+2025-09-29 08:04:08,337 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T08:04:08Z.json
+2025-09-29 08:04:09,792 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T08:04:09Z.json
+2025-09-29 08:04:11,247 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T08:04:11Z.json
+2025-09-29 08:04:12,701 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T08:04:12Z.json
+2025-09-29 08:04:14,155 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T08:04:14Z.json
+2025-09-29 08:04:15,614 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T08:04:15Z.json
+2025-09-29 08:04:17,376 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T08:04:17Z.json
+2025-09-29 08:04:18,897 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T08:04:18Z.json
+2025-09-29 08:04:20,441 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T08:04:20Z.json
+2025-09-29 08:04:21,911 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T08:04:21Z.json
+2025-09-29 08:04:23,409 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T08:04:23Z.json
+2025-09-29 08:04:24,891 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T08:04:24Z.json
+2025-09-29 08:04:26,472 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T08:04:26Z.json
+2025-09-29 08:04:28,091 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T08:04:28Z.json
+2025-09-29 08:04:29,501 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 08:04:29,919 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T08:04:29Z.json
+2025-09-29 08:04:31,350 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T08:04:31Z.json
+2025-09-29 08:04:32,810 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T08:04:32Z.json
+2025-09-29 08:04:34,233 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 08:04:34,638 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 08:04:35,056 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 08:04:35,475 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 08:04:35,949 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:04:35Z.json
+2025-09-29 08:04:37,370 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 08:04:37,758 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 08:04:38,147 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 08:04:38,543 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 08:04:39,013 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 08:04:39,447 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 08:04:39,963 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T08:04:39Z.json
+2025-09-29 08:04:41,431 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 08:04:42,845 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 08:04:43,235 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 08:04:43,645 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 08:04:44,042 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 08:04:44,623 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T08:04:44Z.json
+2025-09-29 08:04:46,055 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 08:04:46,514 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 08:04:46,948 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 08:04:47,354 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 08:04:47,769 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 08:04:48,204 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T08:04:48Z.json
+2025-09-29 08:04:49,821 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 08:04:50,272 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 08:04:50,679 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 08:04:51,103 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 08:04:51,517 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 08:04:51,942 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T08:04:51Z.json
+2025-09-29 08:04:53,345 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 08:04:53,736 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 08:04:54,120 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 08:04:54,529 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 08:04:54,926 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 08:04:55,322 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 08:04:55,739 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 08:04:56,153 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 08:04:56,667 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 08:04:57,250 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 08:04:57,800 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 08:04:58,277 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 08:04:58,739 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 08:04:59,172 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 08:04:59,567 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 08:04:59,943 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 08:05:00,423 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T08:05:00Z.json
+2025-09-29 08:05:01,861 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:05:01Z.json
+2025-09-29 08:05:03,337 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 08:05:03,847 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T08:05:03Z.json
+2025-09-29 08:05:05,402 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T08:05:05Z.json
+2025-09-29 08:05:06,856 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 08:05:07,251 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 08:05:07,659 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 08:05:08,060 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 08:05:08,460 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 08:05:08,882 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 08:05:09,339 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T08:05:09Z.json
+2025-09-29 08:05:10,772 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 08:05:11,177 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 08:05:11,179 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 08:05:11,180 - INFO - Sleeping 235.2 seconds...
+2025-09-29 08:09:06,406 - INFO - Starting data collection round...
+2025-09-29 08:09:06,859 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T08:09:06Z.json
+2025-09-29 08:09:08,330 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T08:09:08Z.json
+2025-09-29 08:09:09,770 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T08:09:09Z.json
+2025-09-29 08:09:11,194 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T08:09:11Z.json
+2025-09-29 08:09:12,633 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T08:09:12Z.json
+2025-09-29 08:09:14,101 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T08:09:14Z.json
+2025-09-29 08:09:15,512 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T08:09:15Z.json
+2025-09-29 08:09:16,966 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T08:09:16Z.json
+2025-09-29 08:09:18,482 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T08:09:18Z.json
+2025-09-29 08:09:19,933 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T08:09:19Z.json
+2025-09-29 08:09:21,355 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T08:09:21Z.json
+2025-09-29 08:09:22,791 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T08:09:22Z.json
+2025-09-29 08:09:24,261 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T08:09:24Z.json
+2025-09-29 08:09:25,721 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T08:09:25Z.json
+2025-09-29 08:09:27,154 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T08:09:27Z.json
+2025-09-29 08:09:28,589 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 08:09:29,015 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T08:09:29Z.json
+2025-09-29 08:09:30,472 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T08:09:30Z.json
+2025-09-29 08:09:31,886 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T08:09:31Z.json
+2025-09-29 08:09:33,305 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 08:09:33,714 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 08:09:34,171 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 08:09:34,679 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 08:09:35,109 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:09:35Z.json
+2025-09-29 08:09:36,537 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 08:09:37,016 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 08:09:37,410 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 08:09:37,916 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 08:09:38,343 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 08:09:38,778 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 08:09:39,236 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T08:09:39Z.json
+2025-09-29 08:09:40,664 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 08:09:41,080 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 08:09:41,531 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 08:09:42,186 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 08:09:42,636 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 08:09:43,216 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T08:09:43Z.json
+2025-09-29 08:09:44,691 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 08:09:45,119 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 08:09:45,528 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 08:09:45,932 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 08:09:46,341 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 08:09:46,786 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T08:09:46Z.json
+2025-09-29 08:09:48,187 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 08:09:48,602 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 08:09:49,115 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 08:09:49,726 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 08:09:50,436 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 08:09:50,911 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T08:09:50Z.json
+2025-09-29 08:09:52,498 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 08:09:52,912 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 08:09:53,319 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 08:09:53,721 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 08:09:54,148 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 08:09:54,590 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 08:09:55,037 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 08:09:55,446 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 08:09:55,849 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 08:09:56,279 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 08:09:56,732 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 08:09:57,171 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 08:09:57,595 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 08:09:57,989 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 08:09:58,400 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 08:09:58,793 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 08:09:59,207 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T08:09:59Z.json
+2025-09-29 08:10:00,634 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:10:00Z.json
+2025-09-29 08:10:02,054 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 08:10:02,969 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T08:10:02Z.json
+2025-09-29 08:10:04,402 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T08:10:04Z.json
+2025-09-29 08:10:05,795 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 08:10:07,195 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 08:10:07,653 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 08:10:08,074 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 08:10:08,462 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 08:10:08,908 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 08:10:09,361 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T08:10:09Z.json
+2025-09-29 08:10:10,830 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 08:10:13,520 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 08:10:13,521 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 08:10:13,522 - INFO - Sleeping 232.9 seconds...
+2025-09-29 08:14:06,388 - INFO - Starting data collection round...
+2025-09-29 08:14:06,829 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Hoan_Kiem/year=2025/month=09/day=29/2025-09-29T08:14:06Z.json
+2025-09-29 08:14:08,257 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Cau_Giay/year=2025/month=09/day=29/2025-09-29T08:14:08Z.json
+2025-09-29 08:14:09,651 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Dong_Da/year=2025/month=09/day=29/2025-09-29T08:14:09Z.json
+2025-09-29 08:14:11,054 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hanoi___Ba_Dinh/year=2025/month=09/day=29/2025-09-29T08:14:11Z.json
+2025-09-29 08:14:12,495 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_1/year=2025/month=09/day=29/2025-09-29T08:14:12Z.json
+2025-09-29 08:14:13,962 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_3/year=2025/month=09/day=29/2025-09-29T08:14:13Z.json
+2025-09-29 08:14:15,395 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___District_7/year=2025/month=09/day=29/2025-09-29T08:14:15Z.json
+2025-09-29 08:14:16,832 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Binh_Thanh/year=2025/month=09/day=29/2025-09-29T08:14:16Z.json
+2025-09-29 08:14:18,282 - INFO - Saved raw payload to MinIO: waqi_raw/city=Ho_Chi_Minh_City___Tan_Binh/year=2025/month=09/day=29/2025-09-29T08:14:18Z.json
+2025-09-29 08:14:19,698 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Hai_Chau/year=2025/month=09/day=29/2025-09-29T08:14:19Z.json
+2025-09-29 08:14:21,082 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Son_Tra/year=2025/month=09/day=29/2025-09-29T08:14:21Z.json
+2025-09-29 08:14:22,497 - INFO - Saved raw payload to MinIO: waqi_raw/city=Da_Nang___Ngu_Hanh_Son/year=2025/month=09/day=29/2025-09-29T08:14:22Z.json
+2025-09-29 08:14:23,918 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Ninh_Kieu/year=2025/month=09/day=29/2025-09-29T08:14:23Z.json
+2025-09-29 08:14:25,328 - INFO - Saved raw payload to MinIO: waqi_raw/city=Can_Tho___Cai_Rang/year=2025/month=09/day=29/2025-09-29T08:14:25Z.json
+2025-09-29 08:14:26,728 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hai_Phong___Hong_Bang/year=2025/month=09/day=29/2025-09-29T08:14:26Z.json
+2025-09-29 08:14:28,150 - WARNING - No WAQI data for Bien Hoa - Dong Nai
+2025-09-29 08:14:28,618 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hue___Hue_City/year=2025/month=09/day=29/2025-09-29T08:14:28Z.json
+2025-09-29 08:14:30,179 - INFO - Saved raw payload to MinIO: waqi_raw/city=Nha_Trang___Khanh_Hoa/year=2025/month=09/day=29/2025-09-29T08:14:30Z.json
+2025-09-29 08:14:31,605 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vung_Tau___Ba_Ria/year=2025/month=09/day=29/2025-09-29T08:14:31Z.json
+2025-09-29 08:14:33,045 - WARNING - No WAQI data for An Giang - Long Xuyen
+2025-09-29 08:14:33,499 - WARNING - No WAQI data for Bac Giang - Bac Giang City
+2025-09-29 08:14:33,905 - WARNING - No WAQI data for Bac Kan - Bac Kan City
+2025-09-29 08:14:34,289 - WARNING - No WAQI data for Bac Lieu - Bac Lieu City
+2025-09-29 08:14:34,700 - INFO - Saved raw payload to MinIO: waqi_raw/city=Bac_Ninh___Bac_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:14:34Z.json
+2025-09-29 08:14:36,086 - WARNING - No WAQI data for Ben Tre - Ben Tre City
+2025-09-29 08:14:36,513 - WARNING - No WAQI data for Binh Dinh - Quy Nhon
+2025-09-29 08:14:36,887 - WARNING - No WAQI data for Binh Duong - Thu Dau Mot
+2025-09-29 08:14:37,324 - WARNING - No WAQI data for Binh Phuoc - Dong Xoai
+2025-09-29 08:14:37,701 - WARNING - No WAQI data for Binh Thuan - Phan Thiet
+2025-09-29 08:14:38,083 - WARNING - No WAQI data for Ca Mau - Ca Mau City
+2025-09-29 08:14:38,458 - INFO - Saved raw payload to MinIO: waqi_raw/city=Cao_Bang___Cao_Bang_City/year=2025/month=09/day=29/2025-09-29T08:14:38Z.json
+2025-09-29 08:14:39,865 - WARNING - No WAQI data for Dak Lak - Buon Ma Thuot
+2025-09-29 08:14:40,235 - WARNING - No WAQI data for Dak Nong - Gia Nghia
+2025-09-29 08:14:40,629 - WARNING - No WAQI data for Dien Bien - Dien Bien Phu
+2025-09-29 08:14:40,994 - WARNING - No WAQI data for Dong Nai - Bien Hoa
+2025-09-29 08:14:41,375 - WARNING - No WAQI data for Dong Thap - Cao Lanh
+2025-09-29 08:14:41,782 - INFO - Saved raw payload to MinIO: waqi_raw/city=Gia_Lai___Pleiku/year=2025/month=09/day=29/2025-09-29T08:14:41Z.json
+2025-09-29 08:14:43,163 - WARNING - No WAQI data for Ha Giang - Ha Giang City
+2025-09-29 08:14:43,518 - WARNING - No WAQI data for Ha Nam - Phu Ly
+2025-09-29 08:14:43,936 - WARNING - No WAQI data for Ha Tinh - Ha Tinh City
+2025-09-29 08:14:44,360 - WARNING - No WAQI data for Hau Giang - Vi Thanh
+2025-09-29 08:14:44,775 - WARNING - No WAQI data for Hoa Binh - Hoa Binh City
+2025-09-29 08:14:45,191 - INFO - Saved raw payload to MinIO: waqi_raw/city=Hung_Yen___Hung_Yen_City/year=2025/month=09/day=29/2025-09-29T08:14:45Z.json
+2025-09-29 08:14:46,575 - WARNING - No WAQI data for Khanh Hoa - Nha Trang
+2025-09-29 08:14:46,961 - WARNING - No WAQI data for Kien Giang - Rach Gia
+2025-09-29 08:14:47,352 - WARNING - No WAQI data for Kon Tum - Kon Tum City
+2025-09-29 08:14:47,726 - WARNING - No WAQI data for Lai Chau - Lai Chau City
+2025-09-29 08:14:48,141 - WARNING - No WAQI data for Lam Dong - Da Lat
+2025-09-29 08:14:48,547 - INFO - Saved raw payload to MinIO: waqi_raw/city=Lang_Son___Lang_Son_City/year=2025/month=09/day=29/2025-09-29T08:14:48Z.json
+2025-09-29 08:14:49,960 - WARNING - No WAQI data for Lao Cai - Lao Cai City
+2025-09-29 08:14:50,358 - WARNING - No WAQI data for Long An - Tan An
+2025-09-29 08:14:50,772 - WARNING - No WAQI data for Nam Dinh - Nam Dinh City
+2025-09-29 08:14:51,269 - WARNING - No WAQI data for Nghe An - Vinh
+2025-09-29 08:14:51,644 - WARNING - No WAQI data for Ninh Binh - Ninh Binh City
+2025-09-29 08:14:52,026 - WARNING - No WAQI data for Ninh Thuan - Phan Rang
+2025-09-29 08:14:52,387 - WARNING - No WAQI data for Phu Tho - Viet Tri
+2025-09-29 08:14:52,774 - WARNING - No WAQI data for Phu Yen - Tuy Hoa
+2025-09-29 08:14:53,146 - WARNING - No WAQI data for Quang Binh - Dong Hoi
+2025-09-29 08:14:53,540 - WARNING - No WAQI data for Quang Nam - Tam Ky
+2025-09-29 08:14:53,926 - WARNING - No WAQI data for Quang Nam - Hoi An
+2025-09-29 08:14:54,339 - WARNING - No WAQI data for Quang Ngai - Quang Ngai City
+2025-09-29 08:14:54,767 - WARNING - No WAQI data for Quang Ninh - Ha Long
+2025-09-29 08:14:55,166 - WARNING - No WAQI data for Quang Ninh - Mong Cai
+2025-09-29 08:14:55,545 - WARNING - No WAQI data for Quang Tri - Dong Ha
+2025-09-29 08:14:55,956 - WARNING - No WAQI data for Soc Trang - Soc Trang City
+2025-09-29 08:14:56,356 - INFO - Saved raw payload to MinIO: waqi_raw/city=Son_La___Son_La_City/year=2025/month=09/day=29/2025-09-29T08:14:56Z.json
+2025-09-29 08:14:57,752 - INFO - Saved raw payload to MinIO: waqi_raw/city=Tay_Ninh___Tay_Ninh_City/year=2025/month=09/day=29/2025-09-29T08:14:57Z.json
+2025-09-29 08:14:59,183 - WARNING - No WAQI data for Thai Binh - Thai Binh City
+2025-09-29 08:14:59,635 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Thai_Nguyen_City/year=2025/month=09/day=29/2025-09-29T08:14:59Z.json
+2025-09-29 08:15:01,085 - INFO - Saved raw payload to MinIO: waqi_raw/city=Thai_Nguyen___Song_Cong/year=2025/month=09/day=29/2025-09-29T08:15:01Z.json
+2025-09-29 08:15:02,580 - WARNING - No WAQI data for Thanh Hoa - Thanh Hoa City
+2025-09-29 08:15:03,003 - WARNING - No WAQI data for Thanh Hoa - Sam Son
+2025-09-29 08:15:03,396 - WARNING - No WAQI data for Thua Thien-Hue - Hue City
+2025-09-29 08:15:03,801 - WARNING - No WAQI data for Tien Giang - My Tho
+2025-09-29 08:15:04,196 - WARNING - No WAQI data for Tra Vinh - Tra Vinh City
+2025-09-29 08:15:04,593 - WARNING - No WAQI data for Tuyen Quang - Tuyen Quang City
+2025-09-29 08:15:05,024 - INFO - Saved raw payload to MinIO: waqi_raw/city=Vinh_Long___Vinh_Long_City/year=2025/month=09/day=29/2025-09-29T08:15:05Z.json
+2025-09-29 08:15:06,423 - WARNING - No WAQI data for Vinh Phuc - Vinh Yen
+2025-09-29 08:15:06,828 - WARNING - No WAQI data for Yen Bai - Yen Bai City
+2025-09-29 08:15:06,830 - INFO - Streaming round completed: 28 stations processed, 51 errors
+2025-09-29 08:15:06,831 - INFO - Sleeping 239.6 seconds...
