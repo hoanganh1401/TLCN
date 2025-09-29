@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu,"Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu, Vietnam",2025-09-29T15:00:00+07:00,11,pm10,14642,10.367976,107.0844,5,10,11,26.7,91.7,1,1005.3,4.6,
+Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu,"Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu, Vietnam",2025-09-29T16:00:00+07:00,11,pm10,14642,10.367976,107.0844,5,10,11,25.5,91.3,1,1006.5,4.1,
+Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu,"Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu, Vietnam",2025-09-29T17:00:00+07:00,12,pm10,14642,10.367976,107.0844,5,11,12,25,92,1,1006.9,0.3,
+Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu,"Vũng Tàu/Ngã tư Giếng nước - Tp.Vũng Tàu, Vietnam",2025-09-29T18:00:00+07:00,9,pm10,14642,10.367976,107.0844,4,8,9,25.6,89.6,1,1007.7,2.1,

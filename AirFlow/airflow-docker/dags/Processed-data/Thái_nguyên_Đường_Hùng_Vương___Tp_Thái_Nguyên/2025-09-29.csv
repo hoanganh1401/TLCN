@@ -1,0 +1,3 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Thái nguyên/Đường Hùng Vương - Tp Thái Nguyên,"Thái nguyên/Đường Hùng Vương - Tp Thái Nguyên, Vietnam",2025-09-29T15:00:00+07:00,27,pm25,13027,21.593151,105.8431043,3,27,,25.5,97,,1004,7.7,25
+Thái nguyên/Đường Hùng Vương - Tp Thái Nguyên,"Thái nguyên/Đường Hùng Vương - Tp Thái Nguyên, Vietnam",2025-09-29T16:00:00+07:00,17,pm25,13027,21.593151,105.8431043,4,17,,25.5,97,,1004,7.7,25

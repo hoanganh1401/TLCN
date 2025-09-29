@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Vĩnh Long/UBND tỉnh,"Vĩnh Long/UBND tỉnh, đường Hoàng Thái Hiếu, Vietnam",2025-09-29T15:00:00+07:00,1,pm10,14930,10.251317,105.946931,2,2,1,29,83,5,1007,4.6,26
+Vĩnh Long/UBND tỉnh,"Vĩnh Long/UBND tỉnh, đường Hoàng Thái Hiếu, Vietnam",2025-09-29T16:00:00+07:00,1,pm10,14930,10.251317,105.946931,1,2,1,28.5,85.5,5,1007,4.3,26
+Vĩnh Long/UBND tỉnh,"Vĩnh Long/UBND tỉnh, đường Hoàng Thái Hiếu, Vietnam",2025-09-29T17:00:00+07:00,1,pm10,14930,10.251317,105.946931,1,2,1,28.5,85.5,5,1007,4.3,26
+Vĩnh Long/UBND tỉnh,"Vĩnh Long/UBND tỉnh, đường Hoàng Thái Hiếu, Vietnam",2025-09-29T18:00:00+07:00,1,pm10,14930,10.251317,105.946931,2,2,1,25,100,5,1009,1,25

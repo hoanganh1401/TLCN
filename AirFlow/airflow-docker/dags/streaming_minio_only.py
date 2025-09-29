@@ -120,10 +120,64 @@ def _get_minio_client():
 
 
 def fetch_waqi_feed(city_name: str):
-    url = f"{BASE_URL}/feed/{city_name}/"
-    r = requests.get(url, params={'token': WAQI_TOKEN}, timeout=15)
-    r.raise_for_status()
-    return r.json()
+    """Fetch WAQI feed for a city.
+
+    Strategy:
+    1. Try the simple /feed/{city_name}/ call (keeps existing behavior).
+    2. If that fails or returns no data, use the /search/{city_name}/ endpoint to
+       find a station UID and then call /feed/@{uid}/.
+
+    This makes lookups more robust when the city name isn't the exact WAQI slug.
+    """
+    # 1) Try direct feed by name (existing behavior)
+    try:
+        url = f"{BASE_URL}/feed/{city_name}/"
+        r = requests.get(url, params={'token': WAQI_TOKEN}, timeout=15)
+        r.raise_for_status()
+        payload = r.json()
+        if payload and payload.get('status') == 'ok':
+            return payload
+    except Exception:
+        # fallthrough to search-based resolution
+        pass
+
+    # 2) Fallback: use search API to resolve to a station uid and request by uid
+    try:
+        search_url = f"{BASE_URL}/search/{city_name}/"
+        rs = requests.get(search_url, params={'token': WAQI_TOKEN}, timeout=15)
+        rs.raise_for_status()
+        sdata = rs.json()
+        if sdata and sdata.get('status') == 'ok' and sdata.get('data'):
+            first = sdata['data'][0]
+            uid = first.get('uid') or first.get('station', {}).get('uid')
+            # If we have coordinates instead, try geo lookup
+            geo = None
+            station = first.get('station') if isinstance(first.get('station'), dict) else None
+            if station:
+                geo = station.get('geo')
+            if uid:
+                try:
+                    feed_url = f"{BASE_URL}/feed/@{uid}/"
+                    rf = requests.get(feed_url, params={'token': WAQI_TOKEN}, timeout=15)
+                    rf.raise_for_status()
+                    return rf.json()
+                except Exception:
+                    pass
+            if geo and isinstance(geo, (list, tuple)) and len(geo) >= 2:
+                lat, lon = geo[0], geo[1]
+                try:
+                    feed_geo_url = f"{BASE_URL}/feed/geo:{lat};{lon}/"
+                    rg = requests.get(feed_geo_url, params={'token': WAQI_TOKEN}, timeout=15)
+                    rg.raise_for_status()
+                    return rg.json()
+                except Exception:
+                    pass
+    except Exception:
+        # final fallback: return whatever the initial attempt produced (likely error)
+        pass
+
+    # If all attempts fail, return a simple error-shaped dict so caller can log it
+    return {'status': 'error', 'data': None, 'message': f'Could not resolve feed for {city_name}'}
 
 
 def save_raw_to_minio(raw_payload, city_label, measured_at=None, logger: logging.Logger = None):

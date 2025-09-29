@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến,"Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến, Vietnam",2025-09-29T15:00:00+07:00,15,pm10,13687,10.026977,105.768249,1,9,15,29,83,10,1007,4.6,26
+Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến,"Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến, Vietnam",2025-09-29T16:00:00+07:00,13,pm10,13687,10.026977,105.768249,2,8,13,28.5,85.5,10,1007,4.3,26
+Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến,"Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến, Vietnam",2025-09-29T17:00:00+07:00,19,pm10,13687,10.026977,105.768249,2,8,19,25,100,10,1008.5,2,25
+Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến,"Cần Thơ/Ninh Kiều - KTTV - Trạm cảm biến, Vietnam",2025-09-29T18:00:00+07:00,18,pm10,13687,10.026977,105.768249,4,10,18,25,100,11,1009,1.2,25

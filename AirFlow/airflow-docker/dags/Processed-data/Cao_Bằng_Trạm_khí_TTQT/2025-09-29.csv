@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Cao Bằng/Trạm khí TTQT,"Cao Bằng/Trạm khí TTQT, Vietnam",2025-09-29T15:00:00+07:00,7,pm10,13252,22.6782,106.245,,6,7,24.6,93,4,980.8,3,23.4
+Cao Bằng/Trạm khí TTQT,"Cao Bằng/Trạm khí TTQT, Vietnam",2025-09-29T16:00:00+07:00,8,pm10,13252,22.6782,106.245,,7,8,24.6,93,4,980.8,3,23.4
+Cao Bằng/Trạm khí TTQT,"Cao Bằng/Trạm khí TTQT, Vietnam",2025-09-29T17:00:00+07:00,8,pm25,13252,22.6782,106.245,,8,8,23.8,98.8,4,980.6,3,23.6
+Cao Bằng/Trạm khí TTQT,"Cao Bằng/Trạm khí TTQT, Vietnam",2025-09-29T18:00:00+07:00,8,pm10,13252,22.6782,106.245,,7,8,23.8,98.8,5,980.6,3,23.6

@@ -1,0 +1,4 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Da Nang,"Da Nang, Vietnam (TP Đà Nẵng)",2025-09-29T15:00:00+07:00,18,pm10,1584,16.074,108.217,3,17,18,31,70,,1005,4.1,25
+Da Nang,"Da Nang, Vietnam (TP Đà Nẵng)",2025-09-29T16:00:00+07:00,15,pm25,1584,16.074,108.217,3,15,14,29,83,,1007,3.6,26
+Da Nang,"Da Nang, Vietnam (TP Đà Nẵng)",2025-09-29T17:00:00+07:00,15,pm25,1584,16.074,108.217,3,15,12,29,83,,1007,4.3,26

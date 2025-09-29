@@ -1,0 +1,2 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Nha Trang,"Nha Trang, Vietnam",2025-09-28T23:00:00+07:00,15,pm25,1585,12.284358,109.192524,2,15,10,28,78,15,1007,7.7,24

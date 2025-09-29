@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Thừa Thiên Huế/83 Hùng Vương,"Thừa Thiên Huế/83 Hùng Vương, Vietnam",2025-09-29T14:00:00+07:00,9,pm25,12488,16.46226,107.596351,6,9,7,30,74,4,1004,1,25
+Thừa Thiên Huế/83 Hùng Vương,"Thừa Thiên Huế/83 Hùng Vương, Vietnam",2025-09-29T15:00:00+07:00,7,pm25,12488,16.46226,107.596351,7,7,5,30,74,4,1004,1,25
+Thừa Thiên Huế/83 Hùng Vương,"Thừa Thiên Huế/83 Hùng Vương, Vietnam",2025-09-29T16:00:00+07:00,7,pm25,12488,16.46226,107.596351,12,7,5,29,79,4,1006,0.5,25
+Thừa Thiên Huế/83 Hùng Vương,"Thừa Thiên Huế/83 Hùng Vương, Vietnam",2025-09-29T17:00:00+07:00,7,pm25,12488,16.46226,107.596351,13,7,5,29,79,3,1006,0.5,25

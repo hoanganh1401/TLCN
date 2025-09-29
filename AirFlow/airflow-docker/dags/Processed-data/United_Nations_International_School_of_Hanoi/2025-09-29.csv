@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+United Nations International School of Hanoi,"United Nations International School of Hanoi, Vietnam (Trường Quốc tế Liên Hợp Quốc Hà Nội)",2025-09-29T14:00:00+07:00,34,pm25,8688,21.0811211,105.8180306,,34,,25.5,98,,1004,7.7,25
+United Nations International School of Hanoi,"United Nations International School of Hanoi, Vietnam (Trường Quốc tế Liên Hợp Quốc Hà Nội)",2025-09-29T15:00:00+07:00,36,pm25,8688,21.0811211,105.8180306,,36,,26,96,,1004,7.7,25
+United Nations International School of Hanoi,"United Nations International School of Hanoi, Vietnam (Trường Quốc tế Liên Hợp Quốc Hà Nội)",2025-09-29T16:00:00+07:00,36,pm25,8688,21.0811211,105.8180306,,36,,27,92,,1004,7.7,25
+United Nations International School of Hanoi,"United Nations International School of Hanoi, Vietnam (Trường Quốc tế Liên Hợp Quốc Hà Nội)",2025-09-29T17:00:00+07:00,38,pm25,8688,21.0811211,105.8180306,,38,,27,92,,1004,7.7,25

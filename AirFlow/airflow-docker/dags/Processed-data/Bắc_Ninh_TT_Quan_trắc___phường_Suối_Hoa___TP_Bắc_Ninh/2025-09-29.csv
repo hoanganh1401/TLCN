@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh,"Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh, Vietnam",2025-09-29T16:00:00+07:00,11,pm25,12961,21.1873402,106.0742958,1,11,7,25.5,97,34,1004,7.7,25
+Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh,"Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh, Vietnam",2025-09-29T15:00:00+07:00,10,pm25,12961,21.1873402,106.0742958,1,10,6,25.5,97,34,1004,7.7,25
+Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh,"Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh, Vietnam",2025-09-29T17:00:00+07:00,12,pm25,12961,21.1873402,106.0742958,1,12,9,25.5,97,35,1004,7.7,25
+Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh,"Bắc Ninh/TT Quan trắc - phường Suối Hoa - TP Bắc Ninh, Vietnam",2025-09-29T18:00:00+07:00,14,pm25,12961,21.1873402,106.0742958,1,14,10,27,88,36,1005,8.2,25

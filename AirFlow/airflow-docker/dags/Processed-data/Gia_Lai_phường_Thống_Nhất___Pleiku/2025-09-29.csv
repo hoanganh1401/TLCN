@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Gia Lai/phường Thống Nhất - Pleiku,"Gia Lai/phường Thống Nhất - Pleiku, Vietnam",2025-09-29T15:00:00+07:00,3,pm25,13012,13.998599,107.996482,3,3,3,25.7,77.6,,922.6,3,21.5
+Gia Lai/phường Thống Nhất - Pleiku,"Gia Lai/phường Thống Nhất - Pleiku, Vietnam",2025-09-29T16:00:00+07:00,3,pm25,13012,13.998599,107.996482,3,3,3,25.7,77.6,,922.6,3,21.5
+Gia Lai/phường Thống Nhất - Pleiku,"Gia Lai/phường Thống Nhất - Pleiku, Vietnam",2025-09-29T17:00:00+07:00,4,pm10,13012,13.998599,107.996482,5,3,4,25.5,83.5,,922.4,2,22.5
+Gia Lai/phường Thống Nhất - Pleiku,"Gia Lai/phường Thống Nhất - Pleiku, Vietnam",2025-09-29T18:00:00+07:00,5,pm10,13012,13.998599,107.996482,6,4,5,25.5,83.5,,922.4,2,22.5

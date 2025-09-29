@@ -1,0 +1,2 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Hải Phòng/Phủ Liễn,"Hải Phòng/Phủ Liễn, Núi Kha Lâm, Kiến An - KTTV - Trạm cảm biến, Vietnam",2025-04-09T07:00:00+07:00,3,pm25,13672,20.805798,106.629752,,3,2,23,94,,1012,3,22

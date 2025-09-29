@@ -1,0 +1,5 @@
+city_label,city_name,measured_at,aqi,dominentpol,idx,lat,lon,co,pm25,pm10,t,h,o3,p,w,dew
+Lạng Sơn/xã Hồng Phong - Cao Lộc,"Lạng Sơn/xã Hồng Phong - Cao Lộc, Vietnam",2025-09-29T15:00:00+07:00,2,pm10,13667,21.930528,106.681389,7,1,2,24.6,97,,975.7,1,24.1
+Lạng Sơn/xã Hồng Phong - Cao Lộc,"Lạng Sơn/xã Hồng Phong - Cao Lộc, Vietnam",2025-09-29T16:00:00+07:00,3,pm10,13667,21.930528,106.681389,7,2,3,24.6,97,,975.7,1,24.1
+Lạng Sơn/xã Hồng Phong - Cao Lộc,"Lạng Sơn/xã Hồng Phong - Cao Lộc, Vietnam",2025-09-29T17:00:00+07:00,3,pm25,13667,21.930528,106.681389,7,3,3,24,98.2,,976,1,23.7
+Lạng Sơn/xã Hồng Phong - Cao Lộc,"Lạng Sơn/xã Hồng Phong - Cao Lộc, Vietnam",2025-09-29T18:00:00+07:00,3,pm25,13667,21.930528,106.681389,7,3,3,24,98.2,,976,1,23.7
