@@ -1,3 +1,4 @@
+
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,6 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+
 
 # Basic Airflow cluster configuration for CeleryExecutor with Redis and PostgreSQL.
 #
@@ -54,6 +56,7 @@ x-airflow-common:
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow-docker/dags
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
@@ -71,9 +74,9 @@ x-airflow-common:
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
     # Install additional requirements from requirements.txt mounted into the container
     # Note: use a plain quoted string to avoid embedding extra quotes via parameter expansion
-    _PIP_ADDITIONAL_REQUIREMENTS: "-r /opt/airflow/requirements.txt"
+    _PIP_ADDITIONAL_REQUIREMENTS: "-r /opt/airflow-docker/requirements.txt"
     # The following line can be used to set a custom config file, stored in the local config folder
-    AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    AIRFLOW_CONFIG: '/opt/airflow-docker/config/airflow.cfg'
     # Provide MinIO and WAQI API settings to Airflow containers
     MINIO_HOST: ${MINIO_HOST:-minio:9000}
     MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-admin}
@@ -81,13 +84,13 @@ x-airflow-common:
     MINIO_BUCKET: ${MINIO_BUCKET:-air-quality}
     WAQI_API_KEY: ${WAQI_API_KEY:-4ab752a4-5aaf-48dc-8130-837c88e9efbe}
   volumes:
-    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-    - ${AIRFLOW_PROJ_DIR:-.}/sql:/opt/airflow/sql:ro
+    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow-docker/dags
+    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow-docker/logs
+    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow-docker/config
+    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow-docker/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/sql:/opt/airflow-docker/sql:ro
     # mount project requirements so Airflow can pip install them at startup
-    - ${AIRFLOW_PROJ_DIR:-.}/requirements.txt:/opt/airflow/requirements.txt:ro
+    - ${AIRFLOW_PROJ_DIR:-.}/requirements.txt:/opt/airflow-docker/requirements.txt:ro
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -95,6 +98,7 @@ x-airflow-common:
       condition: service_healthy
     postgres:
       condition: service_healthy
+
 
 services:
   postgres:
@@ -112,6 +116,7 @@ services:
       start_period: 5s
     restart: always
 
+
   pgadmin:
     image: dpage/pgadmin4:6
     environment:
@@ -124,6 +129,7 @@ services:
     depends_on:
       - postgres
     restart: always
+
 
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change
@@ -139,35 +145,37 @@ services:
       start_period: 30s
     restart: always
 
+
   # Zookeeper for Kafka
   zookeeper:
-    image: bitnami/zookeeper:3
+    image: confluentinc/cp-zookeeper:7.3.1
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
     volumes:
-      - zookeeper-data:/bitnami
-    healthcheck:
-      test: ["CMD-SHELL", "zkServer.sh status || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 10s
+      - zookeeper-data:/var/lib/zookeeper/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/2181' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+
 
   # Kafka broker
   kafka:
-    image: bitnami/kafka:3
+    image: confluentinc/cp-kafka:7.3.1
     environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      # Internal listener for container network and external listener for host access
-      - KAFKA_CFG_LISTENERS=INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INSIDE://kafka:9092,OUTSIDE://localhost:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INSIDE
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
     ports:
       - "9092:9092"
       - "9093:9093"
@@ -184,6 +192,7 @@ services:
       start_period: 10s
     restart: always
 
+
   # Kafka UI - Kafdrop
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
@@ -195,6 +204,7 @@ services:
       kafka:
         condition: service_started
     restart: always
+
 
   airflow-apiserver:
     <<: *airflow-common
@@ -212,6 +222,7 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
 
   # MinIO for Data Lake (S3-compatible)
   minio:
@@ -235,6 +246,7 @@ services:
       start_period: 10s
     restart: always
 
+
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
@@ -250,6 +262,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
@@ -264,6 +277,7 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
 
   airflow-worker:
     <<: *airflow-common
@@ -290,6 +304,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
@@ -304,6 +319,7 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
 
   airflow-init:
     <<: *airflow-common
@@ -387,6 +403,7 @@ services:
         echo
         ls -la /opt/airflow/{logs,dags,plugins,config}
 
+
     # yamllint enable rule:line-length
     environment:
       <<: *airflow-common-env
@@ -396,6 +413,7 @@ services:
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
+
 
   airflow-cli:
     <<: *airflow-common
@@ -411,6 +429,7 @@ services:
       - airflow
     depends_on:
       <<: *airflow-common-depends-on
+
 
   # You can enable flower by adding "--profile flower" option e.g. docker-compose --profile flower up
   # or by explicitly targeted on the command line e.g. docker-compose up flower.
@@ -434,9 +453,10 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+
   # Air Quality Streaming Service
   air-quality-streaming:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: air-quality-streaming
@@ -478,9 +498,14 @@ services:
         max-size: "10m"
         max-file: "3"
 
+
 volumes:
   postgres-db-volume:
   zookeeper-data:
   kafka-data:
   minio-data:
   pgadmin-data:
+
+
+
+
