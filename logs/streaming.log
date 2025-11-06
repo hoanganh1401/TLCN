@@ -1,0 +1,49 @@
+2025-11-04 20:07:42,764 - INFO - Total stations configured: 79
+2025-11-04 20:07:42,764 - INFO - === Air Quality Streaming Service ===
+2025-11-04 20:07:42,765 - INFO - Configured stations: 79
+2025-11-04 20:07:42,765 - INFO - WAQI Token: Set
+2025-11-04 20:07:42,765 - INFO - Streaming interval: 300 seconds
+2025-11-04 20:07:42,766 - INFO - Waiting for dependencies to be ready...
+2025-11-04 20:07:50,064 - INFO - Waiting for PostgreSQL... (1/30)
+2025-11-04 20:08:02,327 - INFO - Waiting for PostgreSQL... (2/30)
+2025-11-04 20:08:14,577 - INFO - Waiting for PostgreSQL... (3/30)
+2025-11-04 20:08:26,862 - INFO - Waiting for PostgreSQL... (4/30)
+2025-11-04 20:08:39,134 - INFO - Waiting for PostgreSQL... (5/30)
+2025-11-04 20:08:51,395 - INFO - Waiting for PostgreSQL... (6/30)
+2025-11-04 20:09:03,635 - INFO - Waiting for PostgreSQL... (7/30)
+2025-11-04 20:09:15,903 - INFO - Waiting for PostgreSQL... (8/30)
+2025-11-04 20:09:28,159 - INFO - Waiting for PostgreSQL... (9/30)
+2025-11-04 20:09:40,412 - INFO - Waiting for PostgreSQL... (10/30)
+2025-11-04 20:09:52,677 - INFO - Waiting for PostgreSQL... (11/30)
+2025-11-04 20:10:04,924 - INFO - Waiting for PostgreSQL... (12/30)
+2025-11-04 20:10:17,190 - INFO - Waiting for PostgreSQL... (13/30)
+2025-11-04 20:10:29,466 - INFO - Waiting for PostgreSQL... (14/30)
+2025-11-04 20:10:41,730 - INFO - Waiting for PostgreSQL... (15/30)
+2025-11-04 20:10:53,994 - INFO - Waiting for PostgreSQL... (16/30)
+2025-11-04 20:11:06,264 - INFO - Waiting for PostgreSQL... (17/30)
+2025-11-04 20:11:18,542 - INFO - Waiting for PostgreSQL... (18/30)
+2025-11-04 20:11:30,792 - INFO - Waiting for PostgreSQL... (19/30)
+2025-11-04 20:11:43,041 - INFO - Waiting for PostgreSQL... (20/30)
+2025-11-04 20:11:55,296 - INFO - Waiting for PostgreSQL... (21/30)
+2025-11-04 20:12:07,548 - INFO - Waiting for PostgreSQL... (22/30)
+2025-11-04 20:12:19,796 - INFO - Waiting for PostgreSQL... (23/30)
+2025-11-04 20:12:32,061 - INFO - Waiting for PostgreSQL... (24/30)
+2025-11-04 20:12:44,317 - INFO - Waiting for PostgreSQL... (25/30)
+2025-11-04 20:12:56,588 - INFO - Waiting for PostgreSQL... (26/30)
+2025-11-04 20:13:08,846 - INFO - Waiting for PostgreSQL... (27/30)
+2025-11-04 20:13:21,108 - INFO - Waiting for PostgreSQL... (28/30)
+2025-11-04 20:13:33,358 - INFO - Waiting for PostgreSQL... (29/30)
+2025-11-04 20:13:45,635 - INFO - Waiting for PostgreSQL... (30/30)
+2025-11-04 20:13:50,636 - ERROR - PostgreSQL not ready after 150 seconds
+2025-11-04 20:13:50,636 - ERROR - Dependencies not ready, exiting
+2025-11-04 20:15:22,725 - INFO - Total stations configured: 4
+2025-11-04 20:15:22,725 - INFO - === Air Quality Streaming Service (MinIO only) ===
+2025-11-04 20:15:22,726 - INFO - Configured stations: 4
+2025-11-04 20:15:22,726 - INFO - WAQI Token: Set
+2025-11-04 20:15:22,726 - INFO - Waiting for MinIO to be ready...
+2025-11-04 20:15:30,020 - WARNING - Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x0000024BA7290BD0>: Failed to resolve 'minio' ([Errno 11001] getaddrinfo failed)")': /
+2025-11-04 20:15:37,686 - WARNING - Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x0000024BA761BA90>: Failed to resolve 'minio' ([Errno 11001] getaddrinfo failed)")': /
+2025-11-04 20:15:45,762 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x0000024BA764C610>: Failed to resolve 'minio' ([Errno 11001] getaddrinfo failed)")': /
+2025-11-04 20:15:54,613 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x0000024BA764D190>: Failed to resolve 'minio' ([Errno 11001] getaddrinfo failed)")': /
+2025-11-04 20:16:05,068 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x0000024BA764DB50>: Failed to resolve 'minio' ([Errno 11001] getaddrinfo failed)")': /
+2025-11-04 20:16:12,329 - INFO - Waiting for MinIO... (1/30)
