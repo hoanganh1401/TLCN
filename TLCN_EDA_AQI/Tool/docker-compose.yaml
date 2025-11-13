@@ -503,7 +503,7 @@ services:
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_PORT=5432
       # MinIO connections  
-      - MINIO_HOST=minio:9000
+      - MINIO_HOST=172.27.91.163:9000
       - MINIO_ACCESS_KEY=admin
       - MINIO_SECRET_KEY=admin123
       - MINIO_BUCKET=air-quality
