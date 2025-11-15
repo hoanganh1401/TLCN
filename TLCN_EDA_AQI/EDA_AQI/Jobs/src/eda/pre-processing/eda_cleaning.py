@@ -9,7 +9,8 @@ import os
 # =============================
 # CẤU HÌNH MINIO
 # =============================
-MINIO_HOST = "localhost:9004"
+#MINIO_HOST = "localhost:9004"
+MINIO_HOST = "172.27.91.163:9004"
 MINIO_ACCESS_KEY = "admin"
 MINIO_SECRET_KEY = "admin123"
 MINIO_BUCKET = "air-quality"
@@ -27,17 +28,17 @@ def get_minio_client():
     )
 
 def list_years_and_files(client, bucket):
-    all_objects = list(client.list_objects(bucket, prefix="openmeteo/", recursive=True))
+    all_objects = list(client.list_objects(bucket, prefix="openmeteo/global/", recursive=True))
     files_by_year = {}
     years = set()
     for obj in all_objects:
         path = obj.object_name
         parts = path.split("/")
-        if len(parts) == 3 and path.endswith(".csv"):
-            year = parts[1]
+        if len(parts) >= 4 and path.endswith(".csv"):
+            year = parts[2]
             years.add(year)
             files_by_year.setdefault(year, []).append(path)
-    return sorted(list(years)), files_by_year
+    return sorted(years), files_by_year
 
 def load_csv_from_minio(client, bucket, path):
     response = client.get_object(bucket, path)

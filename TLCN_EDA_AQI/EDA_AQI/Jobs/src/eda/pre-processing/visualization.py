@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 # ==============================
 # CẤU HÌNH MINIO
 # ==============================
-MINIO_HOST = "localhost:9004"
+#MINIO_HOST = "localhost:9004"
+MINIO_HOST = "172.27.91.163:9004"
 MINIO_ACCESS_KEY = "admin"
 MINIO_SECRET_KEY = "admin123"
 MINIO_CLEAN_BUCKET = "air-quality-clean"
@@ -27,18 +28,17 @@ def get_minio_client():
     )
 
 def list_clean_files_by_year(client, bucket):
-    all_objects = list(client.list_objects(bucket, prefix="openmeteo/", recursive=True))
+    all_objects = list(client.list_objects(bucket, prefix="openmeteo/global/", recursive=True))
     files_by_year = {}
     years = set()
     for obj in all_objects:
         path = obj.object_name
         parts = path.split("/")
-        # path: openmeteo/<year>/<file.csv>
-        if len(parts) == 3 and path.endswith(".csv"):
-            year = parts[1]
+        if len(parts) >= 4 and path.endswith(".csv"):
+            year = parts[2]
             years.add(year)
             files_by_year.setdefault(year, []).append(path)
-    return sorted(list(years)), files_by_year
+    return sorted(years), files_by_year
 
 def load_clean_csv(client, bucket, path):
     response = client.get_object(bucket, path)
@@ -145,32 +145,4 @@ def run():
                 ax.set_xlabel(col)
                 ax.set_ylabel("Frequency")
                 ax.grid(True, linestyle='--', alpha=0.5)
-                st.pyplot(fig)
-
-        # ==============================
-        # Heatmap (tất cả cột số)
-        # ==============================
-        numeric_cols_all = df.select_dtypes(include=[np.number]).columns.tolist()
-        if len(numeric_cols_all) > 1:
-            st.markdown("## Heatmap Correlation (tất cả cột số)")
-            fig, ax = plt.subplots(figsize=(10, 8))
-            sns.heatmap(df[numeric_cols_all].corr(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
-            st.pyplot(fig)
-
-        # ==============================
-        # Line chart theo thời gian (resample theo ngày)
-        # ==============================
-        if "ts_utc" in df.columns and numeric_cols_important:
-            st.markdown("## Line chart theo thời gian (resample theo ngày)")
-            df_resampled = df.set_index("ts_utc")[numeric_cols_important].resample('D').mean().reset_index()
-
-            colors = ['blue', 'green', 'red', 'orange']
-            for col, color in zip(numeric_cols_important, colors):
-                fig, ax = plt.subplots(figsize=(12, 5))
-                ax.plot(df_resampled["ts_utc"], df_resampled[col], linestyle='-', color=color, label=col)
-                ax.set_title(f"{col} theo thời gian")
-                ax.set_xlabel("Time")
-                ax.set_ylabel(col)
-                ax.grid(True, linestyle='--', alpha=0.5)
-                ax.legend()
                 st.pyplot(fig)
