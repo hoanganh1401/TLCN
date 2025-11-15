@@ -11,7 +11,8 @@ import os
 # =============================
 # CẤU HÌNH MINIO
 # =============================
-MINIO_HOST = "172.27.91.163:9004"
+#MINIO_HOST = "172.27.91.163:9004"
+MINIO_HOST = "localhost:9004"
 MINIO_ACCESS_KEY = "admin"
 MINIO_SECRET_KEY = "admin123"
 MINIO_BUCKET = "air-quality"
