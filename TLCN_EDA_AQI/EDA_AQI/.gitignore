@@ -1,0 +1,3 @@
+# Ignore Airflow logs
+TLCN_EDA_AQI/EDA_AQI/Airflow/logs/
+__pycache__/
