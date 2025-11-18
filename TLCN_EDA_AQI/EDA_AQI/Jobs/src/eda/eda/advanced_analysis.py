@@ -299,7 +299,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     # Sidebar / selection: chọn tỉnh(s) và năm để hiển thị biểu đồ
     st.write("**🔎 Lọc cho biểu đồ phân tích (giúp trực quan dễ đọc):**")
     available_locations = sorted(df_rank['location_key'].unique())
-    selected_locations = st.multiselect("Chọn địa điểm (tối đa 10) để so sánh:", options=available_locations, default=available_locations[:5])
+    selected_locations = st.multiselect("Chọn địa điểm để so sánh:", options=available_locations, default=available_locations[:5])
 
     available_years = sorted(df_rank['year'].unique())
     selected_years = st.multiselect("Chọn năm để hiển thị:", options=available_years, default=available_years)
@@ -523,8 +523,7 @@ def bai_toan_2_chat_o_nhiem(df):
             })
             st.dataframe(exceed_df, use_container_width=True, hide_index=True)
             
-            # Thông tin giải thích
-            st.info(f"💡 **Cách tính hợp lý**: Tính % dựa trên tần suất vượt ngưỡng AQI > {aqi_threshold}, không phải tổng AQI (vì AQI không cộng được)")
+ 
         
         with col2:
             # Biểu đồ cột cho tất cả chất ô nhiễm (giá trị trung bình AQI)
@@ -608,32 +607,6 @@ def bai_toan_2_chat_o_nhiem(df):
             
             st.dataframe(all_aqi_stats, use_container_width=True, hide_index=True)
         
-        # Hiển thị phân tích về sự phân bố
-        with st.expander("📊 Giải Thích Chi Tiết Về Phân Bố"):
-            # Tính lại dominant_stats để sử dụng
-            dominant_stats = df_pollutant['dominant_pollutant'].value_counts()
-            
-            st.markdown(f"""
-            **Phân tích dữ liệu hiện tại:**
-            
-            - **Tổng số bản ghi**: {len(df_pollutant):,}
-            - **Chất có AQI cao nhất thường xuyên**: {dominant_stats.index[0]} ({dominant_stats.values[0]:,} lần - {(dominant_stats.values[0]/len(df_pollutant)*100):.1f}%)
-            
-            **Các cách phân tích phân bố chất ô nhiễm:**
-            1. **"% Tần Suất Vượt Ngưỡng"** ✅: Tính % dựa trên số lần mỗi chất vượt ngưỡng an toàn
-            2. **"Chất Ô Nhiễm Chính"**: Chất nào có AQI cao nhất tại từng thời điểm
-            3. **"AQI Trung Bình"**: So sánh mức độ trung bình của các chất
-            
-            **❌ Tại sao KHÔNG nên cộng AQI:**
-            - **AQI không phải additive**: AQI tổng ≠ Σ AQI thành phần  
-            - **PM2.5 ⊂ PM10**: Có sự chồng lấp, cộng lại sẽ bị double-counting
-            - **Các ngưỡng khác nhau**: Mỗi chất có thang đo và ngưỡng ảnh hưởng khác nhau
-            
-            **✅ Cách phân tích đúng:**
-            - **Tần suất vượt ngưỡng**: Chất nào thường xuyên vượt mức an toàn nhất
-            - **Mức độ nghiêm trọng**: Chất nào có AQI trung bình cao nhất
-            - **Xu hướng thay đổi**: Chất nào có xu hướng tăng/giảm theo thời gian
-            """)
     else:
         st.warning("⚠️ Không tìm thấy dữ liệu AQI cho các chất ô nhiễm")
     
@@ -887,39 +860,74 @@ def bai_toan_3_xu_huong(df):
     
     return df_trend, trend_df
 
+@st.cache_data
+def calculate_correlations(df):
+    """Tính ma trận tương quan với cache để tối ưu tốc độ"""
+    pollutants = ['pm25','pm10','o3','no2','so2','co','aod','dust','uv_index','co2']
+    available_pollutants = [p for p in pollutants if p in df.columns]
+    
+    if len(available_pollutants) < 2:
+        return pd.DataFrame(), pd.DataFrame()
+    
+    # Tính ma trận tương quan tổng thể trước (nhanh nhất)
+    overall_corr = df[available_pollutants].corr()
+    
+    # Tối ưu hóa tính toán chi tiết
+    correlation_data = []
+    
+    # Chỉ tính cho các địa điểm có đủ dữ liệu
+    location_counts = df['location_key'].value_counts()
+    valid_locations = location_counts[location_counts >= 50].index  # Chỉ lấy địa điểm có ít nhất 50 bản ghi
+    
+    # Giới hạn số địa điểm để tránh quá chậm
+    if len(valid_locations) > 20:
+        valid_locations = valid_locations[:20]  # Chỉ lấy 20 địa điểm đầu
+    
+    with st.spinner(f"Đang tính toán tương quan cho {len(valid_locations)} địa điểm..."):
+        # Sử dụng groupby thay vì nested loops
+        for location in valid_locations:
+            location_data = df[df['location_key'] == location]
+            
+            # Tính theo quý thay vì tháng để giảm tính toán
+            location_data['quarter'] = location_data['month'].apply(lambda x: (x-1)//3 + 1)
+            
+            for quarter in location_data['quarter'].unique():
+                subset = location_data[location_data['quarter'] == quarter]
+                if len(subset) > 15:  # Tăng ngưỡng để giảm tính toán
+                    try:
+                        corr_matrix = subset[available_pollutants].corr()
+                        
+                        # Chỉ lấy tương quan mạnh để giảm kích thước dữ liệu
+                        for i, p1 in enumerate(available_pollutants):
+                            for j, p2 in enumerate(available_pollutants[i+1:], i+1):
+                                corr_val = corr_matrix.iloc[i, j]
+                                if not pd.isna(corr_val) and abs(corr_val) > 0.3:  # Chỉ lưu tương quan > 0.3
+                                    correlation_data.append({
+                                        'location_key': location,
+                                        'quarter': quarter,
+                                        'pollutant_1': p1,
+                                        'pollutant_2': p2,
+                                        'correlation': round(corr_val, 3)
+                                    })
+                    except:
+                        continue  # Bỏ qua nếu có lỗi
+    
+    df_corr = pd.DataFrame(correlation_data)
+    return overall_corr, df_corr
+
 def bai_toan_4_ma_tran_tuong_quan(df):
     """BÀI TOÁN 4 — MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM"""
     st.header("🌍 BÀI TOÁN 4 — MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM NÂNG CAO")
     
+    
+    # Tính toán với cache
+    overall_corr, df_corr = calculate_correlations(df)
+    
+    # Định nghĩa lại pollutants cho phần dưới
     pollutants = ['pm25','pm10','o3','no2','so2','co','aod','dust','uv_index','co2']
     
-    # Tính ma trận tương quan theo từng địa điểm và tháng
-    correlation_data = []
-    
-    for location in df['location_key'].unique():
-        for month in range(1, 13):
-            subset = df[(df['location_key'] == location) & (df['month'] == month)]
-            if len(subset) > 10:  # Đảm bảo có đủ dữ liệu
-                # Chỉ lấy các pollutants có trong df
-                available_pollutants = [p for p in pollutants if p in subset.columns]
-                if len(available_pollutants) > 1:
-                    corr_matrix = subset[available_pollutants].corr()
-                    
-                    # Lấy các cặp tương quan mạnh
-                    for i in range(len(available_pollutants)):
-                        for j in range(i+1, len(available_pollutants)):
-                            correlation_data.append({
-                                'location_key': location,
-                                'month': month,
-                                'pollutant_1': available_pollutants[i],
-                                'pollutant_2': available_pollutants[j],
-                                'correlation': corr_matrix.iloc[i, j]
-                            })
-    
-    df_corr = pd.DataFrame(correlation_data)
-    
     # Tìm các cặp tương quan mạnh nhất
-    strong_correlations = df_corr[abs(df_corr['correlation']) > 0.7]
+    strong_correlations = df_corr[abs(df_corr['correlation']) > 0.7] if not df_corr.empty else pd.DataFrame()
     
     col1, col2 = st.columns(2)
     
@@ -951,13 +959,17 @@ def bai_toan_4_ma_tran_tuong_quan(df):
     with col2:
         st.subheader("📍 Tương Quan Theo Địa Điểm")
         
-        selected_pollutant_pair = st.selectbox(
-            "Chọn cặp chất ô nhiễm:",
-            options=[f"{p1} - {p2}" for i, p1 in enumerate(pollutants) for p2 in pollutants[i+1:]],
-            index=0
-        )
+        available_pollutants_for_selection = [p for p in pollutants if p in df.columns]
+        if len(available_pollutants_for_selection) >= 2:
+            selected_pollutant_pair = st.selectbox(
+                "Chọn cặp chất ô nhiễm:",
+                options=[f"{p1} - {p2}" for i, p1 in enumerate(available_pollutants_for_selection) for p2 in available_pollutants_for_selection[i+1:]],
+                index=0
+            )
+        else:
+            selected_pollutant_pair = None
         
-        if selected_pollutant_pair:
+        if selected_pollutant_pair and not df_corr.empty:
             p1, p2 = selected_pollutant_pair.split(' - ')
             
             location_corr = (
@@ -970,24 +982,26 @@ def bai_toan_4_ma_tran_tuong_quan(df):
                 .reset_index()
             )
             
-            fig_loc_corr = px.bar(
-                location_corr,
-                x='location_key',
-                y='correlation',
-                color='correlation',
-                color_continuous_scale='RdBu',
-                title=f"Tương Quan {selected_pollutant_pair} Theo Địa Điểm"
-            )
-            st.plotly_chart(fig_loc_corr, use_container_width=True)
+            if not location_corr.empty:
+                fig_loc_corr = px.bar(
+                    location_corr,
+                    x='location_key',
+                    y='correlation',
+                    color='correlation',
+                    color_continuous_scale='RdBu',
+                    title=f"Tương Quan {selected_pollutant_pair} Theo Địa Điểm"
+                )
+                st.plotly_chart(fig_loc_corr, use_container_width=True)
+            else:
+                st.info("Không có dữ liệu tương quan cho cặp này")
+        elif not selected_pollutant_pair:
+            st.info("Không đủ chất ô nhiễm để phân tích")
     
     # Heatmap tương quan tổng thể
     st.subheader("🗺️ Ma Trận Tương Quan Tổng Thể")
     
-    # Chỉ lấy các pollutants có trong df
-    available_pollutants_overall = [p for p in pollutants if p in df.columns]
-    if len(available_pollutants_overall) > 1:
-        overall_corr = df[available_pollutants_overall].corr()
-    else:
+    # Kiểm tra ma trận tương quan tổng thể
+    if overall_corr.empty:
         st.warning("⚠️ Không đủ dữ liệu để tính ma trận tương quan tổng thể")
         return df_corr
     
@@ -1012,6 +1026,25 @@ def bai_toan_4_ma_tran_tuong_quan(df):
             )
     
     st.plotly_chart(fig_overall, use_container_width=True)
+    
+    # Ma trận tương quan để download cho machine learning
+    st.subheader("📥 Tải Ma Trận Tương Quan Cho Machine Learning")
+    
+    st.write("**📊 Ma Trận Tương Quan Tổng Thể:**")
+    st.dataframe(overall_corr, use_container_width=True)
+    
+    # Nút download ma trận tổng thể
+    csv_overall = overall_corr.to_csv()
+    st.download_button(
+        label="📥 Tải Ma Trận Tương Quan (CSV)",
+        data=csv_overall,
+        file_name=f"ma_tran_tuong_quan_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        mime="text/csv",
+        help="Tải ma trận tương quan để sử dụng trong machine learning",
+        use_container_width=True
+    )
+    
+ 
     
     return df_corr
 
