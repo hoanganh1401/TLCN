@@ -1,2 +1,10 @@
-# Ignore Airflow logs
+# Python cache
+__pycache__/
+*.pyc
+
+# Airflow logs
 TLCN_EDA_AQI/EDA_AQI/Airflow/logs/
+Airflow/logs/
+
+# VSCode
+.vscode/
