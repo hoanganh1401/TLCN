@@ -28,7 +28,7 @@ with DAG(
       --mode backfill \
       --start-date {{ dag_run.conf.get('start_date', '2024-01-01') }} \
       --end-date {{ dag_run.conf.get('end_date', ds) }} \
-      --chunk-days {{ dag_run.conf.get('chunk_days', 30) }} \
+      --chunk-days {{ dag_run.conf.get('chunk_days', 60) }} \
       --locations "$LOC_PATH"
     """
 

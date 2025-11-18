@@ -1,48 +1,59 @@
-from datetime import datetime, timedelta
+# aqi_bronze_incremental.py
+from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-default_args = {"retries": 1, "retry_delay": timedelta(minutes=5)}
+DEFAULT_LOC_PATH = "/opt/EDA_AQI/Jobs/src/eda/locations.jsonl"
 
 with DAG(
     dag_id="aqi_bronze_incremental",
     start_date=datetime(2025, 11, 1),
-    schedule=timedelta(minutes=5),   # mỗi 5 phút
+    schedule="*/5 * * * *",   # 5 phút 1 lần
     catchup=False,
-    default_args=default_args,
     max_active_runs=1,
     tags=["aqi", "bronze", "incremental"],
 ) as dag:
 
-    run = BashOperator(
-        task_id="bronze_incremental_hourly",
-        bash_command="""
-        export PYTHONPATH="${PYTHONPATH:-/opt/airflow-docker}"
-        {% set lp = var.value.get('LOCATIONS_PATH') %}
-        python3 -m src.etl.bronze_raw --mode incremental {{ ('--locations ' ~ lp) if lp else '' }}
-        """,
+    incr_cmd = r"""
+    set -e
+    LOC_PATH="{{ dag_run.conf.get('locations', '""" + DEFAULT_LOC_PATH + r"""') }}"
+    echo "Using locations file: $LOC_PATH"
+
+    python3 /opt/EDA_AQI/Jobs/src/eda/load_raw_data/bronze_raw.py \
+      --mode incremental \
+      --locations "$LOC_PATH"
+    """
+
+    bronze_incremental = BashOperator(
+        task_id="bronze_incremental",
+        bash_command=incr_cmd,
         env={
             "MINIO_HOST": "{{ var.value.get('MINIO_HOST', 'minio:9000') }}",
             "MINIO_ACCESS_KEY": "{{ var.value.get('MINIO_ACCESS_KEY', 'admin') }}",
             "MINIO_SECRET_KEY": "{{ var.value.get('MINIO_SECRET_KEY', 'admin123') }}",
-            "MINIO_BUCKET": "{{ var.value.get('MINIO_BUCKET', 'air-quality-raw') }}",
+            "MINIO_BUCKET": "{{ var.value.get('MINIO_BUCKET', 'air-quality') }}",
             "MINIO_SECURE": "{{ var.value.get('MINIO_SECURE', 'false') }}",
         },
     )
+
+    # lấy năm hiện tại từ Airflow template {{ ds }} (YYYY-MM-DD) → cắt lấy 4 ký tự đầu
+    build_cmd = r"""
+    set -e
+    YEAR="{{ ds[:4] }}"
+    echo "▶ Build yearly global for year=$YEAR"
+    python3 /opt/EDA_AQI/Jobs/src/eda/load_raw_data/bronze_build_global.py --year "$YEAR"
+    """
 
     build_global = BashOperator(
-        task_id="bronze_build_global",
-        bash_command="""
-        export PYTHONPATH="${PYTHONPATH:-/opt/airflow-docker}"
-        python3 -m src.etl.bronze_build_global
-        """,
+        task_id="build_global_year",
+        bash_command=build_cmd,
         env={
             "MINIO_HOST": "{{ var.value.get('MINIO_HOST', 'minio:9000') }}",
             "MINIO_ACCESS_KEY": "{{ var.value.get('MINIO_ACCESS_KEY', 'admin') }}",
             "MINIO_SECRET_KEY": "{{ var.value.get('MINIO_SECRET_KEY', 'admin123') }}",
-            "MINIO_BUCKET": "{{ var.value.get('MINIO_BUCKET', 'air-quality-raw') }}",
+            "MINIO_BUCKET": "{{ var.value.get('MINIO_BUCKET', 'air-quality') }}",
             "MINIO_SECURE": "{{ var.value.get('MINIO_SECURE', 'false') }}",
         },
     )
 
-    run >> build_global
+    bronze_incremental >> build_global

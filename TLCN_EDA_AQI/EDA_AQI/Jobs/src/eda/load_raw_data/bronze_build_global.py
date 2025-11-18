@@ -1,18 +1,18 @@
-# src/etl/bronze_build_global.py
-
+#!/usr/bin/env python3
 import os
 import io
-import sys
 import json
+import argparse
 from datetime import datetime
-from typing import List
+from typing import List, Dict, Optional
 
 import pandas as pd
 from dotenv import load_dotenv
 from minio import Minio
-from minio.error import S3Error
 
-# ========= 0) ENV =========
+# =============================
+# 0) Load ENV & constants
+# =============================
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 load_dotenv(os.path.join(ROOT_DIR, ".env"))
 
@@ -22,13 +22,13 @@ MINIO_SECRET = os.environ.get("MINIO_SECRET_KEY", "admin123")
 MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "air-quality")
 MINIO_SECURE = os.environ.get("MINIO_SECURE", "false").lower() == "true"
 
-# Nơi lưu file tổng (Parquet)
-GLOBAL_PREFIX = "openmeteo/_global"
-GLOBAL_SNAPSHOT_NAME = lambda ts: f"{GLOBAL_PREFIX}/all_cities_all_days_{ts}.parquet"
-GLOBAL_LATEST_NAME   = f"{GLOBAL_PREFIX}/all_cities_all_days_latest.parquet"
+# nơi sẽ đặt file tổng
+GLOBAL_PREFIX = "openmeteo/global"
 
-# ========= 1) MinIO client =========
-def get_minio() -> Minio:
+# =============================
+# 1) Helpers
+# =============================
+def get_minio_client() -> Minio:
     return Minio(
         MINIO_HOST,
         access_key=MINIO_ACCESS,
@@ -36,123 +36,142 @@ def get_minio() -> Minio:
         secure=MINIO_SECURE,
     )
 
-def ensure_bucket(cli: Minio, bucket: str):
-    if not cli.bucket_exists(bucket):
-        cli.make_bucket(bucket)
 
-# ========= 2) Liệt kê tất cả object CSV theo cấu trúc Bronze =========
-def list_bronze_csv_objects(cli: Minio) -> List[str]:
-    """
-    Trả về danh sách object_name kiểu:
-    openmeteo/<location_key>/year=YYYY/month=MM/day=DD/openmeteo_<key>_<YYYY-MM-DD>.csv
-    """
-    object_names = []
-    # Duyệt prefix 'openmeteo/' toàn bộ
-    for obj in cli.list_objects(MINIO_BUCKET, prefix="openmeteo/", recursive=True):
-        name = obj.object_name
-        # Lọc folder _global (không phải dữ liệu raw theo location)
-        if name.startswith(f"{GLOBAL_PREFIX}/"):
-            continue
-        # Lấy các file csv raw
-        if name.endswith(".csv") and "/year=" in name and "/month=" in name and "/day=" in name:
-            object_names.append(name)
-    return object_names
+def ensure_bucket(client: Minio, bucket: str):
+    if not client.bucket_exists(bucket):
+        client.make_bucket(bucket)
 
-# ========= 3) Đọc toàn bộ CSV -> concat =========
-def read_all_csv_to_df(cli: Minio, object_names: List[str]) -> pd.DataFrame:
+
+def list_all_daily_objects_for_year(client: Minio, year: int) -> List[str]:
     """
-    Đọc lần lượt từng CSV vào pandas và gộp (concat). Giữ schema như ở Bronze CSV.
-    Thêm cột 'source_object' để trace ngược nếu cần.
+    Liệt kê tất cả object daily của 1 năm.
+    Cấu trúc daily hiện tại: openmeteo/{year}/{month}/{day}/openmeteo_{YYYY_MM_DD}.csv
     """
-    frames = []
-    for i, name in enumerate(object_names, start=1):
+    prefix = f"openmeteo/{year}/"
+    objects = client.list_objects(MINIO_BUCKET, prefix=prefix, recursive=True)
+    keys = []
+    for obj in objects:
+        # chỉ lấy .csv
+        if obj.object_name.endswith(".csv"):
+            # loại trừ trường hợp mình đã có file global mà đặt cùng prefix
+            if not obj.object_name.startswith(f"{GLOBAL_PREFIX}/"):
+                keys.append(obj.object_name)
+    return keys
+
+
+def read_csv_from_minio(client: Minio, object_name: str) -> pd.DataFrame:
+    """
+    Đọc 1 CSV từ MinIO về DataFrame
+    """
+    resp = client.get_object(MINIO_BUCKET, object_name)
+    data = resp.read()
+    df = pd.read_csv(io.BytesIO(data))
+    return df
+
+
+def write_csv_to_minio(client: Minio, df: pd.DataFrame, year: int):
+    """
+    Ghi file tổng năm lên MinIO.
+    Đường dẫn: openmeteo/global/{year}/openmeteo_{year}.csv
+    """
+    ensure_bucket(client, MINIO_BUCKET)
+    object_name = f"{GLOBAL_PREFIX}/{year}/openmeteo_{year}.csv"
+
+    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    csv_stream = io.BytesIO(csv_bytes)
+
+    client.put_object(
+        bucket_name=MINIO_BUCKET,
+        object_name=object_name,
+        data=csv_stream,
+        length=len(csv_bytes),
+        content_type="text/csv",
+    )
+    print(f"✅ Uploaded yearly file: s3://{MINIO_BUCKET}/{object_name} (rows={len(df)})")
+
+
+def detect_years_from_bucket(client: Minio) -> List[int]:
+    """
+    Quét bucket để đoán ra những năm đang có dữ liệu daily.
+    Ví dụ thấy openmeteo/2024/..., openmeteo/2025/... thì trả về [2024, 2025]
+    """
+    objects = client.list_objects(MINIO_BUCKET, prefix="openmeteo/", recursive=False)
+    years = set()
+    for obj in objects:
+        # obj.object_name có thể là "openmeteo/2024/" hoặc "openmeteo/global/"
+        parts = obj.object_name.strip("/").split("/")
+        if len(parts) >= 2 and parts[0] == "openmeteo":
+            # parts[1] có thể là "2024" hoặc "global"
+            if parts[1].isdigit():
+                years.add(int(parts[1]))
+    return sorted(years)
+
+
+# =============================
+# 2) Build global per year
+# =============================
+def build_year(client: Minio, year: int):
+    print(f"\n🛠 Building yearly CSV for {year} ...")
+
+    daily_keys = list_all_daily_objects_for_year(client, year)
+    if not daily_keys:
+        print(f"  ⚠️ No daily files found for year {year}")
+        return
+
+    dfs = []
+    for key in daily_keys:
         try:
-            resp = cli.get_object(MINIO_BUCKET, name)
-            data = resp.read()  # đọc toàn bộ vào memory
-            resp.close(); resp.release_conn()
-            df = pd.read_csv(io.BytesIO(data))
-            # Chuẩn hoá kiểu ngày giờ (nếu chưa đúng)
-            if "ts_utc" in df.columns:
-                df["ts_utc"] = pd.to_datetime(df["ts_utc"], utc=True, errors="coerce")
-            if "date_utc" in df.columns:
-                # một số pandas có thể đọc thành object -> ép date
-                df["date_utc"] = pd.to_datetime(df["date_utc"], errors="coerce").dt.date
-            # gắn nguồn
-            df["source_object"] = name
-            frames.append(df)
-            if i % 500 == 0:
-                print(f"  ...loaded {i} files")
-        except S3Error as e:
-            print(f"Skip {name} due to S3Error: {e}")
+            df = read_csv_from_minio(client, key)
+            dfs.append(df)
+            print(f"  + loaded {key} (rows={len(df)})")
         except Exception as e:
-            print(f"Skip {name} due to error: {e}")
-    if not frames:
-        return pd.DataFrame()
-    return pd.concat(frames, ignore_index=True)
+            print(f"  ⚠️ Failed to read {key}: {e}")
 
-# ========= 4) Ghi Parquet snapshot + latest =========
-def save_parquet(cli: Minio, df: pd.DataFrame):
-    # Đảm bảo có thư mục _global (MinIO không cần tạo folder, nhưng tạo file placeholder là được)
-    ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-    snap_key = GLOBAL_SNAPSHOT_NAME(ts)
-    latest_key = GLOBAL_LATEST_NAME
+    if not dfs:
+        print(f"  ⚠️ No dataframes loaded for year {year}")
+        return
 
-    # Lưu Parquet (cần pyarrow hoặc fastparquet)
-    try:
-        import pyarrow as pa
-        import pyarrow.parquet as pq
-    except ImportError:
-        print("ERROR: cần 'pyarrow'. Hãy cài: pip install pyarrow")
-        sys.exit(1)
+    # gộp toàn bộ
+    full_df = pd.concat(dfs, ignore_index=True)
 
-    # Convert pandas -> parquet bytes
-    table = pa.Table.from_pandas(df, preserve_index=False)
-    sink = io.BytesIO()
-    pq.write_table(table, sink, compression="snappy")
-    payload = sink.getvalue()
+    # nếu có cột location_key và ts_utc thì drop trùng theo 2 cột này
+    if "ts_utc" in full_df.columns and "location_key" in full_df.columns:
+        full_df = full_df.drop_duplicates(subset=["ts_utc", "location_key"], keep="last")
+    else:
+        full_df = full_df.drop_duplicates()
 
-    # Upload snapshot
-    cli.put_object(
-        MINIO_BUCKET, snap_key, io.BytesIO(payload), length=len(payload),
-        content_type="application/octet-stream"
-    )
-    print(f"✅ Snapshot uploaded: s3://{MINIO_BUCKET}/{snap_key}")
+    # sắp xếp theo thời gian nếu có
+    if "ts_utc" in full_df.columns:
+        full_df = full_df.sort_values("ts_utc").reset_index(drop=True)
 
-    # Upload/overwrite latest
-    cli.put_object(
-        MINIO_BUCKET, latest_key, io.BytesIO(payload), length=len(payload),
-        content_type="application/octet-stream"
-    )
-    print(f"✅ Latest uploaded:   s3://{MINIO_BUCKET}/{latest_key}")
+    # ghi lên MinIO
+    write_csv_to_minio(client, full_df, year)
 
+
+# =============================
+# 3) CLI
+# =============================
 def main():
-    cli = get_minio()
-    ensure_bucket(cli, MINIO_BUCKET)
+    parser = argparse.ArgumentParser(
+        description="Build yearly global CSV from daily Open-Meteo bronze files in MinIO"
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--year", type=int, help="Year to build (e.g. 2024)")
+    group.add_argument("--all", action="store_true", help="Build for all years detected in bucket")
+    args = parser.parse_args()
 
-    print("🔎 Listing Bronze CSV objects ...")
-    objects = list_bronze_csv_objects(cli)
-    print(f"Found {len(objects)} CSV files")
+    client = get_minio_client()
 
-    if not objects:
-        print("No data to build global file.")
-        sys.exit(0)
+    if args.year:
+        build_year(client, args.year)
+    else:
+        years = detect_years_from_bucket(client)
+        if not years:
+            print("❌ No years detected under 'openmeteo/' in the bucket.")
+            return
+        for y in years:
+            build_year(client, y)
 
-    print("📚 Reading & concatenating ...")
-    df = read_all_csv_to_df(cli, objects)
-
-    if df.empty:
-        print("No rows after read; abort.")
-        sys.exit(0)
-
-    # Optional: sắp xếp để file nhất quán
-    sort_cols = [c for c in ["date_utc", "ts_utc", "location_key"] if c in df.columns]
-    if sort_cols:
-        df = df.sort_values(sort_cols).reset_index(drop=True)
-
-    print(f"🚀 Saving global parquet with {len(df)} rows ...")
-    save_parquet(cli, df)
-    print("DONE.")
-    sys.exit(0)
 
 if __name__ == "__main__":
     main()

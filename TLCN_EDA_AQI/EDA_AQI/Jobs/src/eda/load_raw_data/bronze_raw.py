@@ -76,7 +76,7 @@ def load_locations(path: str) -> List[Dict]:
     raise ValueError(f"Invalid locations format in {path}")
 
 
-def generate_date_chunks(start: str, end: str, days: int = 30):
+def generate_date_chunks(start: str, end: str, days: int = 60):
     s = datetime.strptime(start, "%Y-%m-%d")
     e = datetime.strptime(end, "%Y-%m-%d")
     current = s
@@ -129,18 +129,22 @@ def fetch_openmeteo(lat: float, lon: float, start_date: str, end_date: str, max_
     if "time" not in df:
         return pd.DataFrame()
 
+    # chuẩn hóa thời gian
     df["ts_utc"] = pd.to_datetime(df["time"], utc=True, errors="coerce")
     df["date_utc"] = df["ts_utc"].dt.date
     df.drop(columns=["time"], inplace=True, errors="ignore")
 
+    # thêm tọa độ + thời điểm nạp
     df["latitude"] = js.get("latitude")
     df["longitude"] = js.get("longitude")
     df["_ingested_at"] = pd.Timestamp.now(tz="UTC")
 
+    # loại bỏ dòng tương lai
     now_utc = pd.Timestamp.now(tz="UTC")
     df = df[df["ts_utc"].notna()]
     df = df[df["ts_utc"] <= now_utc]
 
+    # đổi tên cột
     rename_map = {
         "pm2_5": "pm25", "nitrogen_dioxide": "no2", "ozone": "o3",
         "sulphur_dioxide": "so2", "carbon_monoxide": "co",
@@ -151,6 +155,7 @@ def fetch_openmeteo(lat: float, lon: float, start_date: str, end_date: str, max_
     }
     df.rename(columns=rename_map, inplace=True)
 
+    # sắp cột
     front_cols = ["ts_utc", "date_utc", "latitude", "longitude"]
     df = df[front_cols + [c for c in df.columns if c not in front_cols]]
 
@@ -158,41 +163,73 @@ def fetch_openmeteo(lat: float, lon: float, start_date: str, end_date: str, max_
 
 
 # =============================
-# 3) Save to MinIO (by year)
+# 3) Save to MinIO (merge by day)
 # =============================
-def save_year_to_minio(year: int, df: pd.DataFrame):
+def save_daily_to_minio_merge(client: Minio, df: pd.DataFrame):
     """
-    Ghi 1 file CSV cho đúng 1 năm.
-    Đường dẫn: openmeteo/{year}/openmeteo_{year}.csv
+    Ghi 1 file CSV cho từng ngày.
+    Nếu file ngày đó đã tồn tại thì đọc về, nối thêm (concat) rồi ghi đè lại.
+    Đường dẫn: openmeteo/{year}/{month}/{day}/openmeteo_{YYYY_MM_DD}.csv
     """
-    client = get_minio_client()
     ensure_bucket(client, MINIO_BUCKET)
 
-    object_name = f"openmeteo/{year}/openmeteo_{year}.csv"
+    for date_utc, g in df.groupby("date_utc"):
+        year = date_utc.year
+        month = f"{date_utc.month:02d}"
+        day = f"{date_utc.day:02d}"
+        object_name = f"openmeteo/{year}/{month}/{day}/openmeteo_{year}_{month}_{day}.csv"
 
-    csv_bytes = df.to_csv(index=False).encode("utf-8")
-    csv_stream = io.BytesIO(csv_bytes)
+        # dữ liệu mới
+        new_df = g
 
-    client.put_object(
-        bucket_name=MINIO_BUCKET,
-        object_name=object_name,
-        data=csv_stream,
-        length=len(csv_bytes),
-        content_type="text/csv",
-    )
-    print(f"✅ Uploaded year {year}: s3://{MINIO_BUCKET}/{object_name}")
+        # mặc định: dữ liệu để ghi là dữ liệu mới
+        merged_df = new_df
+
+        # thử đọc dữ liệu cũ nếu có
+        try:
+            resp = client.get_object(MINIO_BUCKET, object_name)
+            old_bytes = resp.read()
+            old_df = pd.read_csv(io.BytesIO(old_bytes))
+
+            # nối
+            merged_df = pd.concat([old_df, new_df], ignore_index=True)
+
+            # tránh trùng theo (ts_utc, location_key) nếu có
+            if "location_key" in merged_df.columns:
+                merged_df = merged_df.drop_duplicates(
+                    subset=["ts_utc", "location_key"],
+                    keep="last"
+                )
+            else:
+                merged_df = merged_df.drop_duplicates()
+        except Exception:
+            # không có file cũ thì thôi
+            pass
+
+        # ghi lại
+        csv_bytes = merged_df.to_csv(index=False).encode("utf-8")
+        csv_stream = io.BytesIO(csv_bytes)
+
+        client.put_object(
+            bucket_name=MINIO_BUCKET,
+            object_name=object_name,
+            data=csv_stream,
+            length=len(csv_bytes),
+            content_type="text/csv",
+        )
+
+        print(f"✅ Uploaded/Merged {year}-{month}-{day}: s3://{MINIO_BUCKET}/{object_name} (rows={len(merged_df)})")
 
 
 # =============================
 # 4) Ingestion
 # =============================
-def run_backfill(locations: List[Dict], start_date: str, end_date: str, chunk_days: int = 30):
+def run_backfill(locations: List[Dict], start_date: str, end_date: str, chunk_days: int = 60):
     """
-    Khác bản cũ: ta sẽ gom toàn bộ dữ liệu về 1 dict theo năm,
-    rồi cuối cùng mới ghi 1 file / năm.
+    Backfill toàn bộ dữ liệu, lưu theo ngày.
+    Mỗi ngày chỉ có 1 file, trong đó chứa tất cả location.
     """
-    # year -> list of dataframes
-    yearly_data: Dict[int, List[pd.DataFrame]] = {}
+    client = get_minio_client()
 
     for loc in locations:
         lat = loc["latitude"]
@@ -207,36 +244,22 @@ def run_backfill(locations: List[Dict], start_date: str, end_date: str, chunk_da
                 print(f"    ⚠️ No data for {loc_key} {s}→{e}")
                 continue
 
-            # gắn lại khóa để downstream biết là của trạm nào
             df["location_key"] = loc_key
+            save_daily_to_minio_merge(client, df)
 
-            # thêm cột year để group
-            df["year_utc"] = pd.to_datetime(df["ts_utc"]).dt.year
-
-            # dồn vào dict theo năm
-            for year, g in df.groupby("year_utc"):
-                yearly_data.setdefault(year, []).append(g)
-
-            time.sleep(10)
-
-    # sau khi duyệt hết location -> ghi ra từng năm
-    for year, df_list in yearly_data.items():
-        big_df = pd.concat(df_list, ignore_index=True)
-        save_year_to_minio(year, big_df)
+            # tránh spam API
+            time.sleep(0.5)
 
     print("\nBACKFILL COMPLETE.")
-    print(f"Years exported: {list(yearly_data.keys())}")
 
 
 def run_incremental(locations: List[Dict]):
     """
-    Incremental: vẫn sẽ ghi vào folder của năm hiện tại.
-    Nghĩa là mỗi lần chạy sẽ tạo lại file năm hiện tại (overwrite).
+    Incremental: chỉ lấy dữ liệu của ngày hiện tại.
+    Vẫn merge vào file ngày đó để gom tất cả tỉnh lại.
     """
+    client = get_minio_client()
     today = datetime.utcnow().strftime("%Y-%m-%d")
-    year_now = datetime.utcnow().year
-
-    yearly_data: Dict[int, List[pd.DataFrame]] = {}
 
     for loc in locations:
         lat = loc["latitude"]
@@ -250,16 +273,9 @@ def run_incremental(locations: List[Dict]):
             continue
 
         df["location_key"] = loc_key
-        df["year_utc"] = pd.to_datetime(df["ts_utc"]).dt.year
+        save_daily_to_minio_merge(client, df)
 
-        yearly_data.setdefault(year_now, []).append(df)
-
-        time.sleep(10)
-
-    # ghi lại năm hiện tại
-    if year_now in yearly_data:
-        big_df = pd.concat(yearly_data[year_now], ignore_index=True)
-        save_year_to_minio(year_now, big_df)
+        time.sleep(0.5)
 
     print("\nINCREMENTAL COMPLETE.")
 
@@ -268,11 +284,11 @@ def run_incremental(locations: List[Dict]):
 # 5) CLI
 # =============================
 def main():
-    parser = argparse.ArgumentParser(description="Bronze ingestion for Open-Meteo → MinIO (year-partitioned CSV)")
+    parser = argparse.ArgumentParser(description="Bronze ingestion for Open-Meteo → MinIO (day-partitioned CSV, merged)")
     parser.add_argument("--mode", choices=["backfill", "incremental"], required=True)
     parser.add_argument("--start-date", help="YYYY-MM-DD (required for backfill)")
     parser.add_argument("--end-date", help="YYYY-MM-DD (default=today)")
-    parser.add_argument("--chunk-days", type=int, default=30)
+    parser.add_argument("--chunk-days", type=int, default=60)
     parser.add_argument("--locations", required=True, help="Path to JSON/JSONL file of locations")
     args = parser.parse_args()
 
@@ -285,6 +301,7 @@ def main():
         run_backfill(locations, args.start_date, end_date, args.chunk_days)
     else:
         run_incremental(locations)
+
 
 if __name__ == "__main__":
     main()

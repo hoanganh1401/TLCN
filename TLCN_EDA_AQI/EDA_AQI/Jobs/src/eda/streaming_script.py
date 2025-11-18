@@ -1,14 +1,10 @@
+#!/usr/bin/env python3
 import os
-import sys
 import io
-import time
-import json
 import argparse
-from datetime import datetime, timedelta
-from typing import List, Dict, Optional
+from typing import List
 
 import pandas as pd
-import requests
 from dotenv import load_dotenv
 from minio import Minio
 
@@ -24,7 +20,8 @@ MINIO_SECRET = os.environ.get("MINIO_SECRET_KEY", "admin123")
 MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "air-quality")
 MINIO_SECURE = os.environ.get("MINIO_SECURE", "false").lower() == "true"
 
-API_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
+# prefix dùng chung với file yearly bạn đã tạo
+GLOBAL_PREFIX = "openmeteo/global"
 
 
 # =============================
@@ -44,131 +41,47 @@ def ensure_bucket(client: Minio, bucket: str):
         client.make_bucket(bucket)
 
 
-def load_locations(path: str) -> List[Dict]:
-    if not path:
-        raise ValueError("❌ You must provide --locations path (JSONL or JSON).")
-
-    with open(path, "r", encoding="utf-8") as f:
-        content = f.read().strip()
-
-    lines = content.splitlines()
-    # JSONL
-    if len(lines) > 1:
-        locs = []
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                locs.append(json.loads(line))
-            except json.JSONDecodeError:
-                pass
-        if locs:
-            return locs
-
-    # JSON thường
-    data = json.loads(content)
-    if isinstance(data, list):
-        return data
-    if isinstance(data, dict) and "locations" in data:
-        return data["locations"]
-
-    raise ValueError(f"Invalid locations format in {path}")
-
-
-def generate_date_chunks(start: str, end: str, days: int = 30):
-    s = datetime.strptime(start, "%Y-%m-%d")
-    e = datetime.strptime(end, "%Y-%m-%d")
-    current = s
-    while current <= e:
-        chunk_end = min(current + timedelta(days=days - 1), e)
-        yield current.strftime("%Y-%m-%d"), chunk_end.strftime("%Y-%m-%d")
-        current = chunk_end + timedelta(days=1)
-
-
-def backoff_sleep(attempt: int):
-    time.sleep(min(2 ** attempt, 10))
-
-
-# =============================
-# 2) Fetch API
-# =============================
-def fetch_openmeteo(lat: float, lon: float, start_date: str, end_date: str, max_retries: int = 3) -> pd.DataFrame:
-    params = {
-        "latitude": lat,
-        "longitude": lon,
-        "hourly": [
-            "pm2_5", "pm10", "nitrogen_dioxide", "ozone",
-            "sulphur_dioxide", "carbon_monoxide",
-            "aerosol_optical_depth", "dust", "uv_index", "carbon_dioxide",
-            "us_aqi", "us_aqi_pm2_5", "us_aqi_pm10",
-            "us_aqi_nitrogen_dioxide", "us_aqi_ozone",
-            "us_aqi_sulphur_dioxide", "us_aqi_carbon_monoxide"
-        ],
-        "timezone": "UTC",
-        "start_date": start_date,
-        "end_date": end_date,
-    }
-
-    for attempt in range(max_retries):
-        try:
-            r = requests.get(API_URL, params=params, timeout=30)
-            r.raise_for_status()
-            js = r.json()
-            break
-        except Exception as e:
-            if attempt == max_retries - 1:
-                print(f"API error ({lat},{lon},{start_date}→{end_date}): {e}")
-                return pd.DataFrame()
-            backoff_sleep(attempt)
-
-    if "hourly" not in js or not js["hourly"]:
-        return pd.DataFrame()
-
-    df = pd.DataFrame(js["hourly"])
-    if "time" not in df:
-        return pd.DataFrame()
-
-    df["ts_utc"] = pd.to_datetime(df["time"], utc=True, errors="coerce")
-    df["date_utc"] = df["ts_utc"].dt.date
-    df.drop(columns=["time"], inplace=True, errors="ignore")
-
-    df["latitude"] = js.get("latitude")
-    df["longitude"] = js.get("longitude")
-    df["_ingested_at"] = pd.Timestamp.now(tz="UTC")
-
-    now_utc = pd.Timestamp.now(tz="UTC")
-    df = df[df["ts_utc"].notna()]
-    df = df[df["ts_utc"] <= now_utc]
-
-    rename_map = {
-        "pm2_5": "pm25", "nitrogen_dioxide": "no2", "ozone": "o3",
-        "sulphur_dioxide": "so2", "carbon_monoxide": "co",
-        "aerosol_optical_depth": "aod", "carbon_dioxide": "co2",
-        "us_aqi": "aqi", "us_aqi_pm2_5": "aqi_pm25", "us_aqi_pm10": "aqi_pm10",
-        "us_aqi_nitrogen_dioxide": "aqi_no2", "us_aqi_ozone": "aqi_o3",
-        "us_aqi_sulphur_dioxide": "aqi_so2", "us_aqi_carbon_monoxide": "aqi_co"
-    }
-    df.rename(columns=rename_map, inplace=True)
-
-    front_cols = ["ts_utc", "date_utc", "latitude", "longitude"]
-    df = df[front_cols + [c for c in df.columns if c not in front_cols]]
-
-    return df.reset_index(drop=True)
-
-
-# =============================
-# 3) Save to MinIO (by year)
-# =============================
-def save_year_to_minio(year: int, df: pd.DataFrame):
+def read_csv_from_minio(client: Minio, object_name: str) -> pd.DataFrame:
     """
-    Ghi 1 file CSV cho đúng 1 năm.
-    Đường dẫn: openmeteo/{year}/openmeteo_{year}.csv
+    Đọc 1 CSV từ MinIO về DataFrame
     """
-    client = get_minio_client()
+    resp = client.get_object(MINIO_BUCKET, object_name)
+    data = resp.read()
+    df = pd.read_csv(io.BytesIO(data))
+    return df
+
+
+def detect_years_with_yearly_files(client: Minio) -> List[int]:
+    """
+    Quét dưới GLOBAL_PREFIX để tìm các năm đã có file yearly.
+    Cấu trúc: openmeteo/global/{year}/openmeteo_{year}.csv
+    """
+    objects = client.list_objects(
+        bucket_name=MINIO_BUCKET,
+        prefix=f"{GLOBAL_PREFIX}/",
+        recursive=True
+    )
+    years = set()
+    for obj in objects:
+        # ví dụ: openmeteo/global/2024/openmeteo_2024.csv
+        parts = obj.object_name.strip("/").split("/")
+        if len(parts) >= 3 and parts[0] == "openmeteo" and parts[1] == "global":
+            if parts[2].isdigit():
+                years.add(int(parts[2]))
+    return sorted(years)
+
+
+def write_multi_year_csv_to_minio(client: Minio, df: pd.DataFrame, years: List[int]):
+    """
+    Ghi file tổng multi-year lên MinIO.
+    Đường dẫn gợi ý: openmeteo/global/combined/openmeteo_{minyear}_{maxyear}.csv
+    """
     ensure_bucket(client, MINIO_BUCKET)
+    years_sorted = sorted(years)
+    min_year, max_year = years_sorted[0], years_sorted[-1]
 
-    object_name = f"openmeteo/{year}/openmeteo_{year}.csv"
+    # Bạn có thể đổi 'combined' thành tên khác nếu thích
+    object_name = f"{GLOBAL_PREFIX}/combined/openmeteo_{min_year}_{max_year}.csv"
 
     csv_bytes = df.to_csv(index=False).encode("utf-8")
     csv_stream = io.BytesIO(csv_bytes)
@@ -180,111 +93,79 @@ def save_year_to_minio(year: int, df: pd.DataFrame):
         length=len(csv_bytes),
         content_type="text/csv",
     )
-    print(f"✅ Uploaded year {year}: s3://{MINIO_BUCKET}/{object_name}")
+    print(f"✅ Uploaded multi-year file: s3://{MINIO_BUCKET}/{object_name} (rows={len(df)})")
 
 
 # =============================
-# 4) Ingestion
+# 2) Build multi-year
 # =============================
-def run_backfill(locations: List[Dict], start_date: str, end_date: str, chunk_days: int = 30):
-    """
-    Khác bản cũ: ta sẽ gom toàn bộ dữ liệu về 1 dict theo năm,
-    rồi cuối cùng mới ghi 1 file / năm.
-    """
-    # year -> list of dataframes
-    yearly_data: Dict[int, List[pd.DataFrame]] = {}
+def build_multi_year(client: Minio, years: List[int]):
+    years = sorted(list(set(years)))
+    print(f"\n🛠 Building multi-year CSV for years: {years} ...")
 
-    for loc in locations:
-        lat = loc["latitude"]
-        lon = loc["longitude"]
-        loc_key = loc.get("location_key") or f"{lat}_{lon}"
-        print(f"\n==> Location: {loc_key}")
+    dfs = []
+    for y in years:
+        object_name = f"{GLOBAL_PREFIX}/{y}/openmeteo_{y}.csv"
+        try:
+            df_y = read_csv_from_minio(client, object_name)
+            dfs.append(df_y)
+            print(f"  + loaded {object_name} (rows={len(df_y)})")
+        except Exception as e:
+            print(f"  ⚠️ Failed to read yearly file for {y}: {e}")
 
-        for s, e in generate_date_chunks(start_date, end_date, days=chunk_days):
-            print(f"  Fetching {s} → {e}")
-            df = fetch_openmeteo(lat, lon, s, e)
-            if df.empty:
-                print(f"    ⚠️ No data for {loc_key} {s}→{e}")
-                continue
+    if not dfs:
+        print("❌ No yearly files loaded. Abort.")
+        return
 
-            # gắn lại khóa để downstream biết là của trạm nào
-            df["location_key"] = loc_key
+    # Gộp các năm lại
+    full_df = pd.concat(dfs, ignore_index=True)
 
-            # thêm cột year để group
-            df["year_utc"] = pd.to_datetime(df["ts_utc"]).dt.year
+    # Nếu có cột ts_utc và location_key thì drop trùng theo 2 cột này
+    if "ts_utc" in full_df.columns and "location_key" in full_df.columns:
+        full_df = full_df.drop_duplicates(subset=["ts_utc", "location_key"], keep="last")
+    else:
+        full_df = full_df.drop_duplicates()
 
-            # dồn vào dict theo năm
-            for year, g in df.groupby("year_utc"):
-                yearly_data.setdefault(year, []).append(g)
+    # Sắp xếp theo thời gian nếu có
+    if "ts_utc" in full_df.columns:
+        full_df = full_df.sort_values("ts_utc").reset_index(drop=True)
 
-            time.sleep(10)
-
-    # sau khi duyệt hết location -> ghi ra từng năm
-    for year, df_list in yearly_data.items():
-        big_df = pd.concat(df_list, ignore_index=True)
-        save_year_to_minio(year, big_df)
-
-    print("\nBACKFILL COMPLETE.")
-    print(f"Years exported: {list(yearly_data.keys())}")
-
-
-def run_incremental(locations: List[Dict]):
-    """
-    Incremental: vẫn sẽ ghi vào folder của năm hiện tại.
-    Nghĩa là mỗi lần chạy sẽ tạo lại file năm hiện tại (overwrite).
-    """
-    today = datetime.utcnow().strftime("%Y-%m-%d")
-    year_now = datetime.utcnow().year
-
-    yearly_data: Dict[int, List[pd.DataFrame]] = {}
-
-    for loc in locations:
-        lat = loc["latitude"]
-        lon = loc["longitude"]
-        loc_key = loc.get("location_key") or f"{lat}_{lon}"
-        print(f"\n==> Location: {loc_key} (today: {today})")
-
-        df = fetch_openmeteo(lat, lon, today, today)
-        if df.empty:
-            print(f"  ⚠️ No data for {loc_key} today")
-            continue
-
-        df["location_key"] = loc_key
-        df["year_utc"] = pd.to_datetime(df["ts_utc"]).dt.year
-
-        yearly_data.setdefault(year_now, []).append(df)
-
-        time.sleep(10)
-
-    # ghi lại năm hiện tại
-    if year_now in yearly_data:
-        big_df = pd.concat(yearly_data[year_now], ignore_index=True)
-        save_year_to_minio(year_now, big_df)
-
-    print("\nINCREMENTAL COMPLETE.")
+    # Ghi lên MinIO
+    write_multi_year_csv_to_minio(client, full_df, years)
 
 
 # =============================
-# 5) CLI
+# 3) CLI
 # =============================
 def main():
-    parser = argparse.ArgumentParser(description="Bronze ingestion for Open-Meteo → MinIO (year-partitioned CSV)")
-    parser.add_argument("--mode", choices=["backfill", "incremental"], required=True)
-    parser.add_argument("--start-date", help="YYYY-MM-DD (required for backfill)")
-    parser.add_argument("--end-date", help="YYYY-MM-DD (default=today)")
-    parser.add_argument("--chunk-days", type=int, default=30)
-    parser.add_argument("--locations", required=True, help="Path to JSON/JSONL file of locations")
+    parser = argparse.ArgumentParser(
+        description="Build multi-year global CSV from existing yearly Open-Meteo files in MinIO"
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        "--years",
+        nargs="+",
+        type=int,
+        help="List of years to merge (e.g. --years 2024 2025)"
+    )
+    group.add_argument(
+        "--all",
+        action="store_true",
+        help="Merge all years that already have yearly files under openmeteo/global/"
+    )
     args = parser.parse_args()
 
-    locations = load_locations(args.locations)
+    client = get_minio_client()
 
-    if args.mode == "backfill":
-        if not args.start_date:
-            parser.error("--start-date is required for backfill")
-        end_date = args.end_date or datetime.utcnow().strftime("%Y-%m-%d")
-        run_backfill(locations, args.start_date, end_date, args.chunk_days)
+    if args.years:
+        build_multi_year(client, args.years)
     else:
-        run_incremental(locations)
+        years = detect_years_with_yearly_files(client)
+        if not years:
+            print("❌ No yearly files detected under 'openmeteo/global/' in the bucket.")
+            return
+        build_multi_year(client, years)
+
 
 if __name__ == "__main__":
     main()
