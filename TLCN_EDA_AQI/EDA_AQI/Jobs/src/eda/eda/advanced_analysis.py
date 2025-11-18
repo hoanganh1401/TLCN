@@ -12,6 +12,7 @@ from minio import Minio
 from io import BytesIO
 import warnings
 warnings.filterwarnings('ignore')
+import json
 
 # =============================
 # CẤU HÌNH MINIO
@@ -299,7 +300,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     # Sidebar / selection: chọn tỉnh(s) và năm để hiển thị biểu đồ
     st.write("**🔎 Lọc cho biểu đồ phân tích (giúp trực quan dễ đọc):**")
     available_locations = sorted(df_rank['location_key'].unique())
-    selected_locations = st.multiselect("Chọn địa điểm để so sánh:", options=available_locations, default=available_locations[:5])
+    selected_locations = st.multiselect("Chọn địa điểm (tối đa 10) để so sánh:", options=available_locations, default=available_locations[:5])
 
     available_years = sorted(df_rank['year'].unique())
     selected_years = st.multiselect("Chọn năm để hiển thị:", options=available_years, default=available_years)
@@ -607,6 +608,7 @@ def bai_toan_2_chat_o_nhiem(df):
             
             st.dataframe(all_aqi_stats, use_container_width=True, hide_index=True)
         
+ 
     else:
         st.warning("⚠️ Không tìm thấy dữ liệu AQI cho các chất ô nhiễm")
     
@@ -1027,24 +1029,49 @@ def bai_toan_4_ma_tran_tuong_quan(df):
     
     st.plotly_chart(fig_overall, use_container_width=True)
     
-    # Ma trận tương quan để download cho machine learning
-    st.subheader("📥 Tải Ma Trận Tương Quan Cho Machine Learning")
+    # Lưu ma trận tương quan lên MinIO
+    st.subheader("💾 Lưu Trữ Ma Trận Tương Quan")
     
     st.write("**📊 Ma Trận Tương Quan Tổng Thể:**")
     st.dataframe(overall_corr, use_container_width=True)
     
-    # Nút download ma trận tổng thể
-    csv_overall = overall_corr.to_csv()
-    st.download_button(
-        label="📥 Tải Ma Trận Tương Quan (CSV)",
-        data=csv_overall,
-        file_name=f"ma_tran_tuong_quan_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
-        mime="text/csv",
-        help="Tải ma trận tương quan để sử dụng trong machine learning",
-        use_container_width=True
-    )
-    
- 
+    # Tự động lưu ma trận tương quan lên MinIO
+    try:
+        minio_client = Minio(
+            MINIO_HOST,
+            access_key=MINIO_ACCESS_KEY,
+            secret_key=MINIO_SECRET_KEY,
+            secure=False
+        )
+        
+        # Tạo bucket air-quality-eda nếu chưa có
+        eda_bucket = "air-quality-eda"
+        if not minio_client.bucket_exists(eda_bucket):
+            minio_client.make_bucket(eda_bucket)
+            st.success(f"✅ Đã tạo bucket '{eda_bucket}'")
+        
+        # Chuẩn bị file CSV với tên cố định để lưu phiên bản mới nhất
+        csv_data = overall_corr.to_csv()
+        csv_bytes = BytesIO(csv_data.encode('utf-8'))
+        file_name = "ma_tran_tuong_quan_latest.csv"
+        
+        # Upload lên MinIO (sẽ tự động ghi đè nếu file đã tồn tại)
+        minio_client.put_object(
+            bucket_name=eda_bucket,
+            object_name=file_name,
+            data=csv_bytes,
+            length=len(csv_data.encode('utf-8')),
+            content_type='text/csv'
+        )
+        
+        current_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
+        st.success(f"✅ Đã cập nhật ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
+  
+        
+    except Exception as e:
+        st.error(f"❌ Lỗi khi lưu lên MinIO: {str(e)}")
+        st.warning("💡 Vui lòng kiểm tra kết nối MinIO và quyền truy cập")
+
     
     return df_corr
 
