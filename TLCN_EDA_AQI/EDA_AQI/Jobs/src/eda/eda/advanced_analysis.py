@@ -74,17 +74,57 @@ def list_combined_files(client, bucket):
         st.error(f"Lỗi khi liệt kê files: {e}")
         return []
 
-def load_csv_from_minio(client, bucket, path):
-    """Load CSV từ MinIO"""
-    try:
-        response = client.get_object(bucket, path)
-        data = response.read()
-        response.close()
-        response.release_conn()
-        return pd.read_csv(BytesIO(data))
-    except Exception as e:
-        st.error(f"Lỗi khi tải file {path}: {e}")
-        return None
+def load_csv_from_minio(client, bucket, path, max_retries=3):
+    """Load CSV từ MinIO với retry logic và chunk reading cho file lớn"""
+    import time
+    
+    for attempt in range(max_retries):
+        try:
+            st.info(f"Đang tải file (lần thử {attempt + 1}/{max_retries})...")
+            
+            # Đọc file theo chunks để tránh timeout
+            response = client.get_object(bucket, path)
+            
+            # Đọc dữ liệu theo chunks
+            chunk_size = 8192  # 8KB mỗi chunk
+            chunks = []
+            total_size = 0
+            
+            # Hiển thị progress
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            while True:
+                chunk = response.read(chunk_size)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+                total_size += len(chunk)
+                
+                # Cập nhật progress (ước tính)
+                if total_size % (chunk_size * 100) == 0:  # Cập nhật mỗi 800KB
+                    status_text.text(f"Đã tải: {total_size / (1024*1024):.1f} MB")
+            
+            progress_bar.progress(100)
+            status_text.text(f"Hoàn tất: {total_size / (1024*1024):.1f} MB")
+            
+            # Kết hợp chunks và đọc CSV
+            data = b''.join(chunks)
+            response.close()
+            response.release_conn()
+            
+            st.success(f" Đã tải thành công {total_size / (1024*1024):.1f} MB")
+            return pd.read_csv(BytesIO(data))
+            
+        except Exception as e:
+            if attempt < max_retries - 1:
+                st.warning(f"Lỗi lần {attempt + 1}: {str(e)[:100]}... Thử lại sau 2 giây...")
+                time.sleep(2)
+            else:
+                st.error(f" Lỗi sau {max_retries} lần thử: {e}")
+                return None
+    
+    return None
 
 @st.cache_data
 def load_data():
