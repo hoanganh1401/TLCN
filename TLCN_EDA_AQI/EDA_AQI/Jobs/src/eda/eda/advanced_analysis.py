@@ -1361,3 +1361,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+def run():
+    # để main.py có thể gọi module.run()
+    main()
