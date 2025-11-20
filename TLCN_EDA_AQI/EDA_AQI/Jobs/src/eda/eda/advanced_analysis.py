@@ -25,7 +25,6 @@ MINIO_CLEAN_BUCKET = "air-quality-clean"
 # Cấu hình trang
 st.set_page_config(
     page_title="Phân Tích Chất Lượng Không Khí Chuyên Sâu",
-    page_icon="🌍",
     layout="wide"
 )
 
@@ -95,28 +94,28 @@ def load_data():
         
         # Kiểm tra bucket tồn tại
         if not client.bucket_exists(MINIO_CLEAN_BUCKET):
-            st.error(f"❌ Bucket '{MINIO_CLEAN_BUCKET}' không tồn tại!")
-            st.info("💡 Hãy chạy quy trình làm sạch dữ liệu trước.")
+            st.error(f"Bucket '{MINIO_CLEAN_BUCKET}' không tồn tại!")
+            st.info("Hãy chạy quy trình làm sạch dữ liệu trước.")
             return None
         
-        st.success(f"✅ Kết nối MinIO thành công: {MINIO_HOST}")
+        st.success(f"Kết nối MinIO thành công: {MINIO_HOST}")
         
         # Tìm file combined
         combined_files = list_combined_files(client, MINIO_CLEAN_BUCKET)
         if not combined_files:
-            st.error("❌ Không tìm thấy file 'combined' trong MinIO!")
-            st.info("💡 Các file có sẵn:")
+            st.error("Không tìm thấy file 'combined' trong MinIO!")
+            st.info("Các file có sẵn:")
             try:
                 all_files = [obj.object_name for obj in client.list_objects(MINIO_CLEAN_BUCKET, recursive=True)]
                 for file in all_files[:10]:  # Hiển thị 10 file đầu tiên
-                    st.write(f"   📄 {file}")
+                    st.write(f"   {file}")
             except:
                 pass
             return None
         
         # Load file đầu tiên tìm được
         selected_file = combined_files[0]
-        st.info(f"📁 Đang tải file: {selected_file}")
+        st.info(f"Đang tải file: {selected_file}")
         
         df = load_csv_from_minio(client, MINIO_CLEAN_BUCKET, selected_file)
         
@@ -126,12 +125,12 @@ def load_data():
         # Chuẩn hóa dữ liệu
         df = standardize_dataframe(df)
         
-        st.success(f"✅ Đã tải thành công {len(df):,} bản ghi từ MinIO")
+        st.success(f"Đã tải thành công {len(df):,} bản ghi từ MinIO")
         return df
         
     except Exception as e:
-        st.error(f"❌ Lỗi khi kết nối MinIO: {e}")
-        st.error("🔧 Kiểm tra lại cấu hình MinIO hoặc đảm bảo server đang chạy")
+        st.error(f"Lỗi khi kết nối MinIO: {e}")
+        st.error("Kiểm tra lại cấu hình MinIO hoặc đảm bảo server đang chạy")
         return None
 
 def standardize_dataframe(df):
@@ -143,7 +142,7 @@ def standardize_dataframe(df):
         elif 'date' in df.columns:
             df['date'] = pd.to_datetime(df['date'], errors='coerce')
         else:
-            st.warning("⚠️ Không tìm thấy cột thời gian (ts_utc hoặc date)")
+            st.warning("Không tìm thấy cột thời gian (ts_utc hoặc date)")
             
         # Tạo cột month và year nếu có cột date
         if 'date' in df.columns:
@@ -157,14 +156,14 @@ def standardize_dataframe(df):
             else:
                 # Tạo location_key giả định
                 df['location_key'] = 'LOC001'
-                st.info("ℹ️ Tạo location_key mặc định: LOC001")
+                st.info("ℹTạo location_key mặc định: LOC001")
         
         # Kiểm tra và tạo các cột cần thiết
         required_columns = ['aqi', 'pm25', 'pm10', 'no2', 'so2', 'co', 'o3']
         missing_columns = [col for col in required_columns if col not in df.columns]
         
         if missing_columns:
-            st.warning(f"⚠️ Thiếu các cột: {missing_columns}")
+            st.warning(f"Thiếu các cột: {missing_columns}")
             # Không tạo dữ liệu giả, chỉ thông báo
         
         # Tạo các cột AQI phụ nếu có đủ dữ liệu gốc
@@ -188,16 +187,16 @@ def standardize_dataframe(df):
                 # Không tạo dữ liệu giả, chỉ thông báo thiếu
                 pass
         
-        st.info(f"📊 Các cột có sẵn: {list(df.columns)}")
+        st.info(f"Các cột có sẵn: {list(df.columns)}")
         return df
         
     except Exception as e:
-        st.error(f"❌ Lỗi khi chuẩn hóa dữ liệu: {e}")
+        st.error(f"Lỗi khi chuẩn hóa dữ liệu: {e}")
         return df
 
-def bai_toan_1_phan_vung_o_nhiem(df):
-    """BÀI TOÁN 1 — PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH"""
-    st.header("🏭 BÀI TOÁN 1 — PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH")
+def phan_vung_o_nhiem(df):
+    """PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH"""
+    st.header("PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH")
 
     # Tính toán ranking theo month + year
     df_rank = (
@@ -217,7 +216,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     df_rank['rank'] = df_rank['avg_aqi'].rank(method='dense').astype(int)
 
     # Summary ranking table (toàn bộ tỉnh thành)
-    st.subheader("🏆 Bảng Xếp Hạng Tổng Thể Tất Cả Tỉnh Thành")
+    st.subheader("Bảng Xếp Hạng Tổng Thể Tất Cả Tỉnh Thành")
     ranking_summary_all = (
         df_rank.groupby('location_key')
         .agg({
@@ -232,19 +231,19 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     st.dataframe(ranking_summary_all, use_container_width=True)
 
     # Top 10 Rankings
-    st.subheader("🥇 Top 10 Tỉnh Thành Theo Chất Lượng Không Khí")
+    st.subheader("Top 10 Tỉnh Thành Theo Chất Lượng Không Khí")
     
     col1, col2 = st.columns(2)
     
     with col1:
         # Top 10 tỉnh ô nhiễm nhất
-        st.write("**🔴 Top 10 Tỉnh Ô Nhiễm Nặng Nhất**")
+        st.write("**Top 10 Tỉnh Ô Nhiễm Nặng Nhất**")
         top_polluted = ranking_summary_all.nlargest(10, 'avg_aqi')[['avg_aqi', 'air_quality_score', 'exceedance_days']]
         top_polluted.columns = ['AQI TB', 'Điểm Chất Lượng', 'Ngày Vượt Chuẩn']
         
         # Thêm icon và màu sắc cảnh báo
         top_polluted_display = top_polluted.copy()
-        top_polluted_display.index = [f"🚨 {idx}" for idx in top_polluted_display.index]
+        top_polluted_display.index = [f"{idx}" for idx in top_polluted_display.index]
         
         st.dataframe(
             top_polluted_display.style.background_gradient(subset=['AQI TB'], cmap='Reds'),
@@ -253,13 +252,13 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     
     with col2:
         # Top 10 tỉnh sạch nhất
-        st.write("**🟢 Top 10 Tỉnh Không Khí Sạch Nhất**")
+        st.write("**Top 10 Tỉnh Không Khí Sạch Nhất**")
         top_clean = ranking_summary_all.nsmallest(10, 'avg_aqi')[['avg_aqi', 'air_quality_score', 'exceedance_days']]
         top_clean.columns = ['AQI TB', 'Điểm Chất Lượng', 'Ngày Vượt Chuẩn']
         
         # Thêm icon và màu sắc tích cực
         top_clean_display = top_clean.copy()
-        top_clean_display.index = [f"✅ {idx}" for idx in top_clean_display.index]
+        top_clean_display.index = [f"{idx}" for idx in top_clean_display.index]
         
         st.dataframe(
             top_clean_display.style.background_gradient(subset=['AQI TB'], cmap='Greens_r'),
@@ -267,7 +266,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
         )
     
     # Thống kê so sánh
-    st.write("**📊 So Sánh Giữa Hai Nhóm:**")
+    st.write("**So Sánh Giữa Hai Nhóm:**")
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -321,7 +320,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
     )
 
     # Phân vùng ô nhiễm theo mức độ
-    st.subheader("🗺️ Phân Vùng Ô Nhiễm Theo Mức Độ")
+    st.subheader("Phân Vùng Ô Nhiễm Theo Mức Độ")
     
     if len(df_rank_filt) == 0:
         st.info("Không có dữ liệu cho lựa chọn này.")
@@ -358,7 +357,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
             st.plotly_chart(fig_zone, use_container_width=True)
             
             # Thống kê vùng ô nhiễm
-            st.write("**📊 Thống Kê Phân Vùng:**")
+            st.write("**Thống Kê Phân Vùng:**")
             for zone, count in zone_counts.items():
                 percentage = (count / len(zone_analysis)) * 100
                 st.write(f"{zone}: {count} địa điểm ({percentage:.1f}%)")
@@ -400,7 +399,7 @@ def bai_toan_1_phan_vung_o_nhiem(df):
         st.dataframe(zone_details, use_container_width=True, hide_index=True)
 
     # Heatmap: use year-month as x axis to show month across years
-    st.subheader("📅 Heatmap AQI Theo Tháng (kèm Năm) và Địa Điểm")
+    st.subheader("Heatmap AQI Theo Tháng (kèm Năm) và Địa Điểm")
     # build period string
     df_rank_filt['period'] = df_rank_filt['year'].astype(str) + '-' + df_rank_filt['month'].astype(str).str.zfill(2)
     pivot_data = df_rank_filt.pivot_table(values='avg_aqi', index='location_key', columns='period', aggfunc='mean')
@@ -432,9 +431,9 @@ def bai_toan_1_phan_vung_o_nhiem(df):
 
     return df_rank
 
-def bai_toan_2_chat_o_nhiem(df):
-    """BÀI TOÁN 2 — PHÂN TÍCH CHẤT Ô NHIỄM CHÍNH ẢNH HƯỞNG"""
-    st.header("🧪 BÀI TOÁN 2 — PHÂN TÍCH CHẤT Ô NHIỄM CHÍNH ẢNH HƯỞNG")
+def chat_o_nhiem(df):
+    """PHÂN TÍCH CHẤT Ô NHIỄM CHÍNH ẢNH HƯỞNG"""
+    st.header("PHÂN TÍCH CHẤT Ô NHIỄM CHÍNH ẢNH HƯỞNG")
     
     # Tính các tỷ lệ chất ô nhiễm
     df_pollutant = df.copy()
@@ -454,13 +453,13 @@ def bai_toan_2_chat_o_nhiem(df):
         df_pollutant[ratio_name] = ratio_values
     
     # Phân tích phân bố các chất ô nhiễm chi tiết
-    st.subheader("📊 Phân Bố Các Chất Ô Nhiễm")
+    st.subheader("Phân Bố Các Chất Ô Nhiễm")
     
     # Hiển thị thông tin về các cột AQI có sẵn
     aqi_cols = ['aqi_pm25', 'aqi_pm10', 'aqi_no2', 'aqi_o3', 'aqi_so2', 'aqi_co']
     available_aqi_cols = [col for col in aqi_cols if col in df_pollutant.columns]
     
-    st.info(f"🔍 Các chỉ số AQI có sẵn: {', '.join(available_aqi_cols)}")
+    st.info(f"Các chỉ số AQI có sẵn: {', '.join(available_aqi_cols)}")
     
     if available_aqi_cols:
         # Tính chất ô nhiễm chính và thống kê đầy đủ
@@ -472,12 +471,12 @@ def bai_toan_2_chat_o_nhiem(df):
             # Phân tích phân bố các chất ô nhiễm theo nhiều tiêu chí
             
             # Cho phép người dùng chọn ngưỡng
-            st.write("**⚙️ Tùy chọn phân tích:**")
+            st.write("**Tùy chọn phân tích:**")
             aqi_threshold = st.selectbox(
                 "Chọn ngưỡng AQI để phân tích:",
-                options=[50, 100, 150],
+                options=[100, 150, 200],
                 index=0,
-                format_func=lambda x: f"AQI > {x} ({'Trung bình' if x==50 else 'Kém' if x==100 else 'Rất kém'})"
+                format_func=lambda x: f"AQI > {x} ({'Trung bình' if x==100 else 'Kém' if x==150 else 'Rất kém'})"
             )
             
             # Tần suất vượt ngưỡng (cách phân tích hợp lý)
@@ -491,11 +490,11 @@ def bai_toan_2_chat_o_nhiem(df):
             total_exceed = sum(threshold_exceed.values())
             
             if total_exceed == 0:
-                st.warning(f"⚠️ Không có chất ô nhiễm nào vượt ngưỡng AQI > {aqi_threshold}")
+                st.warning(f"Không có chất ô nhiễm nào vượt ngưỡng AQI > {aqi_threshold}")
                 exceed_percentages = {k: 0 for k in threshold_exceed.keys()}
             else:
                 exceed_percentages = {k: (v/total_exceed*100) for k, v in threshold_exceed.items()}
-                st.info(f"📊 Tổng số lần vượt ngưỡng: {total_exceed:,} lần")
+                st.info(f"Tổng số lần vượt ngưỡng: {total_exceed:,} lần")
             
             # Biểu đồ tròn - Tần suất vượt ngưỡng AQI > 50
             fig_pie = px.pie(
@@ -515,7 +514,7 @@ def bai_toan_2_chat_o_nhiem(df):
             st.plotly_chart(fig_pie, use_container_width=True)
             
             # Hiển thị bảng số liệu chi tiết
-            st.write(f"**📊 Phân Tích Vượt Ngưỡng AQI > {aqi_threshold}:**")
+            st.write(f"**Phân Tích Vượt Ngưỡng AQI > {aqi_threshold}:**")
             exceed_df = pd.DataFrame({
                 'Chất Ô Nhiễm': list(exceed_percentages.keys()),
                 f'Số Lần > {aqi_threshold}': list(threshold_exceed.values()),
@@ -546,13 +545,13 @@ def bai_toan_2_chat_o_nhiem(df):
             st.plotly_chart(fig_bar, use_container_width=True)
         
         # Thống kê chi tiết tất cả chất ô nhiễm theo ngưỡng
-        st.subheader("📋 Thống Kê Chi Tiết Theo Ngưỡng")
+        st.subheader("Thống Kê Chi Tiết Theo Ngưỡng")
         
         col3, col4 = st.columns(2)
         
         with col3:
             # Bảng thống kê theo ngưỡng đã chọn (sử dụng lại aqi_threshold)
-            st.write(f"**📊 Phân Tích Theo Ngưỡng AQI > {aqi_threshold}:**")
+            st.write(f"**Phân Tích Theo Ngưỡng AQI > {aqi_threshold}:**")
             
             threshold_details = []
             for col in available_aqi_cols:
@@ -585,7 +584,7 @@ def bai_toan_2_chat_o_nhiem(df):
         
         with col4:
             # Bảng thống kê AQI trung bình và so sánh với ngưỡng
-            st.write("**📈 Mức AQI Trung Bình So Với Ngưỡng:**")
+            st.write("**Mức AQI Trung Bình So Với Ngưỡng:**")
             
             all_aqi_stats = pd.DataFrame({
                 'Chất Ô Nhiễm': [col.replace('aqi_', '').upper() for col in available_aqi_cols],
@@ -596,10 +595,10 @@ def bai_toan_2_chat_o_nhiem(df):
             
             # Thêm đánh giá so với ngưỡng
             def compare_with_threshold(avg_val, threshold_val):
-                if avg_val < threshold_val * 0.5: return "✅ Rất tốt"
-                elif avg_val < threshold_val: return "⚠️ Chấp nhận"
-                elif avg_val < threshold_val * 1.5: return "⛔ Vượt ngưỡng"
-                else: return "🚨 Nguy hiểm"
+                if avg_val < threshold_val * 0.5: return "Rất tốt"
+                elif avg_val < threshold_val: return "Chấp nhận"
+                elif avg_val < threshold_val * 1.5: return "Vượt ngưỡng"
+                else: return "Nguy hiểm"
             
             all_aqi_stats['So Sánh'] = all_aqi_stats.apply(
                 lambda row: compare_with_threshold(row['AQI TB'], row['Ngưỡng']), 
@@ -610,10 +609,10 @@ def bai_toan_2_chat_o_nhiem(df):
         
  
     else:
-        st.warning("⚠️ Không tìm thấy dữ liệu AQI cho các chất ô nhiễm")
+        st.warning("Không tìm thấy dữ liệu AQI cho các chất ô nhiễm")
     
     # Phân tích mức độ của từng chất ô nhiễm
-    st.subheader("📈 Mức Độ Các Chất Ô Nhiễm Theo Địa Điểm")
+    st.subheader("Mức Độ Các Chất Ô Nhiễm Theo Địa Điểm")
     
     # Các chất ô nhiễm chính cần phân tích
     main_pollutants = ['pm25', 'pm10', 'no2', 'so2', 'co', 'o3']
@@ -621,7 +620,7 @@ def bai_toan_2_chat_o_nhiem(df):
     
     if available_pollutants:
         # Thêm tùy chọn lọc địa điểm
-        st.write("**🔎 Lọc địa điểm để phân tích:**")
+        st.write("**Lọc địa điểm để phân tích:**")
         all_locations = sorted(df_pollutant['location_key'].unique())
         selected_locations_pollutant = st.multiselect(
             "Chọn địa điểm để hiển thị:", 
@@ -641,7 +640,7 @@ def bai_toan_2_chat_o_nhiem(df):
         pollutant_by_location = df_pollutant_filtered.groupby('location_key')[available_pollutants].mean().reset_index()
         
         # Hiển thị thông tin số lượng địa điểm đã chọn
-        st.info(f"📊 Đang hiển thị {len(selected_locations_pollutant)} / {len(all_locations)} địa điểm")
+        st.info(f"Đang hiển thị {len(selected_locations_pollutant)} / {len(all_locations)} địa điểm")
         
         # Tạo biểu đồ riêng cho từng chất ô nhiễm để tránh chồng chéo
         cols_per_row = 2  # 2 cột mỗi hàng
@@ -725,7 +724,7 @@ def bai_toan_2_chat_o_nhiem(df):
                             st.plotly_chart(fig_single_ratio, use_container_width=True)
             
             # Giải thích ý nghĩa của các tỷ lệ
-            with st.expander("💡 Ý Nghĩa Của Các Tỷ Lệ"):
+            with st.expander("Ý Nghĩa Của Các Tỷ Lệ"):
                 st.markdown("""
                 - **PM2.5/PM10**: Tỷ lệ bụi mịn siêu nhỏ so với bụi thông thường (càng cao càng nguy hiểm)
                 - **NO2/SO2**: Tỷ lệ giữa khí thải giao thông và công nghiệp
@@ -734,7 +733,7 @@ def bai_toan_2_chat_o_nhiem(df):
                 """)
     
     # Thống kê tổng quát về mức độ ô nhiễm
-    st.subheader("📋 Đánh Giá Tổng Quát Mức Độ Ô Nhiễm")
+    st.subheader("Đánh Giá Tổng Quát Mức Độ Ô Nhiễm")
     
     col1, col2, col3 = st.columns(3)
     
@@ -757,9 +756,9 @@ def bai_toan_2_chat_o_nhiem(df):
     
     return df_pollutant
 
-def bai_toan_3_xu_huong(df):
-    """BÀI TOÁN 3 — PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN"""
-    st.header("📈 BÀI TOÁN 3 — PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN")
+def xu_huong(df):
+    """PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN"""
+    st.header("PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN")
     
     # Tính xu hướng
     df_trend = (
@@ -787,12 +786,12 @@ def bai_toan_3_xu_huong(df):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("📊 Xu Hướng PM2.5 Theo Thời Gian")
+        st.subheader("Xu Hướng PM2.5 Theo Thời Gian")
         
         # Hiển thị bảng xu hướng
         trend_summary = trend_df.copy()
         trend_summary['xu_huong'] = trend_summary['trend_slope'].apply(
-            lambda x: '📈 Tăng' if x > 0.1 else '📉 Giảm' if x < -0.1 else '➡️ Ổn định'
+            lambda x: 'Tăng' if x > 0.1 else 'Giảm' if x < -0.1 else 'Ổn định'
         )
         trend_summary['slope_round'] = trend_summary['trend_slope'].round(3)
         trend_summary['r2_round'] = trend_summary['r_squared'].round(3)
@@ -815,7 +814,7 @@ def bai_toan_3_xu_huong(df):
         st.plotly_chart(fig_slope, use_container_width=True)
     
     # Biểu đồ xu hướng theo thời gian
-    st.subheader("📅 Biểu Đồ Xu Hướng PM2.5 Chi Tiết")
+    st.subheader("Biểu Đồ Xu Hướng PM2.5 Chi Tiết")
     
     selected_locations = st.multiselect(
         "Chọn địa điểm để hiển thị:",
@@ -917,9 +916,9 @@ def calculate_correlations(df):
     df_corr = pd.DataFrame(correlation_data)
     return overall_corr, df_corr
 
-def bai_toan_4_ma_tran_tuong_quan(df):
-    """BÀI TOÁN 4 — MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM"""
-    st.header("🌍 BÀI TOÁN 4 — MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM NÂNG CAO")
+def ma_tran_tuong_quan(df):
+    """MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM"""
+    st.header("MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM NÂNG CAO")
     
     
     # Tính toán với cache
@@ -934,7 +933,7 @@ def bai_toan_4_ma_tran_tuong_quan(df):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("🔗 Top Tương Quan Mạnh Nhất")
+        st.subheader("Top Tương Quan Mạnh Nhất")
         if not strong_correlations.empty:
             top_correlations = (
                 strong_correlations
@@ -959,7 +958,7 @@ def bai_toan_4_ma_tran_tuong_quan(df):
             st.info("Không tìm thấy tương quan mạnh (>0.7)")
     
     with col2:
-        st.subheader("📍 Tương Quan Theo Địa Điểm")
+        st.subheader("Tương Quan Theo Địa Điểm")
         
         available_pollutants_for_selection = [p for p in pollutants if p in df.columns]
         if len(available_pollutants_for_selection) >= 2:
@@ -1000,11 +999,11 @@ def bai_toan_4_ma_tran_tuong_quan(df):
             st.info("Không đủ chất ô nhiễm để phân tích")
     
     # Heatmap tương quan tổng thể
-    st.subheader("🗺️ Ma Trận Tương Quan Tổng Thể")
+    st.subheader("Ma Trận Tương Quan Tổng Thể")
     
     # Kiểm tra ma trận tương quan tổng thể
     if overall_corr.empty:
-        st.warning("⚠️ Không đủ dữ liệu để tính ma trận tương quan tổng thể")
+        st.warning("Không đủ dữ liệu để tính ma trận tương quan tổng thể")
         return df_corr
     
     fig_overall = px.imshow(
@@ -1030,9 +1029,9 @@ def bai_toan_4_ma_tran_tuong_quan(df):
     st.plotly_chart(fig_overall, use_container_width=True)
     
     # Lưu ma trận tương quan lên MinIO
-    st.subheader("💾 Lưu Trữ Ma Trận Tương Quan")
+    st.subheader("Lưu Trữ Ma Trận Tương Quan")
     
-    st.write("**📊 Ma Trận Tương Quan Tổng Thể:**")
+    st.write("**Ma Trận Tương Quan Tổng Thể:**")
     st.dataframe(overall_corr, use_container_width=True)
     
     # Tự động lưu ma trận tương quan lên MinIO
@@ -1048,7 +1047,7 @@ def bai_toan_4_ma_tran_tuong_quan(df):
         eda_bucket = "air-quality-eda"
         if not minio_client.bucket_exists(eda_bucket):
             minio_client.make_bucket(eda_bucket)
-            st.success(f"✅ Đã tạo bucket '{eda_bucket}'")
+            st.success(f"Đã tạo bucket '{eda_bucket}'")
         
         # Chuẩn bị file CSV với tên cố định để lưu phiên bản mới nhất
         csv_data = overall_corr.to_csv()
@@ -1065,32 +1064,32 @@ def bai_toan_4_ma_tran_tuong_quan(df):
         )
         
         current_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
-        st.success(f"✅ Đã cập nhật ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
+        st.success(f"Đã cập nhật ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
   
         
     except Exception as e:
-        st.error(f"❌ Lỗi khi lưu lên MinIO: {str(e)}")
-        st.warning("💡 Vui lòng kiểm tra kết nối MinIO và quyền truy cập")
+        st.error(f"Lỗi khi lưu lên MinIO: {str(e)}")
+        st.warning("Vui lòng kiểm tra kết nối MinIO và quyền truy cập")
 
     
     return df_corr
 
 def main():
     """Hàm chính của ứng dụng"""
-    st.title("🌍 Phân Tích Chất Lượng Không Khí Chuyên Sâu")
+    st.title("Phân Tích Chất Lượng Không Khí Chuyên Sâu")
     st.markdown("---")
     
     # Sidebar cho navigation
-    st.sidebar.title("📋 Menu Phân Tích")
+    st.sidebar.title("Menu Phân Tích")
     analysis_option = st.sidebar.selectbox(
-        "Chọn bài toán phân tích:",
+        "Chọn phần phân tích mà bạn muốn xem:",
         [
-            "📊 Tổng Quan",
-            "🏭 Bài 1: Phân Vùng & Xếp Hạng",
-            "🧪 Bài 2: Chất Ô Nhiễm Chính",
-            "📈 Bài 3: Xu Hướng & Sự Kiện",
-            "🌍 Bài 4: Ma Trận Tương Quan",
-            "🔍 Tất Cả Phân Tích"
+            "Tổng Quan",
+            "Phân Vùng & Xếp Hạng",
+            "Chất Ô Nhiễm Chính",
+            "Xu Hướng & Sự Kiện",
+            "Ma Trận Tương Quan",
+            "Tất Cả Phân Tích"
         ]
     )
     
@@ -1099,7 +1098,7 @@ def main():
         df = load_data()
     
     if df is None:
-        st.error("❌ Không thể tải dữ liệu từ MinIO")
+        st.error("Không thể tải dữ liệu từ MinIO")
         st.markdown("""
         ### 🔧 Hướng dẫn khắc phục:
         1. **Kiểm tra MinIO server**: Đảm bảo MinIO đang chạy tại `172.27.91.163:9004`
@@ -1110,8 +1109,8 @@ def main():
         return
     
     # Hiển thị thông tin tổng quan
-    if analysis_option == "📊 Tổng Quan":
-        st.header("📊 Tổng Quan Chất Lượng Không Khí")
+    if analysis_option == "Tổng Quan":
+        st.header("Tổng Quan Chất Lượng Không Khí")
         
         # Metrics chính
         col1, col2, col3, col4 = st.columns(4)
@@ -1127,7 +1126,7 @@ def main():
             st.metric("AQI trung bình", f"{avg_aqi:.1f}", delta=aqi_status)
         
         # Phân tích chất lượng không khí tổng thể
-        st.subheader("🌍 Tình Trạng Chất Lượng Không Khí")
+        st.subheader("Tình Trạng Chất Lượng Không Khí")
         
         col1, col2 = st.columns(2)
         
@@ -1177,7 +1176,7 @@ def main():
             st.plotly_chart(fig_threshold, use_container_width=True)
         
         # Thống kê các chất ô nhiễm chính
-        st.subheader("🧪 Thống Kê Các Chất Ô Nhiễm")
+        st.subheader("Thống Kê Các Chất Ô Nhiễm")
         
         pollutants = ['pm25', 'pm10', 'no2', 'so2', 'co', 'o3']
         available_pollutants = [p for p in pollutants if p in df.columns]
@@ -1219,7 +1218,7 @@ def main():
             st.plotly_chart(fig_pollutants, use_container_width=True)
         
         # Xu hướng theo thời gian
-        st.subheader("📈 Xu Hướng Theo Thời Gian")
+        st.subheader("Xu Hướng Theo Thời Gian")
         
         # AQI theo tháng
         monthly_aqi = df.groupby(['year', 'month'])['aqi'].mean().reset_index()
@@ -1239,13 +1238,13 @@ def main():
         st.plotly_chart(fig_trend, use_container_width=True)
         
         # Thống kê chi tiết toàn diện
-        st.subheader("📋 Thống Kê Chi Tiết Toàn Diện")
+        st.subheader("Thống Kê Chi Tiết Toàn Diện")
         
         # Tạo 3 cột cho layout tốt hơn
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.write("**🎯 Chỉ Số Chất Lượng Không Khí:**")
+            st.write("**Chỉ Số Chất Lượng Không Khí:**")
             
             # Tính toán các percentile
             aqi_p25 = df['aqi'].quantile(0.25)
@@ -1267,7 +1266,7 @@ def main():
                 st.write(f"- **{key}**: {value}")
         
         with col2:
-            st.write("**🚨 Phân Tích Ngưỡng Nguy Hiểm:**")
+            st.write("**Phân Tích Ngưỡng Nguy Hiểm:**")
             
             # Tính toán các ngưỡng nguy hiểm
             danger_stats = {
@@ -1285,7 +1284,7 @@ def main():
                 st.write(f"- **{key}**: {value}")
         
         with col3:
-            st.write("**📊 Thông Tin Cấu Trúc Dữ Liệu:**")
+            st.write("**Thông Tin Cấu Trúc Dữ Liệu:**")
             
             # Phân tích cấu trúc dữ liệu
             data_completeness = {}
@@ -1310,12 +1309,12 @@ def main():
             for key, value in general_info.items():
                 st.write(f"- **{key}**: {value}")
             
-            st.write("\n**📈 Độ Đầy Đủ Dữ Liệu:**")
+            st.write("\n**Độ Đầy Đủ Dữ Liệu:**")
             for key, value in data_completeness.items():
                 st.write(f"- **{key}**: {value}")
         
         # Bảng thống kê mô tả chi tiết
-        st.subheader("📈 Bảng Thống Kê Mô Tả Các Chỉ Số")
+        st.subheader("Bảng Thống Kê Mô Tả Các Chỉ Số")
         
         # Chọn các cột quan trọng để hiển thị
         important_cols = ['aqi', 'pm25', 'pm10', 'no2', 'so2', 'co', 'o3']
@@ -1336,11 +1335,11 @@ def main():
             }).T.round(2)
             
             # Hiển thị bảng mô tả cơ bản
-            st.write("**📊 Thống Kê Các Chỉ Số Chất Lượng Không Khí:**")
+            st.write("**Thống Kê Các Chỉ Số Chất Lượng Không Khí:**")
             st.dataframe(desc_stats, use_container_width=True)
             
             # Giải thích các chỉ số
-            with st.expander("💡 Giải Thích Các Chỉ Số Thống Kê"):
+            with st.expander("Giải Thích Các Chỉ Số Thống Kê"):
                 st.markdown("""
                 **Ý nghĩa các chỉ số trong bảng:**
                 - **count**: Số lượng ngày có dữ liệu đo được
@@ -1357,34 +1356,34 @@ def main():
                 """)
     
     # Chạy các bài phân tích
-    elif analysis_option == "🏭 Bài 1: Phân Vùng & Xếp Hạng":
-        bai_toan_1_phan_vung_o_nhiem(df)
+    elif analysis_option == "Phân Vùng & Xếp Hạng":
+        phan_vung_o_nhiem(df)
     
-    elif analysis_option == "🧪 Bài 2: Chất Ô Nhiễm Chính":
-        bai_toan_2_chat_o_nhiem(df)
+    elif analysis_option == "Chất Ô Nhiễm Chính":
+        chat_o_nhiem(df)
     
-    elif analysis_option == "📈 Bài 3: Xu Hướng & Sự Kiện":
-        bai_toan_3_xu_huong(df)
+    elif analysis_option == "Xu Hướng & Sự Kiện":
+        xu_huong(df)
     
-    elif analysis_option == "🌍 Bài 4: Ma Trận Tương Quan":
-        bai_toan_4_ma_tran_tuong_quan(df)
+    elif analysis_option == "Ma Trận Tương Quan":
+        ma_tran_tuong_quan(df)
     
-    elif analysis_option == "🔍 Tất Cả Phân Tích":
-        st.info("🚀 Chạy tất cả các bài phân tích - có thể mất vài phút...")
+    elif analysis_option == "Tất Cả Phân Tích":
+        st.info("tất cả các bài phân tích - có thể mất vài phút...")
         
-        df_rank = bai_toan_1_phan_vung_o_nhiem(df)
+        df_rank = phan_vung_o_nhiem(df)
         st.markdown("---")
         
-        df_pollutant = bai_toan_2_chat_o_nhiem(df)
+        df_pollutant = chat_o_nhiem(df)
         st.markdown("---")
         
-        df_trend, trend_df = bai_toan_3_xu_huong(df)
+        df_trend, trend_df = xu_huong(df)
         st.markdown("---")
         
-        df_corr = bai_toan_4_ma_tran_tuong_quan(df)
+        df_corr = ma_tran_tuong_quan(df)
         st.markdown("---")
         
-        st.success("✅ Hoàn thành tất cả phân tích!")
+        st.success("Hoàn thành tất cả phân tích!")
 
 if __name__ == "__main__":
     main()
