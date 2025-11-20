@@ -113,15 +113,15 @@ def load_csv_from_minio(client, bucket, path, max_retries=3):
             response.close()
             response.release_conn()
             
-            st.success(f"✅ Đã tải thành công {total_size / (1024*1024):.1f} MB")
+            st.success(f" Đã tải thành công {total_size / (1024*1024):.1f} MB")
             return pd.read_csv(BytesIO(data))
             
         except Exception as e:
             if attempt < max_retries - 1:
-                st.warning(f"⚠️ Lỗi lần {attempt + 1}: {str(e)[:100]}... Thử lại sau 2 giây...")
+                st.warning(f"Lỗi lần {attempt + 1}: {str(e)[:100]}... Thử lại sau 2 giây...")
                 time.sleep(2)
             else:
-                st.error(f"❌ Lỗi sau {max_retries} lần thử: {e}")
+                st.error(f" Lỗi sau {max_retries} lần thử: {e}")
                 return None
     
     return None
