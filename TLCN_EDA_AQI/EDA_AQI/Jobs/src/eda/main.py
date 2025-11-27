@@ -17,7 +17,7 @@ st.set_page_config(page_title="Hệ thống AQI & PM2.5", layout="wide")
 st.sidebar.title("Chức năng")
 
 # ==== Tiêu đề hệ thống ====
-st.title("Hệ thống Phân tích & Dự đoán Chất lượng Không khí (AQI & PM2.5)")
+st.title("Hệ thống Phân tích thăm dò chất lượng không khí (AQI) và Mô hình dự đoán PM2.5")
 
 # ==== MENU CHUNG ====
 menu = st.sidebar.radio(

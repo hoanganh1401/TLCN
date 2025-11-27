@@ -191,7 +191,6 @@ def main():
         start_year = df_processed["year"].min()
         end_year = df_processed["year"].max()
         file_name = save_model_to_minio(model, top_features, le, start_year, end_year)
-        st.balloons()
         st.success(f"Đã lưu mô hình: `{file_name}` vào MinIO")
 
 if __name__ == "__main__":
