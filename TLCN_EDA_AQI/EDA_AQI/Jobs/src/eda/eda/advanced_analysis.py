@@ -1379,10 +1379,14 @@ def main():
                     data_completeness[f"Đầy đủ {col.upper()}"] = f"{completeness:.1f}%"
             
             # Thông tin tổng quan
+            year_min = df['year'].min()
+            year_max = df['year'].max()
+            year_range_display = str(year_min) if year_min == year_max else f"{year_min}-{year_max}"
+            
             general_info = {
                 "Tổng số bản ghi": f"{len(df):,}",
                 "Số địa điểm": f"{df['location_key'].nunique()}",
-                "Khoảng thời gian": f"{df['year'].min()}-{df['year'].max()}",
+                "Khoảng thời gian": year_range_display,
                 "Số năm dữ liệu": f"{df['year'].nunique()}",
                 "Số tháng có dữ liệu": f"{df['month'].nunique()}/12",
                 "Trung bình bản ghi/địa điểm": f"{len(df)/df['location_key'].nunique():.0f}"
@@ -1405,17 +1409,6 @@ def main():
         
         if available_cols:
             desc_stats = df[available_cols].describe().round(2)
-            
-            # Thêm các thống kê bổ sung
-            additional_stats = pd.DataFrame({
-                col: {
-                    'missing_count': df[col].isna().sum(),
-                    'missing_percent': (df[col].isna().sum() / len(df) * 100),
-                    'unique_values': df[col].nunique(),
-                    'skewness': df[col].skew(),
-                    'kurtosis': df[col].kurtosis()
-                } for col in available_cols
-            }).T.round(2)
             
             # Hiển thị bảng mô tả cơ bản
             st.write("**Thống Kê Các Chỉ Số Chất Lượng Không Khí:**")
