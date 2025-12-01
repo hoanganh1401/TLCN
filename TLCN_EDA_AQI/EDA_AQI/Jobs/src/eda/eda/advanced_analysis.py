@@ -1057,14 +1057,8 @@ def ma_tran_tuong_quan(df):
             )
     
     st.plotly_chart(fig_overall, use_container_width=True)
-    
-    # Lưu ma trận tương quan lên MinIO
-    st.subheader("Lưu Trữ Ma Trận Tương Quan")
-    
-    st.write("**Ma Trận Tương Quan Tổng Thể:**")
-    st.dataframe(overall_corr, use_container_width=True)
-    
-    # Tự động lưu ma trận tương quan lên MinIO
+
+    # Tự động lưu ma trận tương quan lên MinIO theo năm
     try:
         minio_client = Minio(
             MINIO_HOST,
@@ -1079,10 +1073,20 @@ def ma_tran_tuong_quan(df):
             minio_client.make_bucket(eda_bucket)
             st.success(f"Đã tạo bucket '{eda_bucket}'")
         
-        # Chuẩn bị file CSV với tên cố định để lưu phiên bản mới nhất
+        # Xác định năm dữ liệu
+        years = df['year'].unique()
+        if len(years) == 1:
+            year_str = str(years[0])
+            folder_name = f"tuong_quan_{year_str}"
+            file_name = f"{folder_name}/ma_tran_tuong_quan_{year_str}_latest.csv"
+        else:
+            year_str = f"{df['year'].min()}_{df['year'].max()}"
+            folder_name = f"tuong_quan_{year_str}"
+            file_name = f"{folder_name}/ma_tran_tuong_quan_{year_str}_latest.csv"
+        
+        # Chuẩn bị file CSV
         csv_data = overall_corr.to_csv()
         csv_bytes = BytesIO(csv_data.encode('utf-8'))
-        file_name = "ma_tran_tuong_quan_latest.csv"
         
         # Upload lên MinIO (sẽ tự động ghi đè nếu file đã tồn tại)
         minio_client.put_object(
@@ -1095,7 +1099,7 @@ def ma_tran_tuong_quan(df):
         
         current_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
         st.success(f"Đã cập nhật ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
-  
+       
         
     except Exception as e:
         st.error(f"Lỗi khi lưu lên MinIO: {str(e)}")
