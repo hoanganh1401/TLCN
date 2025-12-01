@@ -62,14 +62,15 @@ def get_minio_client():
     )
 
 def list_combined_files(client, bucket):
-    """Liệt kê các file combined trong MinIO"""
+    """Liệt kê các file CSV trong thư mục openmeteo/global"""
     try:
         all_objects = list(client.list_objects(bucket, prefix="openmeteo/global/", recursive=True))
-        combined_files = []
+        csv_files = []
         for obj in all_objects:
-            if 'combined' in obj.object_name.lower():
-                combined_files.append(obj.object_name)
-        return combined_files
+            # Lấy tất cả file CSV, không chỉ combined
+            if obj.object_name.endswith('.csv'):
+                csv_files.append(obj.object_name)
+        return sorted(csv_files)  # Sắp xếp để dễ chọn
     except Exception as e:
         st.error(f"Lỗi khi liệt kê files: {e}")
         return []
@@ -127,8 +128,8 @@ def load_csv_from_minio(client, bucket, path, max_retries=3):
     return None
 
 @st.cache_data
-def load_data():
-    """Load dữ liệu từ MinIO"""
+def load_data(selected_file):
+    """Load dữ liệu từ MinIO với file được chọn"""
     try:
         client = get_minio_client()
         
@@ -140,21 +141,10 @@ def load_data():
         
         st.success(f"Kết nối MinIO thành công: {MINIO_HOST}")
         
-        # Tìm file combined
-        combined_files = list_combined_files(client, MINIO_CLEAN_BUCKET)
-        if not combined_files:
-            st.error("Không tìm thấy file 'combined' trong MinIO!")
-            st.info("Các file có sẵn:")
-            try:
-                all_files = [obj.object_name for obj in client.list_objects(MINIO_CLEAN_BUCKET, recursive=True)]
-                for file in all_files[:10]:  # Hiển thị 10 file đầu tiên
-                    st.write(f"   {file}")
-            except:
-                pass
+        if not selected_file:
+            st.warning("Vui lòng chọn file dữ liệu từ sidebar")
             return None
         
-        # Load file đầu tiên tìm được
-        selected_file = combined_files[0]
         st.info(f"Đang tải file: {selected_file}")
         
         df = load_csv_from_minio(client, MINIO_CLEAN_BUCKET, selected_file)
@@ -337,7 +327,7 @@ def phan_vung_o_nhiem(df):
         )
 
     # Sidebar / selection: chọn tỉnh(s) và năm để hiển thị biểu đồ
-    st.write("**🔎 Lọc cho biểu đồ phân tích (giúp trực quan dễ đọc):**")
+    st.write("**Lọc cho biểu đồ phân tích (giúp trực quan dễ đọc):**")
     available_locations = sorted(df_rank['location_key'].unique())
     selected_locations = st.multiselect("Chọn địa điểm (tối đa 10) để so sánh:", options=available_locations, default=available_locations[:5])
 
@@ -1119,8 +1109,52 @@ def main():
     st.title("Phân Tích Chất Lượng Không Khí Chuyên Sâu")
     st.markdown("---")
     
-    # Sidebar cho navigation
+    # Sidebar cho navigation và chọn file
     st.sidebar.title("Menu Phân Tích")
+    
+    # Phần chọn file dữ liệu
+    st.sidebar.subheader(" Chọn Dữ Liệu")
+    
+    # Lấy danh sách file từ MinIO
+    try:
+        client = get_minio_client()
+        available_files = list_combined_files(client, MINIO_CLEAN_BUCKET)
+        
+        if available_files:
+            # Tạo dictionary để hiển thị tên file ngắn gọn hơn
+            file_display_names = {}
+            for file in available_files:
+                # Lấy tên file từ đường dẫn
+                filename = file.split('/')[-1]
+                # Loại bỏ extension và format đẹp hơn
+                display_name = filename.replace('.csv', '').replace('openmeteo_', '').replace('_', ' ').title()
+                file_display_names[display_name] = file
+            
+            st.sidebar.info(f"Tìm thấy {len(available_files)} file dữ liệu")
+            
+            # Selectbox để chọn file
+            selected_display_name = st.sidebar.selectbox(
+                "Chọn file dữ liệu:",
+                options=list(file_display_names.keys()),
+                help="Chọn file dữ liệu đã được làm sạch từ MinIO"
+            )
+            
+            selected_file = file_display_names[selected_display_name]
+            
+            # Hiển thị thông tin file được chọn
+            st.sidebar.success(f"File: `{selected_file.split('/')[-1]}`")
+            
+        else:
+            st.sidebar.error("Không tìm thấy file dữ liệu")
+            st.sidebar.info("Vui lòng chạy quy trình làm sạch dữ liệu trước")
+            selected_file = None
+            
+    except Exception as e:
+        st.sidebar.error(f"Lỗi kết nối MinIO: {str(e)[:100]}")
+        selected_file = None
+    
+    # Menu phân tích
+    st.sidebar.subheader("Loại Phân Tích")
     analysis_option = st.sidebar.selectbox(
         "Chọn phần phân tích mà bạn muốn xem:",
         [
@@ -1133,17 +1167,20 @@ def main():
         ]
     )
     
-    # Load dữ liệu
-    with st.spinner("Đang tải dữ liệu từ MinIO..."):
-        df = load_data()
+    # Load dữ liệu với file được chọn
+    if selected_file:
+        with st.spinner("Đang tải dữ liệu từ MinIO..."):
+            df = load_data(selected_file)
+    else:
+        df = None
     
     if df is None:
         st.error("Không thể tải dữ liệu từ MinIO")
         st.markdown("""
-        ### 🔧 Hướng dẫn khắc phục:
+        ### Hướng dẫn khắc phục:
         1. **Kiểm tra MinIO server**: Đảm bảo MinIO đang chạy tại `172.27.91.163:9004`
         2. **Kiểm tra bucket**: Bucket `air-quality-clean` phải tồn tại
-        3. **Kiểm tra dữ liệu**: Phải có file 'combined' trong `openmeteo/global/`
+        3. **Kiểm tra dữ liệu**: Phải có file CSV trong `openmeteo/global/`
         4. **Chạy tiền xử lý**: Hãy chạy quy trình làm sạch dữ liệu trước
         """)
         return
@@ -1159,7 +1196,10 @@ def main():
         with col2:
             st.metric("Số địa điểm", df['location_key'].nunique())
         with col3:
-            st.metric("Khoảng thời gian", f"{df['year'].min()} - {df['year'].max()}")
+            year_min = df['year'].min()
+            year_max = df['year'].max()
+            time_range = str(year_min) if year_min == year_max else f"{year_min} - {year_max}"
+            st.metric("Khoảng thời gian", time_range)
         with col4:
             avg_aqi = df['aqi'].mean()
             aqi_status = "Tốt" if avg_aqi <= 50 else "Trung bình" if avg_aqi <= 100 else "Kém"
@@ -1193,8 +1233,7 @@ def main():
         with col2:
             # Phân bố AQI theo các mức ngưỡng WHO
             aqi_thresholds = {
-                'Rất Tốt (0-25)': len(df[df['aqi'] <= 25]),
-                'Tốt (26-50)': len(df[(df['aqi'] > 25) & (df['aqi'] <= 50)]),
+                'Tốt (0-50)': len(df[df['aqi'] <= 50]),
                 'Trung Bình (51-100)': len(df[(df['aqi'] > 50) & (df['aqi'] <= 100)]),
                 'Kém (101-150)': len(df[(df['aqi'] > 100) & (df['aqi'] <= 150)]),
                 'Rất Kém (151-200)': len(df[(df['aqi'] > 150) & (df['aqi'] <= 200)]),
