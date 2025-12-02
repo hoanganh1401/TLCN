@@ -225,8 +225,8 @@ def standardize_dataframe(df):
         return df
 
 def phan_vung_o_nhiem(df):
-    """PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH"""
-    st.header("PHÂN VÙNG Ô NHIỄM & XẾP HẠNG TỈNH")
+    """PHÂN VÙNG Ô NHIỄM & XẾP HẠNG ĐỊA ĐIỂM"""
+    st.header("PHÂN VÙNG Ô NHIỄM & XẾP HẠNG ĐỊA ĐIỂM")
 
     # Tính toán ranking theo month + year
     df_rank = (
@@ -245,8 +245,8 @@ def phan_vung_o_nhiem(df):
     df_rank['air_quality_score'] = (100 - df_rank['avg_aqi']/500*100) * (df_rank['data_completeness']/100)
     df_rank['rank'] = df_rank['avg_aqi'].rank(method='dense').astype(int)
 
-    # Summary ranking table (toàn bộ tỉnh thành)
-    st.subheader("Bảng Xếp Hạng Tổng Thể Tất Cả Tỉnh Thành")
+    # Summary ranking table (toàn bộ địa điểm)
+    st.subheader("Bảng Xếp Hạng Tổng Thể Tất Cả Địa Điểm")
     ranking_summary_all = (
         df_rank.groupby('location_key')
         .agg({
@@ -261,13 +261,13 @@ def phan_vung_o_nhiem(df):
     st.dataframe(ranking_summary_all, use_container_width=True)
 
     # Top 10 Rankings
-    st.subheader("Top 10 Tỉnh Thành Theo Chất Lượng Không Khí")
+    st.subheader("Top 10 Địa Điểm Theo Chất Lượng Không Khí")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        # Top 10 tỉnh ô nhiễm nhất
-        st.write("**Top 10 Tỉnh Ô Nhiễm Nặng Nhất**")
+        # Top 10 địa điểm ô nhiễm nhất
+        st.write("**Top 10 Địa Điểm Ô Nhiễm Nặng Nhất**")
         top_polluted = ranking_summary_all.nlargest(10, 'avg_aqi')[['avg_aqi', 'air_quality_score', 'exceedance_days']]
         top_polluted.columns = ['AQI TB', 'Điểm Chất Lượng', 'Ngày Vượt Chuẩn']
         
@@ -281,8 +281,8 @@ def phan_vung_o_nhiem(df):
         )
     
     with col2:
-        # Top 10 tỉnh sạch nhất
-        st.write("**Top 10 Tỉnh Không Khí Sạch Nhất**")
+        # Top 10 địa điểm sạch nhất
+        st.write("**Top 10 Địa Điểm Không Khí Sạch Nhất**")
         top_clean = ranking_summary_all.nsmallest(10, 'avg_aqi')[['avg_aqi', 'air_quality_score', 'exceedance_days']]
         top_clean.columns = ['AQI TB', 'Điểm Chất Lượng', 'Ngày Vượt Chuẩn']
         
@@ -327,9 +327,8 @@ def phan_vung_o_nhiem(df):
         )
 
     # Sidebar / selection: chọn tỉnh(s) và năm để hiển thị biểu đồ
-    st.write("**Lọc cho biểu đồ phân tích (giúp trực quan dễ đọc):**")
     available_locations = sorted(df_rank['location_key'].unique())
-    selected_locations = st.multiselect("Chọn địa điểm (tối đa 10) để so sánh:", options=available_locations, default=available_locations[:5])
+    selected_locations = st.multiselect("Chọn địa điểm để tiến hành phân tích chi tiết:", options=available_locations, default=available_locations[:5])
 
     available_years = sorted(df_rank['year'].unique())
     selected_years = st.multiselect("Chọn năm để hiển thị:", options=available_years, default=available_years)
@@ -357,11 +356,12 @@ def phan_vung_o_nhiem(df):
     else:
         # Phân loại các vùng theo mức độ ô nhiễm
         def classify_pollution_zone(aqi):
-            if aqi <= 50: return "🟢 Vùng Sạch"
-            elif aqi <= 100: return "🟡 Vùng Trung Bình"
-            elif aqi <= 150: return "🟠 Vùng Ô Nhiễm"
-            elif aqi <= 200: return "🔴 Vùng Nguy Hiểm"
-            else: return "🟣 Vùng Cực Nguy Hiểm"
+            if aqi <= 50: return "🟢 Tốt"
+            elif aqi <= 100: return "🟡 Trung Bình"
+            elif aqi <= 150: return "🟠 Không Tốt Cho Nhóm Nhạy Cảm"
+            elif aqi <= 200: return "🔴 Không Tốt"
+            elif aqi <= 300: return "🟣 Rất Không Tốt"
+            else: return "⚫ Nguy Hiểm"
         
         # Tính phân vùng cho từng địa điểm
         zone_analysis = (
@@ -382,7 +382,7 @@ def phan_vung_o_nhiem(df):
                 values=zone_counts.values,
                 names=zone_counts.index,
                 title="Phân Bố Các Vùng Ô Nhiễm",
-                color_discrete_sequence=['#2E8B57', '#FFD700', '#FF8C00', '#FF4500', '#8B008B']
+                color_discrete_sequence=['#009966', '#ffde33', '#ff9933', '#cc0033', '#660099', '#7e0023']
             )
             st.plotly_chart(fig_zone, use_container_width=True)
             
@@ -395,11 +395,12 @@ def phan_vung_o_nhiem(df):
         with col2:
             # Biểu đồ AQI theo từng địa điểm với màu sắc theo vùng
             zone_colors = {
-                "🟢 Vùng Sạch": "#2E8B57",
-                "🟡 Vùng Trung Bình": "#FFD700", 
-                "🟠 Vùng Ô Nhiễm": "#FF8C00",
-                "🔴 Vùng Nguy Hiểm": "#FF4500",
-                "🟣 Vùng Cực Nguy Hiểm": "#8B008B"
+                "🟢 Tốt": "#009966",
+                "🟡 Trung Bình": "#ffde33",
+                "🟠 Không Tốt Cho Nhóm Nhạy Cảm": "#ff9933",
+                "🔴 Không Tốt": "#cc0033",
+                "🟣 Rất Không Tốt": "#660099",
+                "⚫ Nguy Hiểm": "#7e0023"
             }
             
             zone_analysis['color'] = zone_analysis['pollution_zone'].map(zone_colors)
@@ -413,16 +414,82 @@ def phan_vung_o_nhiem(df):
                 title="AQI Trung Bình Theo Địa Điểm & Vùng Ô Nhiễm"
             )
             
-            # Thêm đường ngưỡng
-            fig_aqi.add_hline(y=50, line_dash="dash", line_color="green", annotation_text="Ngưỡng Tốt")
-            fig_aqi.add_hline(y=100, line_dash="dash", line_color="orange", annotation_text="Ngưỡng Trung Bình") 
-            fig_aqi.add_hline(y=150, line_dash="dash", line_color="red", annotation_text="Ngưỡng Kém")
-            
-            fig_aqi.update_layout(xaxis_tickangle=-45)
+            # Thêm đường ngưỡng với annotation được cải thiện
+            fig_aqi.add_hline(
+                y=50, line_dash="dash", line_color="#009966",
+                annotation_text="<b>Tốt (50)</b>", 
+                annotation_position="right",
+                annotation=dict(
+                    font_size=12, 
+                    font_color="white",
+                    bgcolor="#009966",
+                    borderpad=5,
+                    xshift=5
+                )
+            )
+            fig_aqi.add_hline(
+                y=100, line_dash="dash", line_color="#ffde33",
+                annotation_text="<b>Trung Bình (100)</b>", 
+                annotation_position="right",
+                annotation=dict(
+                    font_size=12, 
+                    font_color="black",
+                    bgcolor="#ffde33",
+                    borderpad=5,
+                    xshift=5
+                )
+            )
+            fig_aqi.add_hline(
+                y=150, line_dash="dash", line_color="#ff9933",
+                annotation_text="<b>Không Tốt Nhóm Nhạy Cảm (150)</b>", 
+                annotation_position="right",
+                annotation=dict(
+                    font_size=12, 
+                    font_color="white",
+                    bgcolor="#ff9933",
+                    borderpad=5,
+                    xshift=5
+                )
+            )
+            fig_aqi.add_hline(
+                y=200, line_dash="dash", line_color="#cc0033",
+                annotation_text="<b>Không Tốt (200)</b>", 
+                annotation_position="right",
+                annotation=dict(
+                    font_size=12, 
+                    font_color="white",
+                    bgcolor="#cc0033",
+                    borderpad=5,
+                    xshift=5
+                )
+            )
+            fig_aqi.add_hline(
+                y=300, line_dash="dash", line_color="#660099",
+                annotation_text="<b>Rất Không Tốt (300)</b>", 
+                annotation_position="right",
+                annotation=dict(
+                    font_size=12, 
+                    font_color="white",
+                    bgcolor="#660099",
+                    borderpad=5,
+                    xshift=5
+                )
+            )
+            fig_aqi.update_layout(
+                xaxis_tickangle=-45,
+                legend=dict(
+                    orientation="v",
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=1.25
+                ),
+                margin=dict(r=250)
+            )
             st.plotly_chart(fig_aqi, use_container_width=True)
         
         # Bảng chi tiết phân vùng
-        st.write("**📋 Chi Tiết Phân Vùng Ô Nhiễm:**")
+        st.write("**Chi Tiết Phân Vùng Ô Nhiễm:**")
         zone_details = zone_analysis[['location_key', 'avg_aqi', 'pollution_zone']].copy()
         zone_details['avg_aqi'] = zone_details['avg_aqi'].round(2)
         zone_details.columns = ['Địa Điểm', 'AQI Trung Bình', 'Phân Vùng']
@@ -1206,7 +1273,18 @@ def main():
             st.metric("Khoảng thời gian", time_range)
         with col4:
             avg_aqi = df['aqi'].mean()
-            aqi_status = "Tốt" if avg_aqi <= 50 else "Trung bình" if avg_aqi <= 100 else "Kém"
+            if avg_aqi <= 50:
+                aqi_status = "Tốt"
+            elif avg_aqi <= 100:
+                aqi_status = "Trung Bình"
+            elif avg_aqi <= 150:
+                aqi_status = "Không Tốt Nhóm Nhạy Cảm"
+            elif avg_aqi <= 200:
+                aqi_status = "Không Tốt"
+            elif avg_aqi <= 300:
+                aqi_status = "Rất Không Tốt"
+            else:
+                aqi_status = "Nguy Hiểm"
             st.metric("AQI trung bình", f"{avg_aqi:.1f}", delta=aqi_status)
         
         # Phân tích chất lượng không khí tổng thể
@@ -1218,10 +1296,11 @@ def main():
             # Phân bố AQI theo mức độ
             def classify_aqi(aqi):
                 if aqi <= 50: return "🟢 Tốt"
-                elif aqi <= 100: return "🟡 Trung bình"  
-                elif aqi <= 150: return "🟠 Kém"
-                elif aqi <= 200: return "🔴 Rất kém"
-                else: return "🟣 Nguy hiểm"
+                elif aqi <= 100: return "🟡 Trung Bình"
+                elif aqi <= 150: return "🟠 Không Tốt Cho Nhóm Nhạy Cảm"
+                elif aqi <= 200: return "🔴 Không Tốt"
+                elif aqi <= 300: return "🟣 Rất Không Tốt"
+                else: return "⚫ Nguy Hiểm"
             
             df['aqi_level'] = df['aqi'].apply(classify_aqi)
             aqi_distribution = df['aqi_level'].value_counts()
@@ -1230,7 +1309,7 @@ def main():
                 values=aqi_distribution.values,
                 names=aqi_distribution.index,
                 title="Phân Bố Mức Độ AQI",
-                color_discrete_sequence=['#2E8B57', '#FFD700', '#FF8C00', '#FF4500', '#8B008B']
+                color_discrete_sequence=['#009966', '#ffde33', '#ff9933', '#cc0033', '#660099', '#7e0023']
             )
             st.plotly_chart(fig_aqi_dist, use_container_width=True)
         
@@ -1239,9 +1318,10 @@ def main():
             aqi_thresholds = {
                 'Tốt (0-50)': len(df[df['aqi'] <= 50]),
                 'Trung Bình (51-100)': len(df[(df['aqi'] > 50) & (df['aqi'] <= 100)]),
-                'Kém (101-150)': len(df[(df['aqi'] > 100) & (df['aqi'] <= 150)]),
-                'Rất Kém (151-200)': len(df[(df['aqi'] > 150) & (df['aqi'] <= 200)]),
-                'Nguy Hiểm (>200)': len(df[df['aqi'] > 200])
+                'Không Tốt Nhóm Nhạy Cảm (101-150)': len(df[(df['aqi'] > 100) & (df['aqi'] <= 150)]),
+                'Không Tốt (151-200)': len(df[(df['aqi'] > 150) & (df['aqi'] <= 200)]),
+                'Rất Không Tốt (201-300)': len(df[(df['aqi'] > 200) & (df['aqi'] <= 300)]),
+                'Nguy Hiểm (>300)': len(df[df['aqi'] > 300])
             }
             
             fig_threshold = px.bar(
