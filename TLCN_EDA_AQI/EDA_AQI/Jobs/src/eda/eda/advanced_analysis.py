@@ -1434,9 +1434,10 @@ def main():
             # Tính toán các ngưỡng nguy hiểm
             danger_stats = {
                 "% ngày AQI > 50 (Trung bình)": f"{(df['aqi'] > 50).mean()*100:.2f}%",
-                "% ngày AQI > 100 (Kém)": f"{(df['aqi'] > 100).mean()*100:.2f}%",
-                "% ngày AQI > 150 (Rất kém)": f"{(df['aqi'] > 150).mean()*100:.2f}%",
-                "% ngày AQI > 200 (Nguy hiểm)": f"{(df['aqi'] > 200).mean()*100:.2f}%",
+                "% ngày AQI > 100 (Không Tốt Cho Nhóm Nhạy Cảm)": f"{(df['aqi'] > 100).mean()*100:.2f}%",
+                "% ngày AQI > 150 (Không Tốt)": f"{(df['aqi'] > 150).mean()*100:.2f}%",
+                "% ngày AQI > 200 (Rất Không Tốt)": f"{(df['aqi'] > 200).mean()*100:.2f}%",
+                "% ngày AQI > 300 (Nguy Hiểm)": f"{(df['aqi'] > 300).mean()*100:.2f}%",
                 "Số ngày tốt (AQI ≤ 50)": f"{(df['aqi'] <= 50).sum():,}",
                 "Số ngày kém (AQI > 100)": f"{(df['aqi'] > 100).sum():,}",
                 "Ngày ô nhiễm nhất": f"AQI {df['aqi'].max():.0f}",
