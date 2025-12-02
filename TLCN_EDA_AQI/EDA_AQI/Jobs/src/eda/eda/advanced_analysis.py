@@ -385,13 +385,7 @@ def phan_vung_o_nhiem(df):
                 color_discrete_sequence=['#009966', '#ffde33', '#ff9933', '#cc0033', '#660099', '#7e0023']
             )
             st.plotly_chart(fig_zone, use_container_width=True)
-            
-            # Thống kê vùng ô nhiễm
-            st.write("**Thống Kê Phân Vùng:**")
-            for zone, count in zone_counts.items():
-                percentage = (count / len(zone_analysis)) * 100
-                st.write(f"{zone}: {count} địa điểm ({percentage:.1f}%)")
-        
+
         with col2:
             # Biểu đồ AQI theo từng địa điểm với màu sắc theo vùng
             zone_colors = {
