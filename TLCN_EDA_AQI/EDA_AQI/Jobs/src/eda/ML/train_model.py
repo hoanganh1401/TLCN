@@ -1,4 +1,4 @@
-# train_model_v7.py
+# train_model_v8_no_heatmap.py
 import streamlit as st
 import pandas as pd
 from minio import Minio
@@ -7,8 +7,8 @@ import joblib
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from lightgbm import LGBMRegressor
-import matplotlib.pyplot as plt
 import seaborn as sns
+import re
 
 sns.set_style("whitegrid")
 
@@ -20,9 +20,8 @@ MINIO_ACCESS_KEY = "admin"
 MINIO_SECRET_KEY = "admin123"
 
 BUCKET_DATA = "air-quality-clean"
-PREFIX_DATA = "openmeteo/global/combined/"
+PREFIX_DATA = "openmeteo/global/"
 BUCKET_EDA = "air-quality-eda"
-CORR_OBJECT = "ma_tran_tuong_quan_latest.csv"
 BUCKET_MODEL = "air-quality-model"
 
 # ==============================
@@ -61,97 +60,120 @@ def save_model_to_minio(model, features, le, start_year, end_year):
     return file_name
 
 # ==============================
+# HELPER: Đọc CSV từ MinIO với cache
+# ==============================
+@st.cache_data(show_spinner=False)
+def load_csv_from_minio(bucket, object_name, index_col=None):
+    obj = client.get_object(bucket, object_name)
+    return pd.read_csv(obj, index_col=index_col)
+
+# ==============================
 # MAIN APP
 # ==============================
 def main():
     st.title("Huấn luyện mô hình dự đoán PM2.5")
 
-    # ---------- Load file dữ liệu ----------
-    if "df_data" not in st.session_state:
-        try:
-            objects = client.list_objects(BUCKET_DATA, PREFIX_DATA, recursive=True)
-            file_list = [obj.object_name for obj in objects if not obj.is_dir]
-            if not file_list:
-                st.warning("Không tìm thấy file nào trong bucket!")
-                return
-            st.session_state["file_list"] = file_list
-        except Exception as e:
-            st.error(f"Lỗi kết nối MinIO: {e}")
+    # ---------- Load file dữ liệu sạch ----------
+    st.subheader("Chọn file dữ liệu sạch")
+    try:
+        all_objects = client.list_objects(BUCKET_DATA, prefix=PREFIX_DATA, recursive=True)
+        file_list = [obj.object_name for obj in all_objects if obj.object_name.endswith(".csv")]
+        if not file_list:
+            st.warning("Không tìm thấy file CSV nào trong bucket dữ liệu sạch!")
             return
-    else:
-        file_list = st.session_state["file_list"]
+    except Exception as e:
+        st.error(f"Lỗi kết nối MinIO: {e}")
+        return
 
     file_select = st.selectbox("Chọn file dữ liệu sạch:", file_list)
     if not file_select:
         return
 
-    if "df_data" not in st.session_state or st.session_state.get("current_file") != file_select:
-        st.write(f"Đang tải dữ liệu từ file: {file_select}")
-        try:
-            data_obj = client.get_object(BUCKET_DATA, file_select)
-            df = pd.read_csv(data_obj)
-            st.session_state["df_data"] = df.copy()
-            st.session_state["current_file"] = file_select
-            st.success("Đã tải dữ liệu thành công!")
-        except Exception as e:
-            st.error(f"Không thể đọc file: {e}")
-            return
-    else:
-        df = st.session_state["df_data"]
-        st.info(f"Dữ liệu từ file `{file_select}` đã có trong session")
-    
+    # Load dữ liệu
+    try:
+        df = load_csv_from_minio(BUCKET_DATA, file_select)
+        st.success(f"Đã tải dữ liệu thành công từ file `{file_select}`")
+    except Exception as e:
+        st.error(f"Không thể đọc file: {e}")
+        return
+
     st.dataframe(df.head())
 
     # ---------- Xử lý dữ liệu cơ bản ----------
-    if "df_processed" not in st.session_state or st.session_state.get("processed_file") != file_select:
-        df["ts_utc"] = pd.to_datetime(df["ts_utc"], errors='coerce')
-        df["year"] = df["ts_utc"].dt.year
-        df["hour"] = df["ts_utc"].dt.hour
-        df["day"] = df["ts_utc"].dt.day
-        df["month"] = df["ts_utc"].dt.month
+    df["ts_utc"] = pd.to_datetime(df["ts_utc"], errors='coerce')
+    df["year"] = df["ts_utc"].dt.year
+    df["hour"] = df["ts_utc"].dt.hour
+    df["day"] = df["ts_utc"].dt.day
+    df["month"] = df["ts_utc"].dt.month
 
-        le = LabelEncoder()
-        df["location_encoded"] = le.fit_transform(df["location_key"])
+    le = LabelEncoder()
+    df["location_encoded"] = le.fit_transform(df["location_key"])
+    df_processed = df.drop(columns=["ts_utc", "location_key"])
 
-        df_processed = df.drop(columns=["ts_utc", "location_key"])
-        st.session_state["df_processed"] = df_processed
-        st.session_state["le"] = le
-        st.session_state["processed_file"] = file_select
-    else:
-        df_processed = st.session_state["df_processed"]
-        le = st.session_state["le"]
-
-    # ---------- Hiển thị ma trận tương quan ----------
-    st.subheader("Ma trận tương quan")
-    if "df_corr" not in st.session_state:
-        try:
-            corr_obj = client.get_object(BUCKET_EDA, CORR_OBJECT)
-            df_corr = pd.read_csv(corr_obj, index_col=0)
-            st.session_state["df_corr"] = df_corr
-        except Exception as e:
-            st.error(f"Không tìm thấy ma trận tương quan: {e}")
+    # ---------- Chọn năm và file ma trận tương quan ----------
+    st.subheader("Chọn năm và file ma trận tương quan")
+    try:
+        all_objects = client.list_objects(BUCKET_EDA, recursive=True)
+        folder_set = set()
+        for obj in all_objects:
+            m = re.match(r"(tuong_quan_\d{4})/", obj.object_name)
+            if m:
+                folder_set.add(m.group(1))
+        folder_list = sorted(list(folder_set))
+        if not folder_list:
+            st.warning("Không tìm thấy folder tuong_quan_<năm> trong bucket EDA!")
             return
-    else:
-        df_corr = st.session_state["df_corr"]
+    except Exception as e:
+        st.error(f"Lỗi kết nối MinIO: {e}")
+        return
 
-    st.dataframe(df_corr)
+    year_select = st.selectbox("Chọn năm tương quan:", folder_list)
+
+    # List file CSV trong folder đã chọn
+    try:
+        all_objects_corr = client.list_objects(BUCKET_EDA, prefix=f"{year_select}/", recursive=True)
+        corr_files = [obj.object_name for obj in all_objects_corr if obj.object_name.endswith(".csv")]
+        if not corr_files:
+            st.warning(f"Không tìm thấy file CSV trong folder {year_select}!")
+            return
+    except Exception as e:
+        st.error(f"Lỗi khi lấy file CSV: {e}")
+        return
+
+    corr_file_select = st.selectbox("Chọn file ma trận tương quan:", corr_files)
+
+    # Load ma trận tương quan
+    try:
+        df_corr = load_csv_from_minio(BUCKET_EDA, corr_file_select, index_col=0)
+        # Chuyển tất cả về float (nếu lỗi -> object)
+        df_corr = df_corr.apply(pd.to_numeric, errors='coerce')
+        df_corr.columns = df_corr.columns.astype(str)
+        df_corr.index = df_corr.index.astype(str)
+        st.success(f"Đã tải ma trận tương quan từ file `{corr_file_select}`")
+
+        # Hiển thị ma trận tương quan
+        st.subheader("Ma trận tương quan")
+        st.dataframe(df_corr)
+    except Exception as e:
+        st.error(f"Lỗi khi đọc ma trận tương quan: {e}")
+        return
 
     # ---------- Chọn các đặc trưng ----------
     st.subheader("Chọn các đặc trưng quan trọng cho pm25")
-    if "top_features" not in st.session_state:
+    try:
         top_features = (
             df_corr["pm25"]
             .abs()
             .sort_values(ascending=False)
-            .iloc[1:4]  # 3 đặc trưng cao nhất sau pm25
-            .index.tolist()
+            .drop("pm25")  # loại bỏ chính nó
+            .head(3)
+            .index
+            .tolist()
         )
-        st.session_state["top_features"] = top_features
-    else:
-        top_features = st.session_state["top_features"]
-
-    st.markdown("**Cách chọn:** chọn 3 cột có tương quan tuyệt đối cao nhất với `pm25` (trừ chính `pm25`).")
-    st.write("Các đặc trưng được chọn:", top_features)
+        st.write("Các đặc trưng được chọn:", top_features)
+    except Exception as e:
+        st.error(f"Lỗi khi chọn đặc trưng: {e}")
+        return
 
     X = df_processed[top_features]
     y = df_processed["pm25"]
@@ -175,15 +197,7 @@ def main():
         )
         model.fit(X_train, y_train)
 
-        # Lưu vào session
-        st.session_state["model"] = model
-        st.session_state["X_train"] = X_train
-        st.session_state["X_test"] = X_test
-        st.session_state["y_train"] = y_train
-        st.session_state["y_test"] = y_test
-
         st.success("Huấn luyện xong!")
-
         score = model.score(X_test, y_test)
         st.success(f"R² trên tập test: {score:.4f}")
 
