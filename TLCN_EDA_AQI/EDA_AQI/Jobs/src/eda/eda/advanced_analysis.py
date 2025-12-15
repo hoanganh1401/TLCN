@@ -371,7 +371,6 @@ def phan_vung_o_nhiem(df):
         )
         zone_analysis['pollution_zone'] = zone_analysis['avg_aqi'].apply(classify_pollution_zone)
         zone_analysis = zone_analysis.sort_values('avg_aqi')
-        
         col1, col2 = st.columns(2)
         
         with col1:
@@ -482,12 +481,6 @@ def phan_vung_o_nhiem(df):
             )
             st.plotly_chart(fig_aqi, use_container_width=True)
         
-        # Bảng chi tiết phân vùng
-        st.write("**Chi Tiết Phân Vùng Ô Nhiễm:**")
-        zone_details = zone_analysis[['location_key', 'avg_aqi', 'pollution_zone']].copy()
-        zone_details['avg_aqi'] = zone_details['avg_aqi'].round(2)
-        zone_details.columns = ['Địa Điểm', 'AQI Trung Bình', 'Phân Vùng']
-        st.dataframe(zone_details, use_container_width=True, hide_index=True)
 
     # Heatmap: use year-month as x axis to show month across years
     st.subheader("Heatmap AQI Theo Tháng (kèm Năm) và Địa Điểm")
@@ -587,7 +580,7 @@ def chat_o_nhiem(df):
                 exceed_percentages = {k: (v/total_exceed*100) for k, v in threshold_exceed.items()}
                 st.info(f"Tổng số lần vượt ngưỡng: {total_exceed:,} lần")
             
-            # Biểu đồ tròn - Tần suất vượt ngưỡng AQI > 50
+          
             fig_pie = px.pie(
                 values=list(exceed_percentages.values()),
                 names=list(exceed_percentages.keys()),
@@ -765,7 +758,7 @@ def chat_o_nhiem(df):
     
     # Biểu đồ tỷ lệ các chất ô nhiễm (nếu có dữ liệu)
     if pollutant_ratios:
-        st.subheader("⚖️ Tỷ Lệ Giữa Các Chất Ô Nhiễm")
+        st.subheader("Tỷ Lệ Giữa Các Chất Ô Nhiễm")
         
         # Sử dụng dữ liệu đã lọc theo địa điểm đã chọn
         ratio_data = df_pollutant_filtered.groupby('location_key')[list(pollutant_ratios.keys())].mean().reset_index()
