@@ -844,23 +844,53 @@ def xu_huong(df):
     """PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN"""
     st.header("PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN")
     
-    # Tính xu hướng
+    # Cho phép người dùng chọn chất ô nhiễm để phân tích xu hướng
+    st.subheader("Tùy Chọn Phân Tích")
+    
+    pollutant_options = {
+        'pm25': 'PM2.5 (Bụi mịn < 2.5μm)',
+        'pm10': 'PM10 (Bụi mịn < 10μm)',
+        'no2': 'NO2 (Nitro dioxide)',
+        'so2': 'SO2 (Lưu huỳnh dioxide)',
+        'co': 'CO (Carbon monoxide)',
+        'o3': 'O3 (Ozone)'
+    }
+    
+    # Lọc chỉ những chất có sẵn trong dữ liệu
+    available_pollutants = {k: v for k, v in pollutant_options.items() if k in df.columns}
+    
+    if not available_pollutants:
+        st.error("Không tìm thấy dữ liệu chất ô nhiễm để phân tích xu hướng!")
+        return None, None
+    
+    selected_pollutant = st.selectbox(
+        "Chọn chất ô nhiễm để phân tích xu hướng:",
+        options=list(available_pollutants.keys()),
+        format_func=lambda x: available_pollutants[x],
+        index=0,
+        help="Chọn chất ô nhiễm mà bạn muốn xem xu hướng tăng/giảm theo thời gian"
+    )
+    
+    st.info(f"Đang phân tích xu hướng cho: **{available_pollutants[selected_pollutant]}**")
+    st.markdown("---")
+    
+    # Tính xu hướng cho chất ô nhiễm được chọn
     df_trend = (
         df.groupby(['location_key','month','year'])
-        .agg(pm25_current=('pm25','mean'))
+        .agg(pollutant_current=(selected_pollutant,'mean'))
         .reset_index()
         .sort_values(['location_key','year','month'])
     )
     
-    df_trend['pm25_prev'] = df_trend.groupby('location_key')['pm25_current'].shift(1)
-    df_trend['pm25_mom_change'] = (df_trend['pm25_current'] - df_trend['pm25_prev']) / df_trend['pm25_prev'] * 100
-    df_trend['pm25_3m_ma'] = df_trend.groupby('location_key')['pm25_current'].rolling(3).mean().reset_index(level=0, drop=True)
+    df_trend['pollutant_prev'] = df_trend.groupby('location_key')['pollutant_current'].shift(1)
+    df_trend['pollutant_mom_change'] = (df_trend['pollutant_current'] - df_trend['pollutant_prev']) / df_trend['pollutant_prev'] * 100
+    df_trend['pollutant_3m_ma'] = df_trend.groupby('location_key')['pollutant_current'].rolling(3).mean().reset_index(level=0, drop=True)
     
     # Tính slope xu hướng bằng Linear Regression
     trend_data = []
     for loc, group in df_trend.groupby('location_key'):
         X = np.arange(len(group)).reshape(-1,1)
-        y = group['pm25_current'].values
+        y = group['pollutant_current'].values
         if len(y) > 1:
             model = LinearRegression().fit(X,y)
             trend_data.append((loc, model.coef_[0], model.score(X, y)))
@@ -870,7 +900,7 @@ def xu_huong(df):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("Xu Hướng PM2.5 Theo Thời Gian")
+        st.subheader(f"Xu Hướng {selected_pollutant.upper()} Theo Thời Gian")
         
         # Hiển thị bảng xu hướng
         trend_summary = trend_df.copy()
@@ -893,12 +923,12 @@ def xu_huong(df):
             y='trend_slope',
             color='trend_slope',
             color_continuous_scale='RdYlGn_r',
-            title="Hệ Số Xu Hướng PM2.5"
+            title=f"Hệ Số Xu Hướng {selected_pollutant.upper()}"
         )
         st.plotly_chart(fig_slope, use_container_width=True)
     
     # Biểu đồ xu hướng theo thời gian
-    st.subheader("Biểu Đồ Xu Hướng PM2.5 Chi Tiết")
+    st.subheader(f"Biểu Đồ Xu Hướng {selected_pollutant.upper()} Chi Tiết")
     
     selected_locations = st.multiselect(
         "Chọn địa điểm để hiển thị:",
@@ -913,13 +943,13 @@ def xu_huong(df):
             location_data = df_trend[df_trend['location_key'] == location]
             location_data['date_str'] = location_data['year'].astype(str) + '-' + location_data['month'].astype(str).str.zfill(2)
             
-            # PM2.5 thực tế
+            # Giá trị thực tế
             fig_trend.add_trace(
                 go.Scatter(
                     x=location_data['date_str'],
-                    y=location_data['pm25_current'],
+                    y=location_data['pollutant_current'],
                     mode='lines+markers',
-                    name=f'{location} - PM2.5',
+                    name=f'{location} - {selected_pollutant.upper()}',
                     line=dict(width=2)
                 )
             )
@@ -928,7 +958,7 @@ def xu_huong(df):
             fig_trend.add_trace(
                 go.Scatter(
                     x=location_data['date_str'],
-                    y=location_data['pm25_3m_ma'],
+                    y=location_data['pollutant_3m_ma'],
                     mode='lines',
                     name=f'{location} - MA(3)',
                     line=dict(width=1, dash='dash')
@@ -936,9 +966,9 @@ def xu_huong(df):
             )
         
         fig_trend.update_layout(
-            title="Xu Hướng PM2.5 và Trung Bình Động 3 Tháng",
+            title=f"Xu Hướng {selected_pollutant.upper()} và Trung Bình Động 3 Tháng",
             xaxis_title="Thời Gian",
-            yaxis_title="PM2.5 (µg/m³)",
+            yaxis_title=f"{selected_pollutant.upper()} (µg/m³)",
             height=500
         )
         st.plotly_chart(fig_trend, use_container_width=True)
