@@ -3,11 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection import SelectKBest, f_regression, mutual_info_regression
 from minio import Minio
 from io import BytesIO
 import warnings
@@ -840,11 +836,11 @@ def chat_o_nhiem(df):
     
     return df_pollutant
 
-def xu_huong(df):
-    """PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN"""
-    st.header("PHÂN TÍCH XU HƯỚNG & TÁC ĐỘNG SỰ KIỆN")
+def phan_tich_mua_vu(df):
+    """PHÂN TÍCH MÙA VỤ & CHU KỲ THEO THỜI GIAN"""
+    st.header("PHÂN TÍCH MÙA VỤ & CHU KỲ THEO THỜI GIAN")
     
-    # Cho phép người dùng chọn chất ô nhiễm để phân tích xu hướng
+    # Cho phép người dùng chọn chất ô nhiễm để phân tích
     st.subheader("Tùy Chọn Phân Tích")
     
     pollutant_options = {
@@ -853,127 +849,251 @@ def xu_huong(df):
         'no2': 'NO2 (Nitro dioxide)',
         'so2': 'SO2 (Lưu huỳnh dioxide)',
         'co': 'CO (Carbon monoxide)',
-        'o3': 'O3 (Ozone)'
+        'o3': 'O3 (Ozone)',
+        'aqi': 'AQI (Chỉ số chất lượng không khí)'
     }
     
     # Lọc chỉ những chất có sẵn trong dữ liệu
     available_pollutants = {k: v for k, v in pollutant_options.items() if k in df.columns}
     
     if not available_pollutants:
-        st.error("Không tìm thấy dữ liệu chất ô nhiễm để phân tích xu hướng!")
-        return None, None
+        st.error("Không tìm thấy dữ liệu chất ô nhiễm để phân tích!")
+        return None
     
     selected_pollutant = st.selectbox(
-        "Chọn chất ô nhiễm để phân tích xu hướng:",
+        "Chọn chất ô nhiễm để phân tích mùa vụ:",
         options=list(available_pollutants.keys()),
         format_func=lambda x: available_pollutants[x],
         index=0,
-        help="Chọn chất ô nhiễm mà bạn muốn xem xu hướng tăng/giảm theo thời gian"
+        help="Chọn chất ô nhiễm để xem biến động theo mùa"
     )
     
-    st.info(f"Đang phân tích xu hướng cho: **{available_pollutants[selected_pollutant]}**")
+    st.info(f"Đang phân tích mùa vụ cho: **{available_pollutants[selected_pollutant]}**")
     st.markdown("---")
     
-    # Tính xu hướng cho chất ô nhiễm được chọn
-    df_trend = (
-        df.groupby(['location_key','month','year'])
-        .agg(pollutant_current=(selected_pollutant,'mean'))
-        .reset_index()
-        .sort_values(['location_key','year','month'])
-    )
+    # Tạo DataFrame với seasonal info
+    df_seasonal = df.copy()
     
-    df_trend['pollutant_prev'] = df_trend.groupby('location_key')['pollutant_current'].shift(1)
-    df_trend['pollutant_mom_change'] = (df_trend['pollutant_current'] - df_trend['pollutant_prev']) / df_trend['pollutant_prev'] * 100
-    df_trend['pollutant_3m_ma'] = df_trend.groupby('location_key')['pollutant_current'].rolling(3).mean().reset_index(level=0, drop=True)
+    # Phân loại mùa theo tháng (Việt Nam)
+    def get_season(month):
+        if month in [12, 1, 2]:
+            return 'Mua Dong (Dec-Feb)'
+        elif month in [3, 4, 5]:
+            return 'Mua Xuan (Mar-May)'
+        elif month in [6, 7, 8]:
+            return 'Mua He (Jun-Aug)'
+        else:  # 9, 10, 11
+            return 'Mua Thu (Sep-Nov)'
     
-    # Tính slope xu hướng bằng Linear Regression
-    trend_data = []
-    for loc, group in df_trend.groupby('location_key'):
-        X = np.arange(len(group)).reshape(-1,1)
-        y = group['pollutant_current'].values
-        if len(y) > 1:
-            model = LinearRegression().fit(X,y)
-            trend_data.append((loc, model.coef_[0], model.score(X, y)))
+    df_seasonal['season'] = df_seasonal['month'].apply(get_season)
     
-    trend_df = pd.DataFrame(trend_data, columns=['location_key','trend_slope', 'r_squared'])
+    # So sánh theo mùa
+    st.subheader("So Sánh Mức Độ Ô Nhiễm Theo Mùa")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader(f"Xu Hướng {selected_pollutant.upper()} Theo Thời Gian")
+        # Bar chart so sánh trung bình theo mùa
+        seasonal_avg = df_seasonal.groupby('season')[selected_pollutant].agg(['mean', 'std']).reset_index()
         
-        # Hiển thị bảng xu hướng
-        trend_summary = trend_df.copy()
-        trend_summary['xu_huong'] = trend_summary['trend_slope'].apply(
-            lambda x: 'Tăng' if x > 0.1 else 'Giảm' if x < -0.1 else 'Ổn định'
-        )
-        trend_summary['slope_round'] = trend_summary['trend_slope'].round(3)
-        trend_summary['r2_round'] = trend_summary['r_squared'].round(3)
+        # Sắp xếp theo thứ tự mùa
+        season_order = ['Mua Dong (Dec-Feb)', 'Mua Xuan (Mar-May)', 
+                       'Mua He (Jun-Aug)', 'Mua Thu (Sep-Nov)']
+        seasonal_avg['season'] = pd.Categorical(seasonal_avg['season'], categories=season_order, ordered=True)
+        seasonal_avg = seasonal_avg.sort_values('season')
         
-        st.dataframe(
-            trend_summary[['location_key', 'xu_huong', 'slope_round', 'r2_round']],
-            use_container_width=True
+        fig_bar = go.Figure()
+        fig_bar.add_trace(go.Bar(
+            x=seasonal_avg['season'],
+            y=seasonal_avg['mean'],
+            error_y=dict(type='data', array=seasonal_avg['std']),
+            marker_color=['#87CEEB', '#90EE90', '#FFD700', '#FFA07A'],
+            text=seasonal_avg['mean'].round(2),
+            textposition='outside'
+        ))
+        
+        fig_bar.update_layout(
+            title=f"Mức Trung Bình {selected_pollutant.upper()} Theo Mùa",
+            xaxis_title="Mùa",
+            yaxis_title=f"{selected_pollutant.upper()} (µg/m³)",
+            showlegend=False,
+            height=500
         )
+        st.plotly_chart(fig_bar, use_container_width=True)
     
     with col2:
-        # Biểu đồ slope
-        fig_slope = px.bar(
-            trend_df, 
-            x='location_key', 
-            y='trend_slope',
-            color='trend_slope',
-            color_continuous_scale='RdYlGn_r',
-            title=f"Hệ Số Xu Hướng {selected_pollutant.upper()}"
-        )
-        st.plotly_chart(fig_slope, use_container_width=True)
+        # Thống kê theo mùa
+        seasonal_stats = df_seasonal.groupby('season')[selected_pollutant].agg([
+            ('Trung Bình', 'mean'),
+            ('Trung Vị', 'median'),
+            ('Min', 'min'),
+            ('Max', 'max'),
+            ('Độ Lệch Chuẩn', 'std')
+        ]).round(2)
+        
+        # Sắp xếp theo thứ tự mùa
+        season_order = ['Mua Dong (Dec-Feb)', 'Mua Xuan (Mar-May)', 
+                       'Mua He (Jun-Aug)', 'Mua Thu (Sep-Nov)']
+        seasonal_stats = seasonal_stats.reindex(season_order)
+        
+        st.write("**Thống Kê Chi Tiết Theo Mùa:**")
+        st.dataframe(seasonal_stats, use_container_width=True)
+        
+        # Tìm mùa ô nhiễm nhất/sạch nhất
+        most_polluted_season = seasonal_stats['Trung Bình'].idxmax()
+        cleanest_season = seasonal_stats['Trung Bình'].idxmin()
+        
+        st.success(f"**Mùa ô nhiễm nhất:** {most_polluted_season}")
+        st.success(f"**Mùa sạch nhất:** {cleanest_season}")
     
-    # Biểu đồ xu hướng theo thời gian
-    st.subheader(f"Biểu Đồ Xu Hướng {selected_pollutant.upper()} Chi Tiết")
+
+    # Phân tích theo tháng (Line chart)
+    st.subheader("Biến Động Theo Tháng")
     
     selected_locations = st.multiselect(
-        "Chọn địa điểm để hiển thị:",
-        options=df_trend['location_key'].unique(),
-        default=df_trend['location_key'].unique()[:3]
+        "Chọn địa điểm để so sánh:",
+        options=sorted(df_seasonal['location_key'].unique()),
+        default=sorted(df_seasonal['location_key'].unique())[:3],
+        key="seasonal_location_select"
     )
     
     if selected_locations:
-        fig_trend = go.Figure()
+        monthly_location = df_seasonal[df_seasonal['location_key'].isin(selected_locations)].groupby(
+            ['location_key', 'month', 'season']
+        )[selected_pollutant].mean().reset_index()
         
-        for location in selected_locations:
-            location_data = df_trend[df_trend['location_key'] == location]
-            location_data['date_str'] = location_data['year'].astype(str) + '-' + location_data['month'].astype(str).str.zfill(2)
-            
-            # Giá trị thực tế
-            fig_trend.add_trace(
-                go.Scatter(
-                    x=location_data['date_str'],
-                    y=location_data['pollutant_current'],
-                    mode='lines+markers',
-                    name=f'{location} - {selected_pollutant.upper()}',
-                    line=dict(width=2)
-                )
-            )
-            
-            # Đường trung bình động 3 tháng
-            fig_trend.add_trace(
-                go.Scatter(
-                    x=location_data['date_str'],
-                    y=location_data['pollutant_3m_ma'],
-                    mode='lines',
-                    name=f'{location} - MA(3)',
-                    line=dict(width=1, dash='dash')
-                )
-            )
-        
-        fig_trend.update_layout(
-            title=f"Xu Hướng {selected_pollutant.upper()} và Trung Bình Động 3 Tháng",
-            xaxis_title="Thời Gian",
-            yaxis_title=f"{selected_pollutant.upper()} (µg/m³)",
-            height=500
+        fig_line = px.line(
+            monthly_location,
+            x='month',
+            y=selected_pollutant,
+            color='location_key',
+            title=f"Biến Động {selected_pollutant.upper()} Theo Tháng",
+            markers=True
         )
-        st.plotly_chart(fig_trend, use_container_width=True)
+        
+        # Thêm vùng màu theo mùa
+        seasons_ranges = [
+            (12, 2, 'Mua Dong', 'rgba(135, 206, 235, 0.2)'),
+            (3, 5, 'Mua Xuan', 'rgba(144, 238, 144, 0.2)'),
+            (6, 8, 'Mua He', 'rgba(255, 215, 0, 0.2)'),
+            (9, 11, 'Mua Thu', 'rgba(255, 160, 122, 0.2)')
+        ]
+        
+        for start, end, name, color in seasons_ranges:
+            if start <= end:
+                fig_line.add_vrect(
+                    x0=start-0.5, x1=end+0.5,
+                    fillcolor=color, opacity=0.3,
+                    layer="below", line_width=0,
+                    annotation_text=name, annotation_position="top left"
+                )
+        
+        fig_line.update_layout(
+            xaxis_title="Tháng",
+            yaxis_title=f"{selected_pollutant.upper()} (µg/m³)",
+            height=500,
+            xaxis=dict(tickmode='linear', dtick=1)
+        )
+        st.plotly_chart(fig_line, use_container_width=True)
     
-    return df_trend, trend_df
+    # Heatmap theo tháng × năm để thấy chu kỳ mùa vụ lặp lại
+    st.subheader("Chu Kỳ Mùa Vụ Theo Thời Gian")
+    
+    st.info("Heatmap này giúp bạn nhìn thấy pattern mùa vụ lặp lại qua các năm - mỗi tháng trong năm có mức ô nhiễm như thế nào")
+    
+    # Tính trung bình theo tháng và năm
+    monthly_yearly = df_seasonal.groupby(['year', 'month'])[selected_pollutant].mean().reset_index()
+    
+    # Tạo pivot table: year × month
+    pivot_cycle = monthly_yearly.pivot(index='year', columns='month', values=selected_pollutant)
+    
+    if not pivot_cycle.empty:
+        fig_heatmap_cycle = px.imshow(
+            pivot_cycle.values,
+            labels=dict(x="Tháng", y="Năm", color=f"{selected_pollutant.upper()}"),
+            x=[f"T{m}" for m in pivot_cycle.columns],
+            y=pivot_cycle.index,
+            color_continuous_scale="RdYlGn_r",
+            aspect="auto",
+            title=f"Chu Kỳ Mùa Vụ: {selected_pollutant.upper()} Theo Tháng × Năm"
+        )
+        
+        # Thêm vùng màu mùa
+        fig_heatmap_cycle.update_layout(
+            height=300 + 40*len(pivot_cycle),
+            xaxis=dict(
+                tickmode='linear',
+                tick0=0,
+                dtick=1
+            )
+        )
+        
+        st.plotly_chart(fig_heatmap_cycle, use_container_width=True)
+        
+        # Phân tích pattern mùa vụ
+        st.write("**Nhận Xét Về Chu Kỳ Mùa Vụ:**")
+        
+        # Tính trung bình từng tháng qua các năm
+        monthly_pattern = df_seasonal.groupby('month')[selected_pollutant].mean().sort_values(ascending=False)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            top_3_months = monthly_pattern.head(3)
+            st.write("**Top 3 Tháng Ô Nhiễm Nhất:**")
+            for month, value in top_3_months.items():
+                season = df_seasonal[df_seasonal['month'] == month]['season'].iloc[0]
+                st.write(f"- Tháng {month} ({season}): {value:.2f} µg/m³")
+        
+        with col2:
+            bottom_3_months = monthly_pattern.tail(3)
+            st.write("**Top 3 Tháng Sạch Nhất:**")
+            for month, value in bottom_3_months.items():
+                season = df_seasonal[df_seasonal['month'] == month]['season'].iloc[0]
+                st.write(f"- Tháng {month} ({season}): {value:.2f} µg/m³")
+    else:
+        st.warning("Không đủ dữ liệu để hiển thị chu kỳ mùa vụ")
+    
+    return df_seasonal
+
+@st.cache_data(ttl=3600)
+def calculate_feature_importance(df, target, available_features):
+    """Tính toán feature importance với cache để tăng tốc"""
+    # Chuẩn bị dữ liệu
+    df_clean = df[available_features + [target]].dropna()
+    
+    if len(df_clean) < 100:
+        return None, f"Chỉ có {len(df_clean)} mẫu"
+    
+    X = df_clean[available_features]
+    y = df_clean[target]
+    
+    # Sử dụng cả 2 phương pháp
+    selector_f = SelectKBest(score_func=f_regression, k='all')
+    selector_f.fit(X, y)
+    
+    selector_mi = SelectKBest(score_func=mutual_info_regression, k='all')
+    selector_mi.fit(X, y)
+    
+    # Chuẩn hóa scores
+    f_scores_raw = selector_f.scores_
+    f_scores_norm = (f_scores_raw - f_scores_raw.min()) / (f_scores_raw.max() - f_scores_raw.min()) * 100
+    
+    mi_scores_raw = selector_mi.scores_
+    mi_scores_norm = (mi_scores_raw - mi_scores_raw.min()) / (mi_scores_raw.max() - mi_scores_raw.min()) * 100
+    
+    # Tạo DataFrame kết quả
+    importance_df = pd.DataFrame({
+        'Chất Ô Nhiễm': available_features,
+        'Điểm Tuyến Tính': f_scores_norm,
+        'Điểm Phi Tuyến': mi_scores_norm
+    })
+    
+    importance_df['Điểm Trung Bình'] = (importance_df['Điểm Tuyến Tính'] + importance_df['Điểm Phi Tuyến']) / 2
+    importance_df = importance_df.sort_values('Điểm Trung Bình', ascending=False)
+    importance_df['Xếp Hạng'] = range(1, len(importance_df) + 1)
+    
+    return importance_df, len(df_clean)
 
 @st.cache_data
 def calculate_correlations(df):
@@ -1031,94 +1151,134 @@ def calculate_correlations(df):
     return overall_corr, df_corr
 
 def ma_tran_tuong_quan(df):
-    """MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM"""
-    st.header("MA TRẬN TƯƠNG QUAN CHẤT Ô NHIỄM NÂNG CAO")
+    """MỐI QUAN HỆ GIỮA CÁC CHẤT & MA TRẬN TƯƠNG QUAN """
+    st.header("MỐI QUAN HỆ CHẤT Ô NHIỄM & MA TRẬN TƯƠNG QUAN")
+    # === PHẦN 1: PHÂN TÍCH MỐI QUAN HỆ ẢNH HƯỞNG ===
+    st.header("MỐI QUAN HỆ ẢNH HƯỞNG GIỮA CÁC CHẤT")
     
+    # Chọn target variable
+    st.subheader("Tùy Chọn Phân Tích")
     
+    target_options = {
+        'pm25': 'PM2.5 (Bụi mịn < 2.5μm)',
+        'pm10': 'PM10 (Bụi mịn < 10μm)',
+        'aqi': 'AQI (Chỉ số chất lượng không khí)',
+        'no2': 'NO2 (Nitro dioxide)',
+        'o3': 'O3 (Ozone)'
+    }
+    
+    available_targets = {k: v for k, v in target_options.items() if k in df.columns}
+    
+    if available_targets:
+        target = st.selectbox(
+            "Chọn biến mục tiêu (Target) để phân tích:",
+            options=list(available_targets.keys()),
+            format_func=lambda x: available_targets[x],
+            index=0,
+            help="Chọn chất ô nhiễm mà bạn muốn tìm hiểu yếu tố nào ảnh hưởng đến nó",
+            key="feature_importance_target"
+        )
+        
+        st.info(f"**Biến mục tiêu:** {available_targets[target]}")
+        
+        # Định nghĩa các features có thể dùng
+        all_possible_features = ['pm25', 'pm10', 'no2', 'so2', 'co', 'o3', 'aod', 'dust', 'uv_index', 'co2',
+                                 'aqi_pm25', 'aqi_pm10', 'aqi_no2', 'aqi_so2', 'aqi_co', 'aqi_o3']
+        
+        # Lọc features có sẵn và loại bỏ target
+        available_features = [f for f in all_possible_features if f in df.columns and f != target]
+        
+        if len(available_features) >= 2:
+            st.write(f"**Số lượng features có sẵn:** {len(available_features)}")
+            
+            # Chuẩn bị dữ liệu
+            df_clean = df[available_features + [target]].dropna()
+            
+            if len(df_clean) >= 100:
+                X = df_clean[available_features]
+                y = df_clean[target]
+                
+                st.success(f"Đã chuẩn bị dữ liệu: {len(df_clean):,} mẫu × {len(available_features)} features")
+                
+                # Phương pháp CHÍNH: Tính điểm ảnh hưởng đơn giản
+                st.subheader("Xếp Hạng Mức Độ Ảnh Hưởng")
+                
+                st.info(f"Đang tính toán xem chất ô nhiễm nào ảnh hưởng mạnh nhất đến **{available_targets[target]}**...")
+                
+                # Sử dụng cả 2 phương pháp để đánh giá toàn diện
+                selector_f = SelectKBest(score_func=f_regression, k='all')
+                selector_f.fit(X, y)
+                
+                selector_mi = SelectKBest(score_func=mutual_info_regression, k='all')
+                selector_mi.fit(X, y)
+                
+                # Chuẩn hóa scores về [0, 100]
+                f_scores_raw = selector_f.scores_
+                f_scores_norm = (f_scores_raw - f_scores_raw.min()) / (f_scores_raw.max() - f_scores_raw.min()) * 100
+                
+                mi_scores_raw = selector_mi.scores_
+                mi_scores_norm = (mi_scores_raw - mi_scores_raw.min()) / (mi_scores_raw.max() - mi_scores_raw.min()) * 100
+                
+                # Tính điểm trung bình
+                importance_df = pd.DataFrame({
+                    'Chất Ô Nhiễm': available_features,
+                    'Điểm Tuyến Tính': f_scores_norm,
+                    'Điểm Phi Tuyến': mi_scores_norm
+                })
+                
+                importance_df['Điểm Trung Bình'] = (importance_df['Điểm Tuyến Tính'] + importance_df['Điểm Phi Tuyến']) / 2
+                importance_df = importance_df.sort_values('Điểm Trung Bình', ascending=False)
+                importance_df['Xếp Hạng'] = range(1, len(importance_df) + 1)
+                
+            # Hiển thị kết quả - Top 10
+                fig_importance = px.bar(
+                    importance_df.head(10),
+                    x='Điểm Trung Bình',
+                    y='Chất Ô Nhiễm',
+                    orientation='h',
+                    title=f"Top 10 Chất Ô Nhiễm Ảnh Hưởng Đến {target.upper()}",
+                    color='Điểm Trung Bình',
+                    color_continuous_scale='RdYlGn'
+                )
+                fig_importance.update_layout(
+                    height=600,
+                    yaxis={'categoryorder':'total ascending'},
+                    xaxis_title="Điểm Ảnh Hưởng (0-100)",
+                    yaxis_title=""
+                )
+                st.plotly_chart(fig_importance, use_container_width=True)
+                
+                # Bảng chi tiết đầy đủ
+                with st.expander("Xem Bảng Chi Tiết Tất Cả Features"):
+                    importance_display = importance_df.copy()
+                    importance_display['Điểm Tuyến Tính'] = importance_display['Điểm Tuyến Tính'].round(1)
+                    importance_display['Điểm Phi Tuyến'] = importance_display['Điểm Phi Tuyến'].round(1)
+                    importance_display['Điểm Trung Bình'] = importance_display['Điểm Trung Bình'].round(1)
+                    
+                    st.dataframe(importance_display, use_container_width=True, hide_index=True)
+            else:
+                st.warning(f"Chỉ có {len(df_clean)} mẫu sau khi loại bỏ missing values. Cần ít nhất 100 mẫu để phân tích chính xác.")
+        else:
+            st.warning("Không đủ features để phân tích (cần ít nhất 2 features)")
+    else:
+        st.error("Không tìm thấy target variable phù hợp!")
+    
+    # === PHẦN 2: MA TRẬN TƯƠNG QUAN ===
+    st.markdown("---")
+    st.header("PHẦN 2: MA TRẬN TƯƠNG QUAN TỔNG QUAN")
     # Tính toán với cache
     overall_corr, df_corr = calculate_correlations(df)
+    
+    # Kiểm tra dữ liệu ngay từ đầu
+    if overall_corr.empty:
+        st.warning("Không đủ dữ liệu để tính ma trận tương quan tổng thể")
+        return df_corr
     
     # Định nghĩa lại pollutants cho phần dưới
     pollutants = ['pm25','pm10','o3','no2','so2','co','aod','dust','uv_index','co2']
     
-    # Tìm các cặp tương quan mạnh nhất
-    strong_correlations = df_corr[abs(df_corr['correlation']) > 0.7] if not df_corr.empty else pd.DataFrame()
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("Top Tương Quan Mạnh Nhất")
-        if not strong_correlations.empty:
-            top_correlations = (
-                strong_correlations
-                .groupby(['pollutant_1', 'pollutant_2'])['correlation']
-                .mean()
-                .reset_index()
-                .sort_values('correlation', key=abs, ascending=False)
-                .head(10)
-            )
-            
-            fig_top_corr = px.bar(
-                top_correlations,
-                x='correlation',
-                y=[f"{row['pollutant_1']} - {row['pollutant_2']}" for _, row in top_correlations.iterrows()],
-                orientation='h',
-                color='correlation',
-                color_continuous_scale='RdBu',
-                title="Top 10 Tương Quan Mạnh Nhất"
-            )
-            st.plotly_chart(fig_top_corr, use_container_width=True)
-        else:
-            st.info("Không tìm thấy tương quan mạnh (>0.7)")
-    
-    with col2:
-        st.subheader("Tương Quan Theo Địa Điểm")
-        
-        available_pollutants_for_selection = [p for p in pollutants if p in df.columns]
-        if len(available_pollutants_for_selection) >= 2:
-            selected_pollutant_pair = st.selectbox(
-                "Chọn cặp chất ô nhiễm:",
-                options=[f"{p1} - {p2}" for i, p1 in enumerate(available_pollutants_for_selection) for p2 in available_pollutants_for_selection[i+1:]],
-                index=0
-            )
-        else:
-            selected_pollutant_pair = None
-        
-        if selected_pollutant_pair and not df_corr.empty:
-            p1, p2 = selected_pollutant_pair.split(' - ')
-            
-            location_corr = (
-                df_corr[
-                    (df_corr['pollutant_1'] == p1) & 
-                    (df_corr['pollutant_2'] == p2)
-                ]
-                .groupby('location_key')['correlation']
-                .mean()
-                .reset_index()
-            )
-            
-            if not location_corr.empty:
-                fig_loc_corr = px.bar(
-                    location_corr,
-                    x='location_key',
-                    y='correlation',
-                    color='correlation',
-                    color_continuous_scale='RdBu',
-                    title=f"Tương Quan {selected_pollutant_pair} Theo Địa Điểm"
-                )
-                st.plotly_chart(fig_loc_corr, use_container_width=True)
-            else:
-                st.info("Không có dữ liệu tương quan cho cặp này")
-        elif not selected_pollutant_pair:
-            st.info("Không đủ chất ô nhiễm để phân tích")
-    
-    # Heatmap tương quan tổng thể
-    st.subheader("Ma Trận Tương Quan Tổng Thể")
-    
-    # Kiểm tra ma trận tương quan tổng thể
-    if overall_corr.empty:
-        st.warning("Không đủ dữ liệu để tính ma trận tương quan tổng thể")
-        return df_corr
+    # Hiển thị Ma Trận Tương Quan trước (tổng quan)
+    st.subheader("Heatmap Tương Quan Tổng Thể")
     
     fig_overall = px.imshow(
         overall_corr.values,
@@ -1141,8 +1301,9 @@ def ma_tran_tuong_quan(df):
             )
     
     st.plotly_chart(fig_overall, use_container_width=True)
-
-    # Tự động lưu ma trận tương quan lên MinIO theo năm
+    # Lưu kết quả lên MinIO
+    st.subheader("Lưu Trữ Kết Quả")
+    
     try:
         minio_client = Minio(
             MINIO_HOST,
@@ -1182,13 +1343,89 @@ def ma_tran_tuong_quan(df):
         )
         
         current_time = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
-        st.success(f"Đã cập nhật ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
+        st.success(f"Đã lưu ma trận tương quan lên MinIO: `{eda_bucket}/{file_name}` (Lúc {current_time})")
        
         
     except Exception as e:
         st.error(f"Lỗi khi lưu lên MinIO: {str(e)}")
         st.warning("Vui lòng kiểm tra kết nối MinIO và quyền truy cập")
-
+        
+    # Phân tích chi tiết
+    st.subheader("Phân Tích Chi Tiết Tương Quan")
+    
+    # Tìm các cặp tương quan mạnh nhất
+    strong_correlations = df_corr[abs(df_corr['correlation']) > 0.7] if not df_corr.empty else pd.DataFrame()
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write("**Top 10 Tương Quan Mạnh Nhất (>0.7):**")
+        if not strong_correlations.empty:
+            top_correlations = (
+                strong_correlations
+                .groupby(['pollutant_1', 'pollutant_2'])['correlation']
+                .mean()
+                .reset_index()
+                .sort_values('correlation', key=abs, ascending=False)
+                .head(10)
+            )
+            
+            fig_top_corr = px.bar(
+                top_correlations,
+                x='correlation',
+                y=[f"{row['pollutant_1']} - {row['pollutant_2']}" for _, row in top_correlations.iterrows()],
+                orientation='h',
+                color='correlation',
+                color_continuous_scale='RdBu',
+                title="Top 10 Tương Quan Mạnh Nhất"
+            )
+            st.plotly_chart(fig_top_corr, use_container_width=True)
+        else:
+            st.info("Không tìm thấy tương quan mạnh (>0.7)")
+    
+    with col2:
+        st.write("**Tương Quan Theo Địa Điểm:**")
+        
+        available_pollutants_for_selection = [p for p in pollutants if p in df.columns]
+        if len(available_pollutants_for_selection) >= 2:
+            selected_pollutant_pair = st.selectbox(
+                "Chọn cặp chất để xem tương quan theo địa điểm:",
+                options=[f"{p1} - {p2}" for i, p1 in enumerate(available_pollutants_for_selection) for p2 in available_pollutants_for_selection[i+1:]],
+                index=0,
+                key="correlation_pair_select"
+            )
+        else:
+            selected_pollutant_pair = None
+        
+        if selected_pollutant_pair and not df_corr.empty:
+            p1, p2 = selected_pollutant_pair.split(' - ')
+            
+            location_corr = (
+                df_corr[
+                    (df_corr['pollutant_1'] == p1) & 
+                    (df_corr['pollutant_2'] == p2)
+                ]
+                .groupby('location_key')['correlation']
+                .mean()
+                .reset_index()
+            )
+            
+            if not location_corr.empty:
+                fig_loc_corr = px.bar(
+                    location_corr,
+                    x='location_key',
+                    y='correlation',
+                    color='correlation',
+                    color_continuous_scale='RdBu',
+                    title=f"Tương Quan {selected_pollutant_pair} Theo Địa Điểm"
+                )
+                st.plotly_chart(fig_loc_corr, use_container_width=True)
+            else:
+                st.info("Không có dữ liệu tương quan cho cặp này")
+        elif not selected_pollutant_pair:
+            st.info("Không đủ chất ô nhiễm để phân tích")
+    
+    
     
     return df_corr
 
@@ -1249,8 +1486,8 @@ def main():
             "Tổng Quan",
             "Phân Vùng & Xếp Hạng",
             "Chất Ô Nhiễm Chính",
-            "Xu Hướng & Sự Kiện",
-            "Ma Trận Tương Quan",
+            "Phân Tích Mùa Vụ",
+            "Ma Trận Tương Quan & Mối Quan Hệ",
             "Tất Cả Phân Tích"
         ]
     )
@@ -1536,14 +1773,14 @@ def main():
     elif analysis_option == "Chất Ô Nhiễm Chính":
         chat_o_nhiem(df)
     
-    elif analysis_option == "Xu Hướng & Sự Kiện":
-        xu_huong(df)
+    elif analysis_option == "Phân Tích Mùa Vụ":
+        phan_tich_mua_vu(df)
     
-    elif analysis_option == "Ma Trận Tương Quan":
+    elif analysis_option == "Ma Trận Tương Quan & Mối Quan Hệ":
         ma_tran_tuong_quan(df)
     
     elif analysis_option == "Tất Cả Phân Tích":
-        st.info("tất cả các bài phân tích - có thể mất vài phút...")
+        st.info("Đang chạy tất cả các phân tích - có thể mất vài phút...")
         
         df_rank = phan_vung_o_nhiem(df)
         st.markdown("---")
@@ -1551,13 +1788,13 @@ def main():
         df_pollutant = chat_o_nhiem(df)
         st.markdown("---")
         
-        df_trend, trend_df = xu_huong(df)
+        df_seasonal = phan_tich_mua_vu(df)
         st.markdown("---")
         
         df_corr = ma_tran_tuong_quan(df)
         st.markdown("---")
         
-        st.success("Hoàn thành tất cả phân tích!")
+        st.success("✅ Hoàn thành tất cả phân tích!")
 
 if __name__ == "__main__":
     main()
