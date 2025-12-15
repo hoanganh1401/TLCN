@@ -1,246 +1,361 @@
-import streamlit as st
-from minio import Minio
-from io import BytesIO
-import pandas as pd
-import numpy as np
-from scipy import stats
-import matplotlib.pyplot as plt
-import seaborn as sns
+# /opt/EDA_AQI/Jobs/src/eda/pre-processing/data_preprocessing.py
+# hoặc /opt/EDA_AQI/Jobs/src/eda/silver_clean_global.py
+# (tùy bạn đang dùng path nào trong DAG, nội dung file là như nhau)
+
 import os
+import argparse
+import tempfile
+import time
+from io import BytesIO  # để đây phòng khi cần dùng sau
+import gc
+
+import numpy as np
+import pandas as pd
+from minio import Minio
+from scipy import stats
+from urllib3.exceptions import ProtocolError
+
 
 # =============================
 # CẤU HÌNH MINIO
 # =============================
-#MINIO_HOST = "172.27.91.163:9004"
-MINIO_HOST = "localhost:9004"
-MINIO_ACCESS_KEY = "admin"
-MINIO_SECRET_KEY = "admin123"
-MINIO_BUCKET = "air-quality"
-MINIO_CLEAN_BUCKET = "air-quality-clean"
+MINIO_HOST = os.getenv("MINIO_HOST", "minio:9000")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "admin")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "admin123")
+MINIO_BUCKET = os.getenv("MINIO_BUCKET", "air-quality")
+MINIO_CLEAN_BUCKET = os.getenv("MINIO_CLEAN_BUCKET", "air-quality-clean")
+
 
 # =============================
-# HÀM TIỆN ÍCH
+# HÀM TIỆN ÍCH MINIO
 # =============================
 def get_minio_client():
-    return Minio(MINIO_HOST, access_key=MINIO_ACCESS_KEY, secret_key=MINIO_SECRET_KEY, secure=False)
+    return Minio(
+        MINIO_HOST,
+        access_key=MINIO_ACCESS_KEY,
+        secret_key=MINIO_SECRET_KEY,
+        secure=False,  # nếu sau này MINIO_SECURE=true thì đọc từ env rồi sửa chỗ này
+    )
 
-def list_years_and_files(client, bucket):
-    all_objects = list(client.list_objects(bucket, prefix="openmeteo/global/", recursive=True))
+
+def list_years_and_files(client, bucket=MINIO_BUCKET, prefix="openmeteo/global/"):
+    """
+    Liệt kê các file CSV trong MinIO theo từng năm.
+    Cấu trúc path giả định: openmeteo/global/<year>/<something>.csv
+    """
+    all_objects = list(client.list_objects(bucket, prefix=prefix, recursive=True))
     files_by_year = {}
     years = set()
+
     for obj in all_objects:
-        path = obj.object_name
+        path = obj.object_name  # vd: openmeteo/global/2025/file.csv
         parts = path.split("/")
         if len(parts) >= 4 and path.endswith(".csv"):
             year = parts[2]
             years.add(year)
             files_by_year.setdefault(year, []).append(path)
+
     return sorted(years), files_by_year
 
-def load_csv_from_minio(client, bucket, path):
-    response = client.get_object(bucket, path)
-    data = response.read()
-    response.close()
-    response.release_conn()
-    return pd.read_csv(BytesIO(data))
 
 # =============================
-# EDA
+# HÀM ĐỌC CSV CÓ RETRY (STREAM, KHÔNG ĐỌC FULL VÀO RAM)
 # =============================
-def run_eda(df, z_threshold=7.0, null_threshold=40):
+def iter_csv_chunks_from_minio(
+    client,
+    bucket,
+    path,
+    chunksize=50_000,      # GIẢM chunksize để bớt tốn RAM
+    max_retries=3,
+):
+    """
+    Đọc CSV từ MinIO với retry, dùng streaming thay vì đọc toàn bộ vào RAM.
+    Trả về các chunk DataFrame (generator).
+    """
+    attempt = 1
+    while True:
+        try:
+            print(f"[INFO] Đọc {bucket}/{path}, attempt {attempt}/{max_retries}")
+            resp = client.get_object(bucket, path)
+
+            try:
+                if chunksize:
+                    for chunk in pd.read_csv(resp, chunksize=chunksize):
+                        yield chunk
+                else:
+                    yield pd.read_csv(resp)
+            finally:
+                resp.close()
+                resp.release_conn()
+
+            break  # thành công → thoát retry loop
+
+        except ProtocolError as e:
+            print(
+                f"[WARN] ProtocolError khi đọc {bucket}/{path} "
+                f"(attempt {attempt}/{max_retries}): {e}"
+            )
+            attempt += 1
+            if attempt > max_retries:
+                print("[ERROR] Hết số lần retry → raise lỗi.")
+                raise
+            time.sleep(3)
+
+        except Exception as e:
+            print(f"[ERROR] Lỗi khi đọc {bucket}/{path}: {e}")
+            raise
+
+
+def upload_file_to_minio(client, bucket, path, local_path):
+    size = os.path.getsize(local_path)
+    with open(local_path, "rb") as f:
+        client.put_object(
+            bucket,
+            path,
+            data=f,
+            length=size,
+            content_type="text/csv",
+        )
+
+
+# =============================
+# EDA BASED ON FIRST CHUNK (NHƯNG CHỈ SAMPLE)
+# =============================
+def run_eda(df, z_threshold=7.0, null_threshold=40, max_rows_for_eda=50_000):
+    """
+    Chạy EDA trên sample để tránh ăn RAM khi chunk rất to.
+    """
+    # Nếu df quá to thì lấy sample
+    if len(df) > max_rows_for_eda:
+        print(
+            f"[INFO] EDA sample {max_rows_for_eda} / {len(df)} rows "
+            f"để tiết kiệm RAM"
+        )
+        df_eda = df.sample(n=max_rows_for_eda, random_state=42)
+    else:
+        df_eda = df
+
     report = {}
-    report['shape_before'] = df.shape
+    report["shape_before"] = df.shape
 
-    all_null_cols = df.columns[df.isna().all()].tolist()
-    report['all_null_columns'] = all_null_cols
+    # Các cột toàn null
+    all_null_cols = df_eda.columns[df_eda.isna().all()].tolist()
+    report["all_null_columns"] = all_null_cols
 
-    null_percent = (df.isnull().mean() * 100).to_dict()
-    report['null_percent'] = null_percent
+    # % null theo cột (trên sample, nhưng vẫn phản ánh tương đối)
+    null_percent = (df_eda.isnull().mean() * 100).to_dict()
+    report["null_percent"] = null_percent
 
+    # Cột có % null > ngưỡng
     cols_to_drop_by_null = [c for c, p in null_percent.items() if p > null_threshold]
-    report['cols_dropped_by_null_threshold'] = cols_to_drop_by_null
+    report["cols_dropped_by_null_threshold"] = cols_to_drop_by_null
 
-    dropped_cols_info = {c: null_percent.get(c, 0) for c in set(all_null_cols + cols_to_drop_by_null)}
-    report['dropped_columns_with_null_percent'] = dropped_cols_info
+    # Tổng hợp cột drop
+    dropped_cols_info = {
+        c: null_percent.get(c, 0)
+        for c in set(all_null_cols + cols_to_drop_by_null)
+    }
+    report["dropped_columns_with_null_percent"] = dropped_cols_info
 
-    df_clean = df.drop(columns=list(dropped_cols_info.keys()), errors='ignore')
-    report['describe'] = df_clean.describe(include='all').to_dict()
+    # DataFrame sau khi drop cột "quá bẩn"
+    df_clean = df_eda.drop(columns=list(dropped_cols_info.keys()), errors="ignore")
 
+    # Describe
+    try:
+        report["describe"] = df_clean.describe(include="all").to_dict()
+    except Exception:
+        report["describe"] = {}
+
+    # Phân tích outlier
     numeric_df = df_clean.select_dtypes(include=[np.number])
-    report['numeric_columns'] = numeric_df.columns.tolist()
-    outlier_info = {}
+    report["numeric_columns"] = numeric_df.columns.tolist()
 
+    outlier_info = {}
     if not numeric_df.empty:
         valid_cols = numeric_df.loc[:, numeric_df.std(skipna=True) > 0]
         if not valid_cols.empty:
-            z = np.abs(stats.zscore(valid_cols, nan_policy='omit'))
+            z = np.abs(stats.zscore(valid_cols, nan_policy="omit"))
             z_df = pd.DataFrame(z, columns=valid_cols.columns, index=valid_cols.index)
+
             rows_with_outlier = (z_df >= z_threshold).any(axis=1)
-            outlier_rows_idx = z_df[rows_with_outlier].index.tolist()
             outlier_counts_by_col = (z_df >= z_threshold).sum(axis=0).to_dict()
 
-            outlier_info['total_outlier_rows'] = int(rows_with_outlier.sum())
-            outlier_info['outlier_counts_by_column'] = {k: int(v) for k, v in outlier_counts_by_col.items()}
-            outlier_info['outlier_samples'] = df_clean.loc[outlier_rows_idx].head(20).to_dict(orient='records')
-        else:
-            outlier_info['note'] = 'Không có cột số hợp lệ để tính z-score.'
-    else:
-        outlier_info['note'] = 'Không có cột số để phân tích.'
+            outlier_info["total_outlier_rows"] = int(rows_with_outlier.sum())
+            outlier_info["outlier_counts_by_column"] = {
+                k: int(v) for k, v in outlier_counts_by_col.items()
+            }
+            outlier_info["outlier_samples"] = (
+                df_clean.loc[rows_with_outlier].head(20).to_dict(orient="records")
+            )
+    report["outlier_analysis"] = outlier_info
 
-    report['outlier_analysis'] = outlier_info
-
+    # Corr
     try:
-        report['correlation'] = df_clean.corr().to_dict()
+        report["correlation"] = df_clean.corr().to_dict()
     except Exception:
-        report['correlation'] = {}
+        report["correlation"] = {}
 
-    report['shape_after_drop_for_eda'] = df_clean.shape
+    report["shape_after_drop_for_eda"] = df_clean.shape
     return report, df_clean
 
+
+def save_eda_report(report, file_choice, report_dir="eda_reports"):
+    os.makedirs(report_dir, exist_ok=True)
+    base = os.path.basename(file_choice).replace(".csv", "")
+    out_path = os.path.join(report_dir, f"{base}_eda_report.xlsx")
+
+    with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
+        pd.DataFrame(report.get("describe", {})).T.to_excel(
+            writer, sheet_name="describe"
+        )
+        pd.DataFrame.from_dict(
+            report.get("null_percent", {}), orient="index", columns=["% Null"]
+        ).to_excel(writer, sheet_name="null_percent")
+        pd.DataFrame.from_dict(
+            report.get("dropped_columns_with_null_percent", {}),
+            orient="index",
+            columns=["% Null"],
+        ).to_excel(writer, sheet_name="dropped_columns")
+        outlier_counts = report.get("outlier_analysis", {}).get(
+            "outlier_counts_by_column", {}
+        )
+        pd.DataFrame.from_dict(
+            outlier_counts,
+            orient="index",
+            columns=["Outliers"],
+        ).to_excel(writer, sheet_name="outliers")
+
+    return out_path
+
+
 # =============================
-# CLEANING
+# CLEANING PER CHUNK
 # =============================
-def run_cleaning(df, report, z_threshold=7.0, null_threshold=40):
-    cols_to_drop = set(report.get('all_null_columns', []) + report.get('cols_dropped_by_null_threshold', []))
-    extra_drop_cols = ['date_utc', 'latitude', 'longitude', '_ingested_at']
-    cols_to_drop.update(extra_drop_cols)
-    df = df.drop(columns=list(cols_to_drop), errors='ignore')
+def clean_chunk(chunk, cols_to_drop, z_threshold=7.0):
+    """
+    - Drop các cột cần loại bỏ (null nhiều, metadata không cần thiết)
+    - Loại outlier theo Z-score
+    - Drop tất cả hàng còn null
+    """
+    chunk = chunk.drop(columns=list(cols_to_drop), errors="ignore")
 
-    numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    if numeric_cols:
-        valid_cols = df[numeric_cols].loc[:, df[numeric_cols].std(skipna=True) > 0]
-        if not valid_cols.empty:
-            z = np.abs(stats.zscore(valid_cols, nan_policy='omit'))
-            z_df = pd.DataFrame(z, columns=valid_cols.columns, index=valid_cols.index)
-            rows_with_outlier = (z_df >= z_threshold).any(axis=1)
-            df = df.loc[~rows_with_outlier]
+    numeric_cols = chunk.select_dtypes(include=[np.number]).columns
+    valid_cols = numeric_cols[chunk[numeric_cols].std(skipna=True) > 0]
 
-    df = df.dropna(how='any')
-    return df
+    if len(valid_cols) > 0:
+        z = np.abs(stats.zscore(chunk[valid_cols], nan_policy="omit"))
+        rows_with_outlier = (z >= z_threshold).any(axis=1)
+        chunk = chunk.loc[~rows_with_outlier]
+
+    return chunk.dropna(how="any")
+
 
 # =============================
-# STREAMLIT UI
+# PROCESS 1 FILE (CHUNKED)
 # =============================
-st.set_page_config(page_title="EDA & Làm sạch dữ liệu không khí", layout="wide")
-st.title(" EDA & Làm sạch dữ liệu không khí từ MinIO")
+def process_file_chunked(
+    client,
+    file_path,
+    z_threshold=7.0,
+    null_threshold=40,
+    bucket=MINIO_BUCKET,
+    clean_bucket=MINIO_CLEAN_BUCKET,
+):
+    print(f"=== Xử lý file: {file_path} ===")
 
-client = get_minio_client()
+    chunks = iter_csv_chunks_from_minio(
+        client, bucket, file_path, chunksize=50_000  # giảm thêm cho chắc
+    )
 
-try:
-    if not client.bucket_exists(MINIO_BUCKET):
-        st.error(f" Bucket '{MINIO_BUCKET}' không tồn tại!")
-        st.stop()
-    else:
-        st.sidebar.success(f"Kết nối thành công tới bucket: {MINIO_BUCKET}")
-except Exception as e:
-    st.sidebar.error(f"Lỗi kết nối MinIO: {e}")
-    st.stop()
-
-years, files_by_year = list_years_and_files(client, MINIO_BUCKET)
-selected_year = st.sidebar.selectbox("Chọn năm (folder)", years)
-year_files = files_by_year.get(selected_year, [])
-file_choice = st.selectbox("Chọn file CSV để phân tích / làm sạch", year_files)
-
-mode = st.sidebar.radio("Chọn chế độ:", ["EDA (không lưu)", "EDA + Lưu báo cáo", "Chạy làm sạch và lưu"])
-run_button = st.button(" Chạy phân tích / làm sạch")
-
-z_threshold = 7.0
-null_threshold = 40
-extra_drop_cols = ['date_utc', 'latitude', 'longitude', '_ingested_at']
-
-if file_choice and run_button:
-    st.subheader(f" File đang xử lý: {file_choice}")
     try:
-        df_orig = load_csv_from_minio(client, MINIO_BUCKET, file_choice)
+        first_chunk = next(chunks)
+    except StopIteration:
+        print("  - File rỗng, bỏ qua.")
+        return
 
-        df_orig = df_orig.drop(columns=extra_drop_cols, errors='ignore')
-        st.markdown("### Các cột cố định đã bị loại bỏ (không dùng phân tích):")
-        st.write(extra_drop_cols)
+    extra_drop_cols = ["date_utc", "latitude", "longitude", "_ingested_at", "year_utc"]
+    first_chunk = first_chunk.drop(columns=extra_drop_cols, errors="ignore")
 
-        st.write(f"Kích thước ban đầu (sau khi drop cột cố định): {df_orig.shape}")
+    report, _ = run_eda(first_chunk.copy(), z_threshold, null_threshold)
+    cols_to_drop = (
+        set(report.get("all_null_columns", []))
+        | set(report.get("cols_dropped_by_null_threshold", []))
+        | set(extra_drop_cols)
+    )
 
-        report, df_for_eda = run_eda(df_orig, z_threshold=z_threshold, null_threshold=null_threshold)
+    report_path = save_eda_report(report, file_path)
+    print(f"  - Đã lưu EDA report: {report_path}")
 
-        st.markdown("### Các cột toàn rỗng")
-        st.write(report.get('all_null_columns', []))
+    fd, tmp_path = tempfile.mkstemp(suffix=".csv")
+    os.close(fd)
+    first = True
 
-        st.markdown(f"### Các cột bị drop theo ngưỡng null > {null_threshold}%")
-        st.write(report.get('cols_dropped_by_null_threshold', []))
+    cleaned = clean_chunk(first_chunk, cols_to_drop, z_threshold)
+    if not cleaned.empty:
+        cleaned.to_csv(tmp_path, index=False, mode="w", header=True)
+        first = False
 
-        st.markdown("### Các cột số phân tích")
-        st.write(report.get('numeric_columns', []))
+    # Giải phóng bớt bộ nhớ trung gian
+    del first_chunk
+    gc.collect()
 
-        st.markdown("### Tổng số hàng có ngoại lệ")
-        st.write(report['outlier_analysis'].get('total_outlier_rows', 0))
+    for i, chunk in enumerate(chunks, start=1):
+        print(f"  - Processing chunk #{i}")
+        chunk = chunk.drop(columns=extra_drop_cols, errors="ignore")
+        cleaned = clean_chunk(chunk, cols_to_drop, z_threshold)
+        if not cleaned.empty:
+            cleaned.to_csv(tmp_path, index=False, mode="a", header=first)
+            first = False
+        del chunk, cleaned
+        gc.collect()
 
-        st.markdown("### Ngoại lệ theo cột")
-        st.write(report['outlier_analysis'].get('outlier_counts_by_column', {}))
+    if first:
+        print("  - Không có bản ghi nào sau khi làm sạch, bỏ qua upload.")
+        os.remove(tmp_path)
+        print(f"=== DONE (empty after cleaning): {file_path} ===\n")
+        return
 
-        st.markdown("### Mẫu dữ liệu ngoại lệ (20 hàng đầu)")
-        st.write(pd.DataFrame(report['outlier_analysis'].get('outlier_samples', [])))
+    if not client.bucket_exists(clean_bucket):
+        client.make_bucket(clean_bucket)
 
-        st.markdown("### Mô tả thống kê")
-        st.write(pd.DataFrame(report['describe']).T)
+    upload_file_to_minio(client, clean_bucket, file_path, tmp_path)
+    os.remove(tmp_path)
+    print(f"=== DONE file: {file_path} ===\n")
 
-        # --- Biểu đồ % null ---
-        null_percent_df = pd.DataFrame({
-            'column': list(report['null_percent'].keys()),
-            'percent_null': list(report['null_percent'].values())
-        })
-        fig, ax = plt.subplots(figsize=(12,5))
-        sns.barplot(x='column', y='percent_null', data=null_percent_df, ax=ax)
-        plt.setp(ax.get_xticklabels(), rotation=45, ha='right')  # dùng plt.setp thay cho set_xticklabels
-        ax.set_ylabel('% Null')
-        ax.set_ylim(0, 100)
-        ax.set_title('Tỉ lệ giá trị thiếu theo tất cả các cột')
-        st.pyplot(fig)
-        st.caption("Trục X: tên cột, trục Y: % giá trị null (0-100)")
 
-        numeric_cols = report.get('numeric_columns', [])
-        if numeric_cols:
-            cols_show = numeric_cols if len(numeric_cols) <= 6 else numeric_cols[:6]
-            for c in cols_show:
-                fig, ax = plt.subplots()
-                df_orig[c].hist(bins=30, ax=ax)
-                ax.set_title(f'Histogram của {c}')
-                ax.set_xlabel(c)
-                ax.set_ylabel('Frequency')
-                st.pyplot(fig)
-                st.caption(f'Trục X: giá trị {c}, trục Y: tần suất')
+# =============================
+# PROCESS 1 YEAR
+# =============================
+def process_year(year, z_threshold=7.0, null_threshold=40):
+    client = get_minio_client()
 
-        # --- Lưu báo cáo EDA Excel ---
-        if mode in ("EDA + Lưu báo cáo", "Chạy làm sạch và lưu"):
-            report_dir = "eda_reports"
-            os.makedirs(report_dir, exist_ok=True)
-            base_name = os.path.basename(file_choice).replace('.csv', '')
-            report_path_xlsx = os.path.join(report_dir, f"{base_name}_eda_report.xlsx")
+    years, files_by_year = list_years_and_files(client, MINIO_BUCKET)
 
-            with pd.ExcelWriter(report_path_xlsx, engine='openpyxl') as writer:
-                pd.DataFrame(report['describe']).T.to_excel(writer, sheet_name='describe')
-                pd.DataFrame.from_dict(report['null_percent'], orient='index', columns=['% Null']).to_excel(writer, sheet_name='null_percent')
-                pd.DataFrame.from_dict(report.get('dropped_columns_with_null_percent', {}), orient='index', columns=['% Null']).to_excel(writer, sheet_name='dropped_columns')
-                outlier_counts_df = pd.DataFrame.from_dict(report['outlier_analysis'].get('outlier_counts_by_column', {}), orient='index', columns=['Outlier count'])
-                outlier_counts_df.to_excel(writer, sheet_name='outliers')
-                top_outliers = pd.DataFrame(report['outlier_analysis'].get('outlier_samples', []))
-                if not top_outliers.empty:
-                    top_outliers.to_excel(writer, sheet_name='top_outliers', index=False)
+    if year not in files_by_year:
+        print(f"⚠ Không tìm thấy file cho năm {year}")
+        return
 
-            st.success(f"Đã lưu báo cáo EDA Excel tại: {report_path_xlsx}")
+    files = files_by_year[year]
+    print(f"▶ Bắt đầu xử lý {year}, tổng {len(files)} file")
 
-        # --- Clean dữ liệu ---
-        if mode == "Chạy làm sạch và lưu":
-            st.markdown("### Đang làm sạch dữ liệu...")
-            cleaned_df = run_cleaning(df_orig, report, z_threshold=z_threshold, null_threshold=null_threshold)
-            st.write(f"Kích thước sau khi làm sạch: {cleaned_df.shape}")
-            st.markdown("### Mẫu dữ liệu sạch:")
-            st.write(cleaned_df.head())
+    for f in files:
+        process_file_chunked(
+            client=client,
+            file_path=f,
+            z_threshold=z_threshold,
+            null_threshold=null_threshold,
+        )
+        gc.collect()
 
-            if not client.bucket_exists(MINIO_CLEAN_BUCKET):
-                client.make_bucket(MINIO_CLEAN_BUCKET)
+    print(f"✅ Hoàn thành xử lý năm {year}")
 
-            clean_csv = cleaned_df.to_csv(index=False).encode('utf-8')
-            client.put_object(MINIO_CLEAN_BUCKET, file_choice, data=BytesIO(clean_csv), length=len(clean_csv), content_type='text/csv')
-            st.success(f"Đã lưu file sạch lên bucket `{MINIO_CLEAN_BUCKET}` với đường dẫn: `{file_choice}`")
 
-    except Exception as e:
-        st.error(f"Lỗi khi load hoặc xử lý file: {e}")
+# =============================
+# MAIN
+# =============================
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--year", required=True)
+    args = parser.parse_args()
+
+    process_year(args.year)
