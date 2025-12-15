@@ -8,7 +8,7 @@ DEFAULT_LOC_PATH = "/opt/EDA_AQI/Jobs/src/eda/locations.jsonl"
 with DAG(
     dag_id="aqi_bronze_incremental",
     start_date=datetime(2025, 11, 1),
-    schedule="*/5 * * * *",   # 5 phút 1 lần
+    schedule="0 * * * *",   # 5 phút 1 lần: chỉ để ingest incremental vào Bronze
     catchup=False,
     max_active_runs=1,
     tags=["aqi", "bronze", "incremental"],
@@ -35,25 +35,3 @@ with DAG(
             "MINIO_SECURE": "{{ var.value.get('MINIO_SECURE', 'false') }}",
         },
     )
-
-    # lấy năm hiện tại từ Airflow template {{ ds }} (YYYY-MM-DD) → cắt lấy 4 ký tự đầu
-    build_cmd = r"""
-    set -e
-    YEAR="{{ ds[:4] }}"
-    echo "▶ Build yearly global for year=$YEAR"
-    python3 /opt/EDA_AQI/Jobs/src/eda/load_raw_data/bronze_build_global.py --year "$YEAR"
-    """
-
-    build_global = BashOperator(
-        task_id="build_global_year",
-        bash_command=build_cmd,
-        env={
-            "MINIO_HOST": "{{ var.value.get('MINIO_HOST', 'minio:9000') }}",
-            "MINIO_ACCESS_KEY": "{{ var.value.get('MINIO_ACCESS_KEY', 'admin') }}",
-            "MINIO_SECRET_KEY": "{{ var.value.get('MINIO_SECRET_KEY', 'admin123') }}",
-            "MINIO_BUCKET": "{{ var.value.get('MINIO_BUCKET', 'air-quality') }}",
-            "MINIO_SECURE": "{{ var.value.get('MINIO_SECURE', 'false') }}",
-        },
-    )
-
-    bronze_incremental >> build_global
