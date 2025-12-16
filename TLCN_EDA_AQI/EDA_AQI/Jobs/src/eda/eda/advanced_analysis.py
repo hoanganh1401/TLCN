@@ -840,7 +840,7 @@ def phan_tich_mua_vu(df):
     """PHÂN TÍCH MÙA VỤ & CHU KỲ THEO THỜI GIAN"""
     st.header("PHÂN TÍCH MÙA VỤ & CHU KỲ THEO THỜI GIAN")
     
-    # Cho phép người dùng chọn chất ô nhiễm để phân tích
+    # Cho phép người dùng chọn chỉ số để phân tích
     st.subheader("Tùy Chọn Phân Tích")
     
     pollutant_options = {
@@ -861,11 +861,11 @@ def phan_tich_mua_vu(df):
         return None
     
     selected_pollutant = st.selectbox(
-        "Chọn chất ô nhiễm để phân tích mùa vụ:",
+        "Chọn chỉ số để phân tích mùa vụ:",
         options=list(available_pollutants.keys()),
         format_func=lambda x: available_pollutants[x],
         index=0,
-        help="Chọn chất ô nhiễm để xem biến động theo mùa"
+        help="Chọn chỉ số để xem biến động theo mùa"
     )
     
     st.info(f"Đang phân tích mùa vụ cho: **{available_pollutants[selected_pollutant]}**")
@@ -948,7 +948,7 @@ def phan_tich_mua_vu(df):
     
 
     # Phân tích theo tháng (Line chart)
-    st.subheader("Biến Động Theo Tháng")
+    st.subheader("Biến Động Theo Mùa Của Các Địa Điểm")
     
     selected_locations = st.multiselect(
         "Chọn địa điểm để so sánh:",
@@ -996,11 +996,8 @@ def phan_tich_mua_vu(df):
         )
         st.plotly_chart(fig_line, use_container_width=True)
     
-    # Heatmap theo tháng × năm để thấy chu kỳ mùa vụ lặp lại
-    st.subheader("Chu Kỳ Mùa Vụ Theo Thời Gian")
-    
-    st.info("Heatmap này giúp bạn nhìn thấy pattern mùa vụ lặp lại qua các năm - mỗi tháng trong năm có mức ô nhiễm như thế nào")
-    
+    # Heatmap theo tháng × năm để thấy mẫu hình mùa vụ từng năm
+    st.subheader("Mẫu Hình Mùa Vụ Theo Từng Năm")
     # Tính trung bình theo tháng và năm
     monthly_yearly = df_seasonal.groupby(['year', 'month'])[selected_pollutant].mean().reset_index()
     
@@ -1015,7 +1012,7 @@ def phan_tich_mua_vu(df):
             y=pivot_cycle.index,
             color_continuous_scale="RdYlGn_r",
             aspect="auto",
-            title=f"Chu Kỳ Mùa Vụ: {selected_pollutant.upper()} Theo Tháng × Năm"
+            title=f"Mẫu Hình Mùa Vụ: {selected_pollutant.upper()} Từng Năm (Theo Tháng)"
         )
         
         # Thêm vùng màu mùa
@@ -1031,7 +1028,7 @@ def phan_tich_mua_vu(df):
         st.plotly_chart(fig_heatmap_cycle, use_container_width=True)
         
         # Phân tích pattern mùa vụ
-        st.write("**Nhận Xét Về Chu Kỳ Mùa Vụ:**")
+        st.write("**Nhận Xét Về Mẫu Hình Mùa Vụ:**")
         
         # Tính trung bình từng tháng qua các năm
         monthly_pattern = df_seasonal.groupby('month')[selected_pollutant].mean().sort_values(ascending=False)
@@ -1151,10 +1148,10 @@ def calculate_correlations(df):
     return overall_corr, df_corr
 
 def ma_tran_tuong_quan(df):
-    """MỐI QUAN HỆ GIỮA CÁC CHẤT & MA TRẬN TƯƠNG QUAN """
-    st.header("MỐI QUAN HỆ CHẤT Ô NHIỄM & MA TRẬN TƯƠNG QUAN")
+    """MỐI QUAN HỆ GIỮA CÁC CHỈ SỐ & MA TRẬN TƯƠNG QUAN """
+    st.header("MỐI QUAN HỆ GIỮA CÁC CHỈ SỐ & MA TRẬN TƯƠNG QUAN")
     # === PHẦN 1: PHÂN TÍCH MỐI QUAN HỆ ẢNH HƯỞNG ===
-    st.header("MỐI QUAN HỆ ẢNH HƯỞNG GIỮA CÁC CHẤT")
+    st.header("MỐI QUAN HỆ ẢNH HƯỞNG GIỮA CÁC CHỈ SỐ")
     
     # Chọn target variable
     st.subheader("Tùy Chọn Phân Tích")
@@ -1221,7 +1218,7 @@ def ma_tran_tuong_quan(df):
                 
                 # Tính điểm trung bình
                 importance_df = pd.DataFrame({
-                    'Chất Ô Nhiễm': available_features,
+                    'Chỉ Số': available_features,
                     'Điểm Tuyến Tính': f_scores_norm,
                     'Điểm Phi Tuyến': mi_scores_norm
                 })
@@ -1234,9 +1231,9 @@ def ma_tran_tuong_quan(df):
                 fig_importance = px.bar(
                     importance_df.head(10),
                     x='Điểm Trung Bình',
-                    y='Chất Ô Nhiễm',
+                    y='Chỉ Số',
                     orientation='h',
-                    title=f"Top 10 Chất Ô Nhiễm Ảnh Hưởng Đến {target.upper()}",
+                    title=f"Top 10 Chỉ Số Ảnh Hưởng Đến {target.upper()}",
                     color='Điểm Trung Bình',
                     color_continuous_scale='RdYlGn'
                 )
@@ -1249,7 +1246,7 @@ def ma_tran_tuong_quan(df):
                 st.plotly_chart(fig_importance, use_container_width=True)
                 
                 # Bảng chi tiết đầy đủ
-                with st.expander("Xem Bảng Chi Tiết Tất Cả Features"):
+                with st.expander("Xem Bảng Chi Tiết Tất Cả Chỉ Số Ảnh Hưởng"):
                     importance_display = importance_df.copy()
                     importance_display['Điểm Tuyến Tính'] = importance_display['Điểm Tuyến Tính'].round(1)
                     importance_display['Điểm Phi Tuyến'] = importance_display['Điểm Phi Tuyến'].round(1)
@@ -1263,9 +1260,9 @@ def ma_tran_tuong_quan(df):
     else:
         st.error("Không tìm thấy target variable phù hợp!")
     
-    # === PHẦN 2: MA TRẬN TƯƠNG QUAN ===
+    # === MA TRẬN TƯƠNG QUAN ===
     st.markdown("---")
-    st.header("PHẦN 2: MA TRẬN TƯƠNG QUAN TỔNG QUAN")
+    st.header("MA TRẬN TƯƠNG QUAN TỔNG QUAN")
     # Tính toán với cache
     overall_corr, df_corr = calculate_correlations(df)
     
@@ -1794,7 +1791,7 @@ def main():
         df_corr = ma_tran_tuong_quan(df)
         st.markdown("---")
         
-        st.success("✅ Hoàn thành tất cả phân tích!")
+        st.success("Hoàn thành tất cả phân tích!")
 
 if __name__ == "__main__":
     main()
