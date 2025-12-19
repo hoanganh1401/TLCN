@@ -32,10 +32,10 @@
 {"location_key":"daklak_buonmathuot","location_name":"Dak Lak - Buon Ma Thuot","latitude":12.6681,"longitude":108.0378,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"daknong_gianghia","location_name":"Dak Nong - Gia Nghia","latitude":12.0342,"longitude":107.6919,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"dienbien_dienbienphu","location_name":"Dien Bien - Dien Bien Phu","latitude":21.388,"longitude":103.02,"timezone":"Asia/Ho_Chi_Minh"}
-{"location_key":"dongnai_bienhoa","location_name":"Dong Nai - Bien Hoa","latitude":10.946,"longitude":106.8234,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"dongthap_caolanh","location_name":"Dong Thap - Cao Lanh","latitude":10.4596,"longitude":105.6325,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"gialai_pleiku","location_name":"Gia Lai - Pleiku","latitude":14.0041,"longitude":108.0062,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"hagiang_hagiangcity","location_name":"Ha Giang - Ha Giang City","latitude":22.8025,"longitude":104.9784,"timezone":"Asia/Ho_Chi_Minh"}
+{"location_key": "haiduong_haiduongcity","location_name": "Hai Duong - Hai Duong City","latitude": 20.9397,"longitude": 106.3309,"timezone": "Asia/Ho_Chi_Minh"}
 {"location_key":"hanam_phuly","location_name":"Ha Nam - Phu Ly","latitude":20.5401,"longitude":105.9109,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"hatinh_hatinhcity","location_name":"Ha Tinh - Ha Tinh City","latitude":18.3559,"longitude":105.9058,"timezone":"Asia/Ho_Chi_Minh"}
 {"location_key":"haugiang_vithanh","location_name":"Hau Giang - Vi Thanh","latitude":9.7838,"longitude":105.4695,"timezone":"Asia/Ho_Chi_Minh"}
